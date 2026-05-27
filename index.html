@@ -1,531 +1,513 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>AI SEO Growth Console</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Gemini SEO Intelligence Dashboard</title>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    *{
-        font-family: 'Inter', sans-serif;
-    }
+    <!-- CHART -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    body{
-        background:#05010f;
-        overflow-x:hidden;
-    }
+    <!-- ICONS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
-    .glass{
-        background: rgba(255,255,255,0.04);
-        backdrop-filter: blur(14px);
-        border:1px solid rgba(255,255,255,0.08);
-    }
+    <!-- FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
-    .purple-glow{
-        box-shadow: 0 0 30px rgba(168,85,247,0.2);
-    }
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
 
-    .dashboard-card{
-        transition:0.3s ease;
-    }
+        body {
+            background: #05010f;
+            overflow-x: hidden;
+        }
 
-    .dashboard-card:hover{
-        transform:translateY(-4px);
-        box-shadow:0 20px 40px rgba(168,85,247,0.15);
-    }
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
 
-    ::-webkit-scrollbar{
-        width:6px;
-    }
+        .purple-glow {
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.2);
+        }
 
-    ::-webkit-scrollbar-thumb{
-        background:#7e22ce;
-        border-radius:10px;
-    }
+        .dashboard-card {
+            transition: all 0.3s ease;
+        }
 
-    .gradient-text{
-        background:linear-gradient(to right,#c084fc,#ffffff);
-        -webkit-background-clip:text;
-        -webkit-text-fill-color:transparent;
-    }
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.2);
+        }
 
-    .gradient-border{
-        position:relative;
-    }
+        .gradient-text {
+            background: linear-gradient(to right, #c084fc, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .gradient-border::before{
-        content:'';
-        position:absolute;
-        inset:0;
-        padding:1px;
-        border-radius:18px;
-        background:linear-gradient(135deg,#9333ea,#ffffff10);
-        -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-        -webkit-mask-composite:xor;
-        mask-composite:exclude;
-    }
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
 
-</style>
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #9333ea;
+            border-radius: 999px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .loader {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .result-card {
+            animation: fadeUp 0.4s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0px);
+            }
+        }
+    </style>
 
 </head>
 
 <body class="text-white">
 
-<div class="flex min-h-screen">
+    <div class="flex min-h-screen">
 
-    <!-- SIDEBAR -->
+        <!-- SIDEBAR -->
 
-    <aside class="w-72 border-r border-purple-900/40 bg-black/30 backdrop-blur-xl p-6">
+        <aside
+            class="w-72 hidden lg:block border-r border-purple-900/40 bg-black/30 backdrop-blur-xl p-6 custom-scroll overflow-y-auto">
 
-        <div class="mb-10">
+            <div class="mb-10">
 
-            <div class="flex items-center gap-3 mb-3">
-                <div class="w-12 h-12 rounded-2xl bg-purple-600 flex items-center justify-center text-xl">
-                    <i class="fa-solid fa-sparkles"></i>
-                </div>
+                <div class="flex items-center gap-4">
 
-                <div>
-                    <h1 class="font-black text-xl gradient-text">
-                        Growth Console
-                    </h1>
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-purple-600 flex items-center justify-center text-2xl purple-glow">
 
-                    <p class="text-xs text-purple-300 mt-1">
-                        Gemini SEO Intelligence
-                    </p>
-                </div>
-            </div>
+                        <i class="fa-solid fa-sparkles"></i>
 
-        </div>
-
-        <div class="space-y-3">
-
-            <button class="w-full text-left px-5 py-4 rounded-2xl bg-purple-600 font-semibold">
-                <i class="fa-solid fa-chart-line mr-3"></i>
-                Dashboard
-            </button>
-
-            <button class="w-full text-left px-5 py-4 rounded-2xl hover:bg-white/5 transition-all text-slate-300">
-                <i class="fa-brands fa-reddit mr-3"></i>
-                Reddit Analytics
-            </button>
-
-            <button class="w-full text-left px-5 py-4 rounded-2xl hover:bg-white/5 transition-all text-slate-300">
-                <i class="fa-brands fa-quora mr-3"></i>
-                Quora Analytics
-            </button>
-
-            <button class="w-full text-left px-5 py-4 rounded-2xl hover:bg-white/5 transition-all text-slate-300">
-                <i class="fa-solid fa-globe mr-3"></i>
-                SEO Pages
-            </button>
-
-            <button class="w-full text-left px-5 py-4 rounded-2xl hover:bg-white/5 transition-all text-slate-300">
-                <i class="fa-solid fa-brain mr-3"></i>
-                Gemini Reports
-            </button>
-
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN -->
-
-    <main class="flex-1 p-8">
-
-        <!-- HEADER -->
-
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
-
-            <div>
-                <h2 class="text-4xl font-black gradient-text">
-                    SEO Intelligence Dashboard
-                </h2>
-
-                <p class="text-slate-400 mt-2">
-                    AI-powered SEO monitoring, analytics, and optimization engine powered by Gemini.
-                </p>
-            </div>
-
-            <div class="flex gap-3">
-
-                <select class="bg-black/40 border border-purple-800 rounded-xl px-5 py-3 outline-none">
-                    <option>Monthly Comparison</option>
-                    <option>Month-to-Month</option>
-                    <option>Quarterly Comparison</option>
-                    <option>Custom Comparison</option>
-                </select>
-
-                <select class="bg-black/40 border border-purple-800 rounded-xl px-5 py-3 outline-none">
-                    <option>Traffic</option>
-                    <option>Revenue</option>
-                    <option>Rankings</option>
-                    <option>Conversions</option>
-                </select>
-
-            </div>
-
-        </div>
-
-
-        <!-- KPI CARDS -->
-
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-
-            <div class="glass gradient-border rounded-3xl p-6 dashboard-card purple-glow">
-
-                <div class="flex justify-between items-center mb-5">
-
-                    <div>
-                        <p class="uppercase text-xs tracking-widest text-purple-300 font-bold">
-                            Total Traffic
-                        </p>
-
-                        <h3 class="text-4xl font-black mt-3">
-                            124K
-                        </h3>
-                    </div>
-
-                    <div class="w-16 h-16 rounded-2xl bg-purple-600 flex items-center justify-center text-2xl">
-                        <i class="fa-solid fa-chart-line"></i>
-                    </div>
-
-                </div>
-
-                <p class="text-emerald-400 text-sm font-semibold">
-                    +28.4% growth
-                </p>
-
-            </div>
-
-
-            <div class="glass gradient-border rounded-3xl p-6 dashboard-card">
-
-                <div class="flex justify-between items-center mb-5">
-
-                    <div>
-                        <p class="uppercase text-xs tracking-widest text-purple-300 font-bold">
-                            Revenue
-                        </p>
-
-                        <h3 class="text-4xl font-black mt-3">
-                            $48K
-                        </h3>
-                    </div>
-
-                    <div class="w-16 h-16 rounded-2xl bg-purple-600 flex items-center justify-center text-2xl">
-                        <i class="fa-solid fa-dollar-sign"></i>
-                    </div>
-
-                </div>
-
-                <p class="text-emerald-400 text-sm font-semibold">
-                    SEO pipeline improving
-                </p>
-
-            </div>
-
-
-            <div class="glass gradient-border rounded-3xl p-6 dashboard-card">
-
-                <div class="flex justify-between items-center mb-5">
-
-                    <div>
-                        <p class="uppercase text-xs tracking-widest text-orange-300 font-bold">
-                            Reddit Reach
-                        </p>
-
-                        <h3 class="text-4xl font-black mt-3">
-                            82K
-                        </h3>
-                    </div>
-
-                    <div class="w-16 h-16 rounded-2xl bg-orange-500 flex items-center justify-center text-2xl">
-                        <i class="fa-brands fa-reddit"></i>
-                    </div>
-
-                </div>
-
-                <p class="text-orange-300 text-sm font-semibold">
-                    Community engagement rising
-                </p>
-
-            </div>
-
-
-            <div class="glass gradient-border rounded-3xl p-6 dashboard-card">
-
-                <div class="flex justify-between items-center mb-5">
-
-                    <div>
-                        <p class="uppercase text-xs tracking-widest text-red-300 font-bold">
-                            Quora Authority
-                        </p>
-
-                        <h3 class="text-4xl font-black mt-3">
-                            91
-                        </h3>
-                    </div>
-
-                    <div class="w-16 h-16 rounded-2xl bg-red-500 flex items-center justify-center text-2xl">
-                        <i class="fa-brands fa-quora"></i>
-                    </div>
-
-                </div>
-
-                <p class="text-red-300 text-sm font-semibold">
-                    Authority increasing
-                </p>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- CHART -->
-
-        <div class="glass rounded-3xl p-8 mb-8 gradient-border">
-
-            <div class="flex justify-between items-center mb-6">
-
-                <div>
-                    <h3 class="text-2xl font-black">
-                        SEO Growth Analytics
-                    </h3>
-
-                    <p class="text-slate-400 mt-1">
-                        Compare SEO traffic, rankings, and revenue performance.
-                    </p>
-                </div>
-
-            </div>
-
-            <div class="h-[400px]">
-                <canvas id="seoChart"></canvas>
-            </div>
-
-        </div>
-
-
-
-        <!-- REDDIT + QUORA -->
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-
-            <!-- REDDIT -->
-
-            <div class="glass rounded-3xl p-8 gradient-border">
-
-                <div class="flex items-center gap-4 mb-8">
-
-                    <div class="w-14 h-14 rounded-2xl bg-orange-500 flex items-center justify-center text-2xl">
-                        <i class="fa-brands fa-reddit"></i>
                     </div>
 
                     <div>
-                        <h3 class="text-2xl font-black">
-                            Reddit Dashboard
-                        </h3>
 
-                        <p class="text-slate-400">
-                            Community visibility tracker
-                        </p>
-                    </div>
+                        <h1 class="text-2xl font-black gradient-text">
+                            Growth Console
+                        </h1>
 
-                </div>
-
-                <div class="grid grid-cols-2 gap-5">
-
-                    <div class="bg-orange-500/10 border border-orange-500/20 rounded-2xl p-5">
-                        <p class="text-xs uppercase text-orange-300 font-bold">
-                            Views
+                        <p class="text-purple-300 text-sm mt-1">
+                            Gemini SEO Intelligence
                         </p>
 
-                        <h4 class="text-3xl font-black mt-3">
-                            24.8K
-                        </h4>
-                    </div>
-
-                    <div class="bg-orange-500/10 border border-orange-500/20 rounded-2xl p-5">
-                        <p class="text-xs uppercase text-orange-300 font-bold">
-                            Comments
-                        </p>
-
-                        <h4 class="text-3xl font-black mt-3">
-                            1.4K
-                        </h4>
-                    </div>
-
-                    <div class="bg-orange-500/10 border border-orange-500/20 rounded-2xl p-5">
-                        <p class="text-xs uppercase text-orange-300 font-bold">
-                            Karma
-                        </p>
-
-                        <h4 class="text-3xl font-black mt-3">
-                            5.8K
-                        </h4>
-                    </div>
-
-                    <div class="bg-orange-500/10 border border-orange-500/20 rounded-2xl p-5">
-                        <p class="text-xs uppercase text-orange-300 font-bold">
-                            CTR
-                        </p>
-
-                        <h4 class="text-3xl font-black mt-3">
-                            18%
-                        </h4>
                     </div>
 
                 </div>
 
             </div>
 
-
-
-            <!-- QUORA -->
-
-            <div class="glass rounded-3xl p-8 gradient-border">
-
-                <div class="flex items-center gap-4 mb-8">
-
-                    <div class="w-14 h-14 rounded-2xl bg-red-500 flex items-center justify-center text-2xl">
-                        <i class="fa-brands fa-quora"></i>
-                    </div>
-
-                    <div>
-                        <h3 class="text-2xl font-black">
-                            Quora Dashboard
-                        </h3>
-
-                        <p class="text-slate-400">
-                            Authority and visibility engine
-                        </p>
-                    </div>
-
-                </div>
-
-                <div class="grid grid-cols-2 gap-5">
-
-                    <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5">
-                        <p class="text-xs uppercase text-red-300 font-bold">
-                            Views
-                        </p>
-
-                        <h4 class="text-3xl font-black mt-3">
-                            18.4K
-                        </h4>
-                    </div>
-
-                    <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5">
-                        <p class="text-xs uppercase text-red-300 font-bold">
-                            Upvotes
-                        </p>
-
-                        <h4 class="text-3xl font-black mt-3">
-                            2.8K
-                        </h4>
-                    </div>
-
-                    <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5">
-                        <p class="text-xs uppercase text-red-300 font-bold">
-                            Authority
-                        </p>
-
-                        <h4 class="text-3xl font-black mt-3">
-                            94
-                        </h4>
-                    </div>
-
-                    <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5">
-                        <p class="text-xs uppercase text-red-300 font-bold">
-                            Traffic
-                        </p>
-
-                        <h4 class="text-3xl font-black mt-3">
-                            8.2K
-                        </h4>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- GEMINI ANALYZER -->
-
-        <div class="glass rounded-3xl p-8 gradient-border purple-glow">
-
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
-
-                <div>
-                    <h3 class="text-3xl font-black gradient-text">
-                        Gemini SEO Analyzer
-                    </h3>
-
-                    <p class="text-slate-400 mt-2">
-                        Analyze SEO pages, detect content gaps, and generate optimization reports using Gemini AI.
-                    </p>
-                </div>
-
-                <div class="bg-purple-600 px-5 py-3 rounded-full text-sm font-bold">
-                    Gemini Powered
-                </div>
-
-            </div>
-
-
-            <!-- INPUT -->
-
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
-
-                <input
-                    type="text"
-                    id="seo-url"
-                    placeholder="Paste SEO page URL..."
-                    class="lg:col-span-3 bg-black/40 border border-purple-800 rounded-2xl px-6 py-5 outline-none focus:border-purple-500"
-                />
+            <div class="space-y-3">
 
                 <button
-                    onclick="analyzeSeoPage()"
-                    class="bg-purple-600 hover:bg-purple-700 transition-all rounded-2xl font-bold text-lg"
-                >
-                    <i class="fa-solid fa-sparkles mr-2"></i>
-                    Analyze
+                    class="w-full text-left bg-purple-600 rounded-2xl px-5 py-4 font-semibold hover:bg-purple-700 transition-all">
+
+                    <i class="fa-solid fa-chart-line mr-3"></i>
+                    Dashboard
+
+                </button>
+
+                <button
+                    class="w-full text-left hover:bg-white/5 rounded-2xl px-5 py-4 text-slate-300 transition-all">
+
+                    <i class="fa-brands fa-reddit mr-3"></i>
+                    Reddit Analytics
+
+                </button>
+
+                <button
+                    class="w-full text-left hover:bg-white/5 rounded-2xl px-5 py-4 text-slate-300 transition-all">
+
+                    <i class="fa-brands fa-quora mr-3"></i>
+                    Quora Analytics
+
+                </button>
+
+                <button
+                    class="w-full text-left hover:bg-white/5 rounded-2xl px-5 py-4 text-slate-300 transition-all">
+
+                    <i class="fa-solid fa-globe mr-3"></i>
+                    SEO Analyzer
+
                 </button>
 
             </div>
 
+        </aside>
 
 
-            <!-- RESULTS -->
+        <!-- MAIN -->
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <main class="flex-1 p-5 md:p-8">
 
-                <!-- GAPS -->
+            <!-- HEADER -->
 
-                <div class="bg-black/30 border border-purple-900 rounded-3xl p-6">
+            <div
+                class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6 mb-8">
 
-                    <h4 class="text-xl font-black mb-6">
-                        SEO Gaps
-                    </h4>
+                <div>
 
-                    <div id="seo-gaps" class="space-y-4 text-slate-300">
+                    <h2 class="text-4xl md:text-5xl font-black gradient-text">
+                        SEO Intelligence Dashboard
+                    </h2>
+
+                    <p class="text-slate-400 mt-3 max-w-2xl">
+                        AI-powered SEO monitoring, Gemini content analysis,
+                        Reddit tracking, Quora visibility insights, and advanced
+                        SEO recommendation engine.
+                    </p>
+
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+
+                    <select
+                        class="bg-black/40 border border-purple-800 rounded-xl px-5 py-3 outline-none">
+
+                        <option>Monthly Comparison</option>
+                        <option>Month-to-Month</option>
+                        <option>Quarterly Comparison</option>
+                        <option>Custom Comparison</option>
+
+                    </select>
+
+                    <select
+                        class="bg-black/40 border border-purple-800 rounded-xl px-5 py-3 outline-none">
+
+                        <option>Traffic</option>
+                        <option>Revenue</option>
+                        <option>Rankings</option>
+                        <option>Conversions</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- KPI -->
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+
+                <!-- CARD -->
+
+                <div
+                    class="glass rounded-3xl p-6 dashboard-card purple-glow">
+
+                    <div class="flex justify-between items-center mb-5">
 
                         <div>
-                            Analyze a page to generate AI SEO gap analysis.
+
+                            <p
+                                class="uppercase text-xs tracking-widest text-purple-300 font-bold">
+
+                                Total Traffic
+
+                            </p>
+
+                            <h3 class="text-4xl font-black mt-3">
+                                124K
+                            </h3>
+
+                        </div>
+
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-purple-600 flex items-center justify-center text-2xl">
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-emerald-400 font-semibold">
+                        +28.4% growth
+                    </p>
+
+                </div>
+
+
+                <!-- CARD -->
+
+                <div class="glass rounded-3xl p-6 dashboard-card">
+
+                    <div class="flex justify-between items-center mb-5">
+
+                        <div>
+
+                            <p
+                                class="uppercase text-xs tracking-widest text-purple-300 font-bold">
+
+                                Revenue
+
+                            </p>
+
+                            <h3 class="text-4xl font-black mt-3">
+                                $48K
+                            </h3>
+
+                        </div>
+
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-purple-600 flex items-center justify-center text-2xl">
+
+                            <i class="fa-solid fa-dollar-sign"></i>
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-emerald-400 font-semibold">
+                        SEO pipeline improving
+                    </p>
+
+                </div>
+
+
+                <!-- CARD -->
+
+                <div class="glass rounded-3xl p-6 dashboard-card">
+
+                    <div class="flex justify-between items-center mb-5">
+
+                        <div>
+
+                            <p
+                                class="uppercase text-xs tracking-widest text-orange-300 font-bold">
+
+                                Reddit Reach
+
+                            </p>
+
+                            <h3 class="text-4xl font-black mt-3">
+                                82K
+                            </h3>
+
+                        </div>
+
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-orange-500 flex items-center justify-center text-2xl">
+
+                            <i class="fa-brands fa-reddit"></i>
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-orange-300 font-semibold">
+                        Community engagement growing
+                    </p>
+
+                </div>
+
+
+                <!-- CARD -->
+
+                <div class="glass rounded-3xl p-6 dashboard-card">
+
+                    <div class="flex justify-between items-center mb-5">
+
+                        <div>
+
+                            <p
+                                class="uppercase text-xs tracking-widest text-red-300 font-bold">
+
+                                Quora Authority
+
+                            </p>
+
+                            <h3 class="text-4xl font-black mt-3">
+                                91
+                            </h3>
+
+                        </div>
+
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-red-500 flex items-center justify-center text-2xl">
+
+                            <i class="fa-brands fa-quora"></i>
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-red-300 font-semibold">
+                        Thought leadership rising
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CHART -->
+
+            <div class="glass rounded-3xl p-8 mb-8">
+
+                <div class="mb-6">
+
+                    <h3 class="text-2xl font-black">
+                        SEO Growth Analytics
+                    </h3>
+
+                    <p class="text-slate-400 mt-2">
+                        Compare SEO traffic, rankings, conversions, and revenue.
+                    </p>
+
+                </div>
+
+                <div class="h-[420px]">
+
+                    <canvas id="seoChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- REDDIT + QUORA -->
+
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
+
+                <!-- REDDIT -->
+
+                <div class="glass rounded-3xl p-8">
+
+                    <div class="flex items-center gap-4 mb-8">
+
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-orange-500 flex items-center justify-center text-2xl">
+
+                            <i class="fa-brands fa-reddit"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3 class="text-2xl font-black">
+                                Reddit Dashboard
+                            </h3>
+
+                            <p class="text-slate-400">
+                                Track subreddit visibility & engagement
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-5">
+
+                        <div
+                            class="bg-orange-500/10 border border-orange-500/20 rounded-2xl p-5">
+
+                            <p
+                                class="text-xs uppercase text-orange-300 font-bold">
+
+                                Views
+
+                            </p>
+
+                            <h4 class="text-3xl font-black mt-3">
+                                24.8K
+                            </h4>
+
+                        </div>
+
+                        <div
+                            class="bg-orange-500/10 border border-orange-500/20 rounded-2xl p-5">
+
+                            <p
+                                class="text-xs uppercase text-orange-300 font-bold">
+
+                                Comments
+
+                            </p>
+
+                            <h4 class="text-3xl font-black mt-3">
+                                1.2K
+                            </h4>
+
+                        </div>
+
+                        <div
+                            class="bg-orange-500/10 border border-orange-500/20 rounded-2xl p-5">
+
+                            <p
+                                class="text-xs uppercase text-orange-300 font-bold">
+
+                                Karma
+
+                            </p>
+
+                            <h4 class="text-3xl font-black mt-3">
+                                4.6K
+                            </h4>
+
+                        </div>
+
+                        <div
+                            class="bg-orange-500/10 border border-orange-500/20 rounded-2xl p-5">
+
+                            <p
+                                class="text-xs uppercase text-orange-300 font-bold">
+
+                                CTR
+
+                            </p>
+
+                            <h4 class="text-3xl font-black mt-3">
+                                18.4%
+                            </h4>
+
                         </div>
 
                     </div>
@@ -534,18 +516,97 @@
 
 
 
-                <!-- RECOMMENDATIONS -->
+                <!-- QUORA -->
 
-                <div class="bg-black/30 border border-purple-900 rounded-3xl p-6">
+                <div class="glass rounded-3xl p-8">
 
-                    <h4 class="text-xl font-black mb-6">
-                        Gemini Recommendations
-                    </h4>
+                    <div class="flex items-center gap-4 mb-8">
 
-                    <div id="seo-recommendations" class="space-y-4 text-slate-300">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-red-500 flex items-center justify-center text-2xl">
+
+                            <i class="fa-brands fa-quora"></i>
+
+                        </div>
 
                         <div>
-                            Gemini recommendations will appear here.
+
+                            <h3 class="text-2xl font-black">
+                                Quora Dashboard
+                            </h3>
+
+                            <p class="text-slate-400">
+                                Authority and visibility tracker
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-5">
+
+                        <div
+                            class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5">
+
+                            <p
+                                class="text-xs uppercase text-red-300 font-bold">
+
+                                Views
+
+                            </p>
+
+                            <h4 class="text-3xl font-black mt-3">
+                                18.4K
+                            </h4>
+
+                        </div>
+
+                        <div
+                            class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5">
+
+                            <p
+                                class="text-xs uppercase text-red-300 font-bold">
+
+                                Upvotes
+
+                            </p>
+
+                            <h4 class="text-3xl font-black mt-3">
+                                2.8K
+                            </h4>
+
+                        </div>
+
+                        <div
+                            class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5">
+
+                            <p
+                                class="text-xs uppercase text-red-300 font-bold">
+
+                                Authority
+
+                            </p>
+
+                            <h4 class="text-3xl font-black mt-3">
+                                94
+                            </h4>
+
+                        </div>
+
+                        <div
+                            class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5">
+
+                            <p
+                                class="text-xs uppercase text-red-300 font-bold">
+
+                                Traffic
+
+                            </p>
+
+                            <h4 class="text-3xl font-black mt-3">
+                                8.2K
+                            </h4>
+
                         </div>
 
                     </div>
@@ -554,253 +615,585 @@
 
             </div>
 
-        </div>
-
-    </main>
-
-</div>
 
 
-<!-- JAVASCRIPT -->
+            <!-- GEMINI ANALYZER -->
 
-<script>
+            <div class="glass rounded-3xl p-8 purple-glow">
 
-    // =========================================
-    // PASTE YOUR GEMINI API KEY HERE
-    // =========================================
+                <div
+                    class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6 mb-8">
 
-    const GEMINI_API_KEY = "PASTE_YOUR_GEMINI_API_KEY_HERE";
+                    <div>
+
+                        <h3 class="text-4xl font-black gradient-text">
+                            Gemini SEO Analyzer
+                        </h3>
+
+                        <p class="text-slate-400 mt-3 max-w-2xl">
+                            Paste SEO content and let Gemini identify ranking
+                            gaps, weak headings, keyword opportunities,
+                            readability issues, and SERP optimization strategies.
+                        </p>
+
+                    </div>
+
+                    <div
+                        class="bg-purple-600 px-5 py-3 rounded-full font-bold">
+
+                        Gemini Powered
+
+                    </div>
+
+                </div>
 
 
 
-    // =========================================
-    // SEO CHART
-    // =========================================
+                <!-- INPUT -->
 
-    const ctx = document.getElementById('seoChart');
+                <div class="mb-6">
 
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [
-                {
-                    label: 'Traffic',
-                    data: [12000, 18000, 25000, 42000, 67000, 124000],
-                    borderColor: '#a855f7',
-                    backgroundColor: 'rgba(168,85,247,0.1)',
-                    fill: true,
-                    tension: 0.4
-                },
-                {
-                    label: 'Revenue',
-                    data: [4000, 8000, 12000, 18000, 30000, 48000],
-                    borderColor: '#ffffff',
-                    tension: 0.4
-                }
-            ]
-        },
+                    <textarea id="seo-content"
+                        placeholder="Paste SEO article or webpage content here..."
+                        class="w-full bg-black/40 border border-purple-800 rounded-3xl px-6 py-6 outline-none focus:border-purple-500 min-h-[250px]"></textarea>
 
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
+                </div>
 
-            plugins: {
-                legend: {
-                    labels: {
-                        color: '#fff'
+                <div class="flex flex-wrap gap-4 mb-10">
+
+                    <button id="analyze-btn"
+                        class="bg-purple-600 hover:bg-purple-700 transition-all rounded-2xl px-8 py-4 font-bold text-lg flex items-center gap-3"
+                        onclick="analyzeSeoContent()">
+
+                        <i class="fa-solid fa-sparkles"></i>
+                        Analyze with Gemini
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- RESULTS -->
+
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+
+                    <!-- GAPS -->
+
+                    <div
+                        class="bg-black/30 border border-purple-900 rounded-3xl p-6">
+
+                        <h4 class="text-2xl font-black mb-6">
+                            SEO Gaps
+                        </h4>
+
+                        <div id="seo-gaps" class="space-y-4">
+
+                            <div class="text-slate-400">
+                                Gemini SEO gap analysis will appear here.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- RECOMMENDATIONS -->
+
+                    <div
+                        class="bg-black/30 border border-purple-900 rounded-3xl p-6">
+
+                        <h4 class="text-2xl font-black mb-6">
+                            Gemini Recommendations
+                        </h4>
+
+                        <div id="seo-recommendations"
+                            class="space-y-4">
+
+                            <div class="text-slate-400">
+                                AI-powered optimization suggestions will appear
+                                here.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        // =========================================
+        // PASTE GEMINI API KEY
+        // =========================================
+
+        const GEMINI_API_KEY = "PASTE_YOUR_GEMINI_API_KEY_HERE";
+
+
+
+        // =========================================
+        // CHART
+        // =========================================
+
+        const ctx = document.getElementById('seoChart');
+
+        new Chart(ctx, {
+
+            type: 'line',
+
+            data: {
+
+                labels: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun'
+                ],
+
+                datasets: [
+
+                    {
+                        label: 'Traffic',
+
+                        data: [
+                            12000,
+                            18000,
+                            26000,
+                            42000,
+                            78000,
+                            124000
+                        ],
+
+                        borderColor: '#a855f7',
+
+                        backgroundColor: 'rgba(168,85,247,0.1)',
+
+                        fill: true,
+
+                        tension: 0.4
+                    },
+
+                    {
+                        label: 'Revenue',
+
+                        data: [
+                            4000,
+                            8000,
+                            12000,
+                            18000,
+                            30000,
+                            48000
+                        ],
+
+                        borderColor: '#c084fc',
+
+                        tension: 0.4
                     }
-                }
+
+                ]
+
             },
 
-            scales: {
-                x: {
-                    ticks: {
-                        color: '#aaa'
-                    },
-                    grid: {
-                        color: 'rgba(255,255,255,0.05)'
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+
+                        labels: {
+
+                            color: '#ffffff'
+                        }
                     }
                 },
 
-                y: {
-                    ticks: {
-                        color: '#aaa'
+                scales: {
+
+                    x: {
+
+                        ticks: {
+
+                            color: '#999'
+                        },
+
+                        grid: {
+
+                            color: 'rgba(255,255,255,0.05)'
+                        }
                     },
-                    grid: {
-                        color: 'rgba(255,255,255,0.05)'
+
+                    y: {
+
+                        ticks: {
+
+                            color: '#999'
+                        },
+
+                        grid: {
+
+                            color: 'rgba(255,255,255,0.05)'
+                        }
                     }
                 }
             }
-        }
-    });
+        });
 
 
 
-    // =========================================
-    // ANALYZE SEO PAGE WITH GEMINI
-    // =========================================
+        // =========================================
+        // ANALYZE SEO CONTENT
+        // =========================================
 
-    async function analyzeSeoPage() {
+        async function analyzeSeoContent() {
 
-        const url = document.getElementById('seo-url').value;
+            const btn =
+                document.getElementById('analyze-btn');
 
-        if (!url) {
-            alert('Please enter a URL');
-            return;
-        }
+            const content =
+                document.getElementById('seo-content').value.trim();
 
-        document.getElementById('seo-gaps').innerHTML =
-            '<div class="text-purple-300">Analyzing page with Gemini...</div>';
+            const gapsDiv =
+                document.getElementById('seo-gaps');
 
-        document.getElementById('seo-recommendations').innerHTML =
-            '<div class="text-purple-300">Generating recommendations...</div>';
-
-        try {
-
-            // Fetch page content
-            const pageResponse = await fetch(url);
-            const html = await pageResponse.text();
-
-            // Clean HTML
-            const cleanContent = html
-                .replace(/<script[^>]*>([\\S\\s]*?)<\\/script>/gmi, '')
-                .replace(/<style[^>]*>([\\S\\s]*?)<\\/style>/gmi, '')
-                .replace(/<[^>]+>/g, ' ')
-                .replace(/\\s+/g, ' ')
-                .substring(0, 15000);
+            const recDiv =
+                document.getElementById('seo-recommendations');
 
 
 
-            // GEMINI PROMPT
+            // VALIDATIONS
 
-            const prompt = `
-You are an advanced SEO expert.
+            if (
+                !GEMINI_API_KEY ||
+                GEMINI_API_KEY ===
+                "PASTE_YOUR_GEMINI_API_KEY_HERE"
+            ) {
 
-Analyze this webpage content and provide:
+                alert("Please paste your Gemini API key.");
+                return;
+            }
+
+            if (!content) {
+
+                alert("Please paste SEO content.");
+                return;
+            }
+
+
+
+            // LOADING
+
+            btn.disabled = true;
+
+            btn.innerHTML = `
+                <div class="loader"></div>
+                Analyzing...
+            `;
+
+            gapsDiv.innerHTML = `
+                <div class="text-purple-300">
+                    Gemini is analyzing SEO gaps...
+                </div>
+            `;
+
+            recDiv.innerHTML = `
+                <div class="text-purple-300">
+                    Generating recommendations...
+                </div>
+            `;
+
+
+
+            try {
+
+                // LIMIT CONTENT
+
+                const trimmedContent =
+                    content.substring(0, 8000);
+
+
+
+                // PROMPT
+
+                const prompt = `
+You are an advanced SEO strategist.
+
+Analyze this SEO content.
+
+Provide:
 
 1. SEO content gaps
-2. Missing keywords
-3. Heading structure issues
-4. Internal linking weaknesses
-5. CTA issues
-6. Thin content problems
-7. Competitor opportunity suggestions
+2. Missing keyword opportunities
+3. Weak headings
+4. Thin content sections
+5. Readability issues
+6. CTA optimization suggestions
+7. SERP ranking opportunities
+8. Internal linking improvements
 
-Then provide:
-- Actionable SEO recommendations
-- Content optimization suggestions
-- Readability improvements
-- SERP improvement strategies
+Respond ONLY in valid JSON.
 
-Respond ONLY in JSON format:
+FORMAT:
 
 {
-  "gaps": [],
-  "recommendations": []
+  "gaps": [
+    "gap 1",
+    "gap 2"
+  ],
+  "recommendations": [
+    "recommendation 1",
+    "recommendation 2"
+  ]
 }
 
-Website content:
-${cleanContent}
+SEO Content:
+${trimmedContent}
 `;
 
 
 
-            // GEMINI API REQUEST
+                // GEMINI API
 
-            const response = await fetch(
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                const response =
+                    await fetch(
+                        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+                        {
 
-                    body: JSON.stringify({
-                        contents: [
-                            {
-                                parts: [
+                            method: 'POST',
+
+                            headers: {
+
+                                'Content-Type': 'application/json'
+                            },
+
+                            body: JSON.stringify({
+
+                                contents: [
+
                                     {
-                                        text: prompt
+                                        parts: [
+
+                                            {
+                                                text: prompt
+                                            }
+
+                                        ]
                                     }
+
                                 ]
-                            }
-                        ]
-                    })
+                            })
+                        }
+                    );
+
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Gemini API request failed."
+                    );
                 }
-            );
 
 
 
-            const data = await response.json();
-
-            console.log(data);
-
-
-
-            const text =
-                data.candidates[0].content.parts[0].text;
-
-            const cleaned = text
-                .replace(/```json/g, '')
-                .replace(/```/g, '');
-
-            const parsed = JSON.parse(cleaned);
+                const data =
+                    await response.json();
 
 
 
-            // DISPLAY GAPS
+                const text =
+                    data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-            document.getElementById('seo-gaps').innerHTML =
-                parsed.gaps.map(item => `
-                    <div class="flex items-start gap-3 bg-purple-500/10 border border-purple-500/20 rounded-2xl p-4">
-                        <i class="fa-solid fa-circle-exclamation text-purple-400 mt-1"></i>
-                        <span>${item}</span>
+
+
+                if (!text) {
+
+                    throw new Error(
+                        "No Gemini response received."
+                    );
+                }
+
+
+
+                const cleaned =
+                    text
+                        .replace(/```json/g, '')
+                        .replace(/```/g, '')
+                        .trim();
+
+
+
+                let parsed;
+
+
+
+                try {
+
+                    parsed = JSON.parse(cleaned);
+
+                } catch (err) {
+
+                    parsed = {
+
+                        gaps: [
+                            "Gemini returned malformed JSON."
+                        ],
+
+                        recommendations: [
+                            "Improve prompt formatting."
+                        ]
+                    };
+                }
+
+
+
+                // FALLBACKS
+
+                const gaps =
+                    parsed.gaps || [];
+
+                const recommendations =
+                    parsed.recommendations || [];
+
+
+
+                // DISPLAY GAPS
+
+                if (gaps.length === 0) {
+
+                    gapsDiv.innerHTML = `
+                        <div class="text-slate-400">
+                            No SEO gaps detected.
+                        </div>
+                    `;
+
+                } else {
+
+                    gapsDiv.innerHTML =
+                        gaps.map(item => `
+
+                        <div class="result-card bg-purple-500/10 border border-purple-500/20 rounded-2xl p-5 flex items-start gap-4">
+
+                            <i class="fa-solid fa-circle-exclamation text-purple-400 mt-1"></i>
+
+                            <span>${escapeHtml(item)}</span>
+
+                        </div>
+
+                    `).join('');
+                }
+
+
+
+                // DISPLAY RECOMMENDATIONS
+
+                if (recommendations.length === 0) {
+
+                    recDiv.innerHTML = `
+                        <div class="text-slate-400">
+                            No recommendations generated.
+                        </div>
+                    `;
+
+                } else {
+
+                    recDiv.innerHTML =
+                        recommendations.map(item => `
+
+                        <div class="result-card bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-5 flex items-start gap-4">
+
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+
+                            <span>${escapeHtml(item)}</span>
+
+                        </div>
+
+                    `).join('');
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                gapsDiv.innerHTML = `
+
+                    <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5 text-red-300">
+
+                        Failed to analyze SEO content.
+
+                        <br><br>
+
+                        Possible reasons:
+                        <br>
+                        • Invalid Gemini API key
+                        <br>
+                        • API quota exceeded
+                        <br>
+                        • Network issue
+                        <br>
+                        • Gemini API unavailable
+
                     </div>
-                `).join('');
 
-
-
-            // DISPLAY RECOMMENDATIONS
-
-            document.getElementById('seo-recommendations').innerHTML =
-                parsed.recommendations.map(item => `
-                    <div class="flex items-start gap-3 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4">
-                        <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
-                        <span>${item}</span>
-                    </div>
-                `).join('');
-
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            document.getElementById('seo-gaps').innerHTML =
-                `
-                <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5 text-red-300">
-                    Failed to analyze page.
-                    Possible reasons:
-                    <br><br>
-                    • CORS restrictions
-                    <br>
-                    • Invalid URL
-                    <br>
-                    • Invalid Gemini API key
-                </div>
                 `;
 
-            document.getElementById('seo-recommendations').innerHTML =
-                `
-                <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5 text-red-300">
-                    Gemini recommendations could not be generated.
-                </div>
+                recDiv.innerHTML = `
+
+                    <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-5 text-red-300">
+
+                        Gemini recommendations could not be generated.
+
+                    </div>
+
                 `;
+
+            } finally {
+
+                btn.disabled = false;
+
+                btn.innerHTML = `
+
+                    <i class="fa-solid fa-sparkles"></i>
+                    Analyze with Gemini
+
+                `;
+            }
         }
-    }
 
-</script>
+
+
+        // =========================================
+        // ESCAPE HTML
+        // =========================================
+
+        function escapeHtml(text) {
+
+            const div =
+                document.createElement('div');
+
+            div.innerText = text;
+
+            return div.innerHTML;
+        }
+
+    </script>
 
 </body>
+
 </html>
