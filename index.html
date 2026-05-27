@@ -39,7 +39,6 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Custom styled scrollbars to maintain visual sleekness in both dark & light states */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -68,7 +67,6 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 h-screen flex overflow-hidden transition-colors duration-300">
 
-    <!-- Sidebar Left Navigation panel -->
     <aside class="w-68 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800/80 flex flex-col shrink-0 z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)] transition-colors duration-300">
         <!-- Brand identity header -->
         <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-800/80">
@@ -81,51 +79,29 @@
             </h1>
         </div>
 
-        <!-- Connection Diagnostics HUD -->
-        <div class="px-4 py-3 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-1.5 text-xs">
+        <!-- Unified Core System Diagnostics Indicator -->
+        <div class="px-4 py-3 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-2.5 text-xs">
             <div class="flex items-center justify-between">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-cloud text-slate-400 dark:text-slate-500"></i> Sync Status:
+                    <i class="fa-solid fa-cloud text-slate-400 dark:text-slate-500"></i> Cloud Sync:
                 </span>
                 <span id="cloud-status-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center gap-1">
                     Checking...
                 </span>
             </div>
             
-            <!-- Setup Online DB Quick Link Button -->
-            <button onclick="openDatabaseConfigModal()" class="w-full mt-1.5 text-center bg-purple-500/10 hover:bg-purple-500 border border-purple-500/30 hover:border-purple-500 text-[10px] text-purple-600 dark:text-purple-400 hover:text-white font-semibold py-1 rounded transition-all">
-                <i class="fa-solid fa-database mr-1"></i> Configure Online Database
-            </button>
-        </div>
-
-        <!-- Gemini API Key Setup Control -->
-        <div class="px-4 py-3 bg-purple-50/50 dark:bg-purple-950/20 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-1.5 text-xs">
-            <div class="flex flex-col gap-1">
-                <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-semibold text-[10px] uppercase tracking-wider">
-                    <i class="fa-solid fa-wand-magic-sparkles text-purple-500 animate-pulse"></i> Gemini API Key:
-                </span>
-                <div class="flex gap-1 items-center mt-1">
-                    <input type="password" id="gemini-key-input" placeholder="Paste AI Studio Key" class="w-full px-2 py-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded text-[11px] text-slate-800 dark:text-slate-100 outline-none focus:border-purple-500">
-                    <button onclick="saveGeminiKey()" class="bg-purple-600 hover:bg-purple-500 text-white px-2.5 py-1 rounded text-[10px] font-bold" title="Save API Key">
-                        Save
-                    </button>
-                </div>
-                <p class="text-[9px] text-slate-400 mt-0.5">Key stored locally & securely in your browser.</p>
-            </div>
-        </div>
-        
-        <!-- Access Control Configuration Panel -->
-        <div class="px-4 py-3 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-1.5 text-xs">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between border-t border-slate-200/50 dark:border-slate-800/50 pt-2">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-user-shield text-slate-400 dark:text-slate-500"></i> Access Role:
+                    <i class="fa-solid fa-user-shield text-slate-400 dark:text-slate-500"></i> Role:
                 </span>
-                <span id="role-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center gap-1 border border-slate-300 dark:border-slate-700/60">
-                    Guest View-Only
+                <span id="role-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center gap-1">
+                    Guest
                 </span>
             </div>
-            <button id="auth-action-btn" onclick="openLoginModal()" class="w-full mt-1.5 text-center bg-purple-500/10 hover:bg-purple-500 border border-purple-500/30 hover:border-purple-500 text-[10px] text-purple-600 dark:text-purple-400 hover:text-white font-semibold py-1 rounded transition-all">
-                <i class="fa-solid fa-right-to-bracket mr-1"></i> Admin Login
+
+            <!-- Global Unified Settings Button -->
+            <button onclick="openSettingsModal()" class="w-full mt-1 bg-purple-500/10 hover:bg-purple-500 border border-purple-500/30 hover:border-purple-500 text-[10px] text-purple-600 dark:text-purple-400 hover:text-white font-semibold py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-sliders"></i> Console Settings
             </button>
         </div>
 
@@ -133,7 +109,7 @@
         <div class="px-4 py-3 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-1.5 text-xs">
             <div class="flex items-center justify-between">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-circle-half-stroke text-slate-400 dark:text-slate-500"></i> Console Theme:
+                    <i class="fa-solid fa-circle-half-stroke text-slate-400 dark:text-slate-500"></i> Mode:
                 </span>
                 <button onclick="toggleTheme()" class="px-3 py-1 bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-700 dark:text-slate-300 font-bold hover:bg-purple-500 hover:text-white dark:hover:bg-purple-500 dark:hover:text-white transition-all flex items-center gap-1.5">
                     <span id="theme-icon"><i class="fa-solid fa-moon"></i></span>
@@ -174,14 +150,14 @@
             <div class="flex items-center gap-4">
                 <!-- Reporting Period & Custom Date Option Selector -->
                 <div class="flex flex-wrap items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-lg text-xs" id="filter-wrapper">
-                    <span class="text-slate-500 dark:text-slate-400 font-medium"><i class="fa-regular fa-calendar-days text-purple-500 mr-1.5"></i> Viewing Period:</span>
+                    <span class="text-slate-500 dark:text-slate-400 font-medium"><i class="fa-regular fa-calendar-days text-purple-500 mr-1.5"></i> Period:</span>
                     <select id="filter-period" onchange="handlePeriodSelection()" class="bg-transparent text-slate-800 dark:text-white font-bold outline-none cursor-pointer">
                         <option value="current" selected class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">June 2026</option>
                         <option value="all" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">All Logged Months</option>
                         <option value="custom" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">Custom Range...</option>
                     </select>
 
-                    <!-- Interactive Custom Date pickers (revealed dynamically) -->
+                    <!-- Interactive Custom Date pickers -->
                     <div id="custom-date-selectors" class="hidden flex items-center gap-1.5 ml-2 pl-2 border-l border-slate-200 dark:border-slate-800">
                         <input type="date" id="custom-start-date" onchange="renderView()" class="bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded px-2 py-0.5 text-[10px] text-slate-800 dark:text-white outline-none focus:border-purple-500">
                         <span class="text-slate-400">to</span>
@@ -202,67 +178,78 @@
         </div>
     </main>
 
-    <!-- Database Setup Dialog Overlay -->
-    <div id="db-config-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-xl flex flex-col transition-all transform scale-95 opacity-0 duration-200 border border-slate-200 dark:border-slate-800" id="db-config-content">
+    <!-- Unified Console Settings Control Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-2xl flex flex-col transition-all transform scale-95 opacity-0 duration-200 border border-slate-200 dark:border-slate-800" id="settings-modal-content">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-950 rounded-t-xl">
                 <div>
-                    <h3 class="text-base font-bold text-slate-800 dark:text-white">Configure Cloud Connection</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Sync changes instantly to Google Firestore.</p>
+                    <h3 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-purple-500"></i> Console Control panel
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Manage credentials, API keys, and connection configurations.</p>
                 </div>
-                <button onclick="closeDatabaseConfigModal()" class="text-slate-400 hover:text-slate-600 transition-colors bg-white dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
+                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 transition-colors bg-white dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
                     <i class="fa-solid fa-xmark text-lg px-1"></i>
                 </button>
             </div>
-            <div class="p-6 space-y-4">
-                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed bg-amber-500/10 border border-amber-500/20 p-3 rounded-lg">
-                    <strong>Free Firestore Syncing:</strong> Create a Firebase project at <a href="https://console.firebase.google.com/" target="_blank" class="text-purple-500 font-bold underline">firebase.google.com</a>, add a Web Application, and paste the generated JSON configuration below.
-                </p>
-                <div class="flex flex-col">
-                    <label for="db-config-input" class="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Firebase SDK Configuration Config JSON:</label>
-                    <textarea id="db-config-input" rows="8" placeholder='{&#10;  "apiKey": "AIzaSy...",&#10;  "authDomain": "...",&#10;  "projectId": "...",&#10;  "storageBucket": "...",&#10;  "messagingSenderId": "...",&#10;  "appId": "..."&#10;}' class="w-full p-3 font-mono text-[11px] bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 transition-all text-slate-800 dark:text-slate-100"></textarea>
+            
+            <div class="p-6 space-y-6 overflow-y-auto max-h-[75vh]">
+                <!-- Section 1: Gemini AI Key Setup -->
+                <div class="p-4 bg-purple-500/5 border border-purple-500/10 rounded-xl">
+                    <h4 class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-key"></i> Gemini AI Studio Key
+                    </h4>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Required to operate SEO, Distribution, and AEO Analyzers. Keys remain local to your browser.</p>
+                    <div class="flex gap-2">
+                        <input type="password" id="gemini-key-input" placeholder="Paste your Gemini API Key..." class="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-slate-100 outline-none focus:ring-2 focus:ring-purple-500">
+                        <button onclick="saveGeminiKey()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition-all">Save Key</button>
+                    </div>
                 </div>
-            </div>
-            <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-between items-center rounded-b-xl">
-                <button onclick="clearCustomDatabase()" class="text-rose-500 hover:text-rose-400 text-xs font-bold">Disconnect & Clear</button>
-                <div class="flex gap-2">
-                    <button onclick="closeDatabaseConfigModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Cancel</button>
-                    <button onclick="saveCustomDatabase()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">Connect Database</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Admin Login Panel Overlay -->
-    <div id="login-modal" class="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-md flex flex-col transition-all transform scale-95 opacity-0 duration-200 border border-slate-200 dark:border-slate-800" id="login-modal-content">
-            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-950 rounded-t-xl">
-                <div>
-                    <h3 class="text-base font-bold text-slate-800 dark:text-white">Admin Authentication</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Log in to unlock content editing tools.</p>
+                <!-- Section 2: Firestore Online Database Config -->
+                <div class="p-4 bg-amber-500/5 border border-amber-500/10 rounded-xl">
+                    <h4 class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Google Firestore Database Setup
+                    </h4>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Provide your Firebase Web SDK config JSON object to sync entries globally.</p>
+                    <textarea id="db-config-input" rows="5" placeholder='{&#10;  "apiKey": "AIzaSy...",&#10;  "authDomain": "...",&#10;  "projectId": "...",&#10;  "appId": "..."&#10;}' class="w-full p-3 font-mono text-[11px] bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 text-slate-800 dark:text-slate-100 mb-3"></textarea>
+                    <div class="flex justify-between items-center">
+                        <button onclick="clearCustomDatabase()" class="text-rose-500 hover:text-rose-400 text-xs font-bold">Disconnect & Clear</button>
+                        <button onclick="saveCustomDatabase()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">Connect DB</button>
+                    </div>
                 </div>
-                <button onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 transition-colors bg-white dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <i class="fa-solid fa-xmark text-lg px-1"></i>
-                </button>
-            </div>
-            <div class="p-6 space-y-4">
-                <div class="flex flex-col">
-                    <label for="login-email" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Administrative Email:</label>
-                    <input type="email" id="login-email" placeholder="example@gmail.com" class="w-full mt-1.5 p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs outline-none focus:ring-2 focus:ring-purple-500 transition-all text-slate-800 dark:text-white" value="amanbhardwaj1509@gmail.com">
-                </div>
-                <div class="flex flex-col">
-                    <label for="login-password" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Password:</label>
-                    <div class="relative mt-1.5">
-                        <input type="password" id="login-password" placeholder="••••••••" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs outline-none focus:ring-2 focus:ring-purple-500 transition-all text-slate-800 dark:text-white">
-                        <button onclick="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-purple-500">
-                            <i class="fa-regular fa-eye" id="password-eye-icon"></i>
-                        </button>
+
+                <!-- Section 3: Administrative Access (Login/Logout) -->
+                <div class="p-4 bg-slate-500/5 border border-slate-500/10 rounded-xl">
+                    <h4 class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-shield"></i> Administration Authentication
+                    </h4>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Guests operate view-only. Log in to activate manual record entries, updates, or backup restoring.</p>
+                    
+                    <div id="settings-login-fields" class="space-y-3">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="email" id="login-email" placeholder="example@gmail.com" class="p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-purple-500" value="amanbhardwaj1509@gmail.com">
+                            <div class="relative">
+                                <input type="password" id="login-password" placeholder="••••••••" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-purple-500">
+                                <button onclick="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-purple-500">
+                                    <i class="fa-regular fa-eye" id="password-eye-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button onclick="submitAdminLogin()" class="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">Authorize & Login</button>
+                    </div>
+
+                    <div id="settings-logout-fields" class="hidden flex items-center justify-between">
+                        <span class="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Authorized Administrative Session Active
+                        </span>
+                        <button onclick="triggerLogout()" class="px-4 py-2 bg-rose-600/20 hover:bg-rose-600 border border-rose-500/30 hover:border-rose-500 text-rose-600 dark:text-rose-400 hover:text-white text-xs font-semibold rounded-lg transition-all">Sign Out Admin</button>
                     </div>
                 </div>
             </div>
-            <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-end gap-2 rounded-b-xl">
-                <button onclick="closeLoginModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Cancel</button>
-                <button onclick="submitAdminLogin()" class="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">Log In</button>
+
+            <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-end rounded-b-xl">
+                <button onclick="closeSettingsModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Close Settings</button>
             </div>
         </div>
     </div>
@@ -285,7 +272,7 @@
                 </form>
             </div>
             <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-end gap-2 rounded-b-xl">
-                <button onclick="closeModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Cancel</button>
+                <button onclick="closeModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-300 text-slate-600 dark:text-slate-400 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Cancel</button>
                 <button onclick="saveEntry()" class="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-lg shadow-md transition-all">Save Details</button>
             </div>
         </div>
@@ -557,27 +544,28 @@
                     badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ${message}`;
                 } else {
                     badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-amber-500/10 text-amber-400 flex items-center gap-1";
-                    badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> ${message}`;
+                    badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-50"></span> ${message}`;
                 }
             }
         }
 
         function updateAccessRoleUI() {
             const badge = document.getElementById('role-badge');
-            const btn = document.getElementById('auth-action-btn');
+            const loginFields = document.getElementById('settings-login-fields');
+            const logoutFields = document.getElementById('settings-logout-fields');
             const isAdmin = window.isAdminActive();
 
-            if (badge && btn) {
+            if (badge) {
                 if (isAdmin) {
                     badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-purple-500/10 text-purple-400 flex items-center gap-1 border border-purple-500/20";
-                    badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> Admin (Write)`;
-                    btn.className = "w-full mt-1.5 text-center bg-rose-600/30 hover:bg-rose-600 border border-rose-500/40 hover:border-rose-500 text-[10px] text-rose-300 hover:text-white font-semibold py-1 rounded transition-all";
-                    btn.innerHTML = `<i class="fa-solid fa-right-from-bracket mr-1"></i> Admin Sign Out`;
+                    badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span> Admin`;
+                    if (loginFields) loginFields.classList.add('hidden');
+                    if (logoutFields) logoutFields.classList.remove('hidden');
                 } else {
                     badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center gap-1 border border-slate-300 dark:border-slate-700/60";
-                    badge.innerHTML = `Guest (View)`;
-                    btn.className = "w-full mt-1.5 text-center bg-purple-500/10 hover:bg-purple-500 border border-purple-500/30 hover:border-purple-500 text-[10px] text-purple-600 dark:text-purple-400 hover:text-white font-semibold py-1 rounded transition-all";
-                    btn.innerHTML = `<i class="fa-solid fa-right-to-bracket mr-1"></i> Admin Login`;
+                    badge.innerHTML = `Guest`;
+                    if (loginFields) loginFields.classList.remove('hidden');
+                    if (logoutFields) logoutFields.classList.add('hidden');
                 }
             }
         }
@@ -719,21 +707,9 @@
             }
         }, 50);
 
-        window.saveGeminiKey = function() {
-            const val = document.getElementById('gemini-key-input').value.trim();
-            localStorage.setItem('gemini_api_key', val);
-            window.GEMINI_API_KEY = val;
-            showToast("Gemini API key saved!", "success");
-        };
-
-        window.openLoginModal = function() {
-            if (window.isAdminActive && window.isAdminActive()) {
-                if (window.processAdminLogout) window.processAdminLogout();
-                return;
-            }
-
-            const modal = document.getElementById('login-modal');
-            const content = document.getElementById('login-modal-content');
+        window.openSettingsModal = function() {
+            const modal = document.getElementById('settings-modal');
+            const content = document.getElementById('settings-modal-content');
             if (modal && content) {
                 modal.classList.remove('hidden');
                 setTimeout(() => {
@@ -743,16 +719,28 @@
             }
         };
 
-        window.closeLoginModal = function() {
-            const modal = document.getElementById('login-modal');
-            const content = document.getElementById('login-modal-content');
+        window.closeSettingsModal = function() {
+            const modal = document.getElementById('settings-modal');
+            const content = document.getElementById('settings-modal-content');
             if (modal && content) {
                 content.classList.remove('scale-100', 'opacity-100');
                 content.classList.add('scale-95', 'opacity-0');
                 setTimeout(() => {
                     modal.classList.add('hidden');
-                    document.getElementById('login-password').value = '';
                 }, 200);
+            }
+        };
+
+        window.saveGeminiKey = function() {
+            const val = document.getElementById('gemini-key-input').value.trim();
+            localStorage.setItem('gemini_api_key', val);
+            window.GEMINI_API_KEY = val;
+            showToast("Gemini API key saved!", "success");
+        };
+
+        window.triggerLogout = function() {
+            if (window.processAdminLogout) {
+                window.processAdminLogout();
             }
         };
 
@@ -786,7 +774,7 @@
             if (window.processAdminLogin) {
                 const success = await window.processAdminLogin(email, pass);
                 if (success) {
-                    window.closeLoginModal();
+                    passInput.value = '';
                 }
             }
         };
@@ -813,7 +801,6 @@
                 if (!startVal && !endVal) return true;
                 const itemDate = new Date(dateStr);
                 
-                // Set start/end boundaries safely
                 if (startVal) {
                     const startDate = new Date(startVal);
                     startDate.setHours(0,0,0,0);
@@ -923,8 +910,6 @@
 
             navMenu.innerHTML = '';
 
-            const isDark = document.documentElement.classList.contains('dark');
-
             // Master Dashboard navigation button
             const isDashboardActive = activeTab === 'masterDashboard';
             const dashBtn = document.createElement('button');
@@ -946,7 +931,7 @@
             separator.innerText = "Channels";
             navMenu.appendChild(separator);
 
-            // Dynamically generate other channel view links, making sure all five tracks (including nonSeo) render cleanly
+            // Dynamically generate other channel view links
             const schemas = getActiveSchema();
             Object.values(schemas).forEach(schema => {
                 const isActive = activeTab === schema.id;
@@ -963,21 +948,6 @@
                 `;
                 navMenu.appendChild(btn);
             });
-
-            updateAccessUIPermissions();
-        }
-
-        function updateAccessUIPermissions() {
-            const isAdmin = window.isAdminActive ? window.isAdminActive() : false;
-            const dbConfigBtn = document.querySelector('button[onclick="openDatabaseConfigModal()"]');
-
-            if (dbConfigBtn) {
-                if (isAdmin) {
-                    dbConfigBtn.classList.remove('hidden');
-                } else {
-                    dbConfigBtn.classList.add('hidden');
-                }
-            }
         }
 
         function switchTab(tabId) {
@@ -1050,7 +1020,7 @@
                 }
             });
 
-            // 4. Parse Non-SEO (Restored in screenshot 3)
+            // 4. Parse Non-SEO
             const nonList = window.appData.nonSeo || [];
             nonList.forEach(item => {
                 if (isDateInPeriod(item.entryDate, targetPeriod)) {
@@ -1063,7 +1033,7 @@
                 }
             });
 
-            // 5. Parse Forum Community entries (Reddit and Quora stats, as specifically requested)
+            // 5. Parse Forum Community entries (Reddit and Quora stats)
             const commList = window.appData.community || [];
             commList.forEach(item => {
                 if (isDateInPeriod(item.entryDate, targetPeriod)) {
@@ -1362,7 +1332,7 @@
                         </div>
                     </div>
 
-                    <!-- 3. Dual Gemini AI Lab Workspace -->
+                    <!-- 3. Expanded Gemini AI Lab Workspace with new Feature C (AEO Visibility) -->
                     <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl p-6 mb-8 shadow-sm">
                         <div class="flex items-center justify-between pb-3 mb-6 border-b border-slate-200 dark:border-slate-800/60">
                             <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
@@ -1371,15 +1341,15 @@
                             <span class="px-2 py-0.5 bg-purple-500/10 text-purple-600 dark:text-purple-400 text-[10px] rounded font-bold font-mono">Gemini-3-Flash Engine</span>
                         </div>
 
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <!-- Feature 1: URL SEO Auditor -->
                             <div class="bg-slate-50 dark:bg-slate-900/60 p-5 rounded-xl border border-slate-100 dark:border-slate-800/60 flex flex-col justify-between">
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <h4 class="text-xs font-extrabold uppercase tracking-wide text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
-                                            <i class="fa-solid fa-circle-check"></i> URL SEO Auditor (Feature A)
+                                            <i class="fa-solid fa-circle-check"></i> SEO Page Auditor (A)
                                         </h4>
-                                        <span class="px-2 py-0.5 rounded text-[9px] bg-purple-500/10 text-purple-600 font-mono font-extrabold">Audit & Score</span>
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-purple-500/10 text-purple-600 font-mono font-extrabold">Audit</span>
                                     </div>
                                     <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Input any SEO page URL to receive a critical SEO health rating out of 10 and a curated list of recommendations.</p>
                                     
@@ -1400,9 +1370,9 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <h4 class="text-xs font-extrabold uppercase tracking-wide text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
-                                            <i class="fa-solid fa-lightbulb"></i> Social hook & distribution Architect (Feature B)
+                                            <i class="fa-solid fa-lightbulb"></i> Social hook architect (B)
                                         </h4>
-                                        <span class="px-2 py-0.5 rounded text-[9px] bg-purple-500/10 text-purple-600 font-mono font-extrabold">Quora & Reddit</span>
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-purple-500/10 text-purple-600 font-mono font-extrabold">Distribution</span>
                                     </div>
                                     <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Extract secondary high-intent search terms, target Quora discussion prompts, and outline viral Reddit posts.</p>
                                     
@@ -1414,6 +1384,29 @@
                                     </div>
                                 </div>
                                 <div id="planner-output" class="mt-4 p-4 bg-white dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs hidden overflow-y-auto max-h-60">
+                                    <!-- Dynamic response stream -->
+                                </div>
+                            </div>
+
+                            <!-- Feature 3: Answer Engine Optimization (AEO) Auditor -->
+                            <div class="bg-slate-50 dark:bg-slate-900/60 p-5 rounded-xl border border-slate-100 dark:border-slate-800/60 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="text-xs font-extrabold uppercase tracking-wide text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
+                                            <i class="fa-solid fa-magnifying-glass-chart"></i> LLM AEO citation Auditor (C)
+                                        </h4>
+                                        <span class="px-2 py-0.5 rounded text-[9px] bg-purple-500/10 text-purple-600 font-mono font-extrabold">AEO Visibility</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Analyze if your blog will be cited as a source by LLM Search (Perplexity/SearchGPT) and optimize prompts.</p>
+                                    
+                                    <div class="space-y-3">
+                                        <input type="url" id="ai-aeo-url" placeholder="e.g., https://example.com/blog/marketing-audit" class="w-full px-3 py-2 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white outline-none focus:border-purple-500">
+                                        <button onclick="runAeoAudit()" id="btn-aeo-audit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors flex items-center justify-center gap-2">
+                                            <i class="fa-solid fa-microchip"></i> Audit AEO citation
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="aeo-output" class="mt-4 p-4 bg-white dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs hidden overflow-y-auto max-h-60">
                                     <!-- Dynamic response stream -->
                                 </div>
                             </div>
@@ -1662,7 +1655,7 @@
 
         function openModal() {
             if (!window.isAdminActive()) {
-                showToast("Access Denied: Log in to edit entries.", "error");
+                showToast("Access Denied: Log in using Console Settings to edit entries.", "error");
                 return;
             }
             const schemas = getActiveSchema();
@@ -1847,37 +1840,6 @@
             }
         }
 
-        function openDatabaseConfigModal() {
-            if (!window.isAdminActive()) {
-                showToast("Access Denied: Guests cannot configure databases.", "error");
-                return;
-            }
-            const modal = document.getElementById('db-config-modal');
-            const content = document.getElementById('db-config-content');
-            const input = document.getElementById('db-config-input');
-
-            const stored = localStorage.getItem('custom_firebase_config_prod');
-            if (stored) {
-                input.value = stored;
-            }
-
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                content.classList.remove('scale-95', 'opacity-0');
-                content.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
-
-        function closeDatabaseConfigModal() {
-            const modal = document.getElementById('db-config-modal');
-            const content = document.getElementById('db-config-content');
-            content.classList.remove('scale-100', 'opacity-100');
-            content.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 200);
-        }
-
         function saveCustomDatabase() {
             if (!window.isAdminActive()) {
                 showToast("Access Denied: Guests cannot write configuration.", "error");
@@ -1893,7 +1855,7 @@
                 JSON.parse(rawInput);
                 localStorage.setItem('custom_firebase_config_prod', rawInput);
                 showToast("Cloud Connection Saved! Reconnecting...");
-                closeDatabaseConfigModal();
+                closeSettingsModal();
                 
                 if (window.triggerCloudSyncInit) {
                     window.triggerCloudSyncInit();
@@ -1911,7 +1873,7 @@
             localStorage.removeItem('custom_firebase_config_prod');
             document.getElementById('db-config-input').value = '';
             showToast("Cloud credentials cleared. Operating offline.", "delete");
-            closeDatabaseConfigModal();
+            closeSettingsModal();
             
             if (window.triggerCloudSyncInit) {
                 window.triggerCloudSyncInit();
@@ -1948,7 +1910,7 @@
         // Restore backup JSON file
         function importData(event) {
             if (!window.isAdminActive()) {
-                showToast("Access Denied: Guests cannot restore data.", "error");
+                showToast("Access Denied: Log in to restore files.", "error");
                 event.target.value = '';
                 return;
             }
@@ -1991,7 +1953,7 @@
         async function fetchGeminiInsight(prompt, systemInstruction) {
             const key = window.GEMINI_API_KEY || '';
             if (!key) {
-                throw new Error("No Gemini API key detected. Paste your key in the Sidebar configuration box to proceed.");
+                throw new Error("No Gemini API key detected. Save your key in Console Settings first.");
             }
 
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${key}`;
@@ -2037,7 +1999,6 @@
 
             try {
                 const responseText = await fetchGeminiInsight(userQuery, systemPrompt);
-                // Convert simple markdowns into visual HTML
                 const parsedHTML = responseText
                     .replace(/\n/g, '<br>')
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -2054,13 +2015,13 @@
                     </div>
                 `;
             } catch (err) {
-                outputBox.innerHTML = `<div class="text-rose-500 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Audit failed: ${err.message}</div>`;
+                outputBox.innerHTML = `<div class="text-rose-500 font-semibold text-[11px]"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Audit failed: ${err.message}</div>`;
             } finally {
                 btn.disabled = false;
             }
         }
 
-        // Feature B: Run Content Distribution & Quora Planner
+        // Feature B: Run Content Distribution Plan
         async function runContentPlanner() {
             const urlInput = document.getElementById('ai-planner-url').value.trim();
             const outputBox = document.getElementById('planner-output');
@@ -2096,7 +2057,49 @@
                     </div>
                 `;
             } catch (err) {
-                outputBox.innerHTML = `<div class="text-rose-500 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Blueprint generation failed: ${err.message}</div>`;
+                outputBox.innerHTML = `<div class="text-rose-500 font-semibold text-[11px]"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Blueprint generation failed: ${err.message}</div>`;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // Feature C: Answer Engine Optimization (AEO) Blog Citation Analyzer
+        async function runAeoAudit() {
+            const urlInput = document.getElementById('ai-aeo-url').value.trim();
+            const outputBox = document.getElementById('aeo-output');
+            const btn = document.getElementById('btn-aeo-audit');
+
+            if (!urlInput) {
+                showToast("Please provide a target blog URL.", "error");
+                return;
+            }
+
+            outputBox.classList.remove('hidden');
+            outputBox.innerHTML = `<div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold"><i class="fa-solid fa-circle-notch animate-spin"></i> Gemini is auditing LLM citation likelihood...</div>`;
+            btn.disabled = true;
+
+            const systemPrompt = "You are an AI Search Specialist and pioneer in Answer Engine Optimization (AEO). Analyze the target URL topic. Estimate its citation probability in Gemini, Perplexity, and ChatGPT Search on a scale from 0% to 100%. Highlight: 1. 3 direct question prompts that this blog currently answers perfectly, 2. 3 highly optimized direct-question prompts the author should include directly inside the blog, and 3. How to structure the answer format under those questions so AI crawlers cite it.";
+            const userQuery = `Audit AEO visibility and citation potential for: ${urlInput}`;
+
+            try {
+                const responseText = await fetchGeminiInsight(userQuery, systemPrompt);
+                const parsedHTML = responseText
+                    .replace(/\n/g, '<br>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/-\s(.*?)<br>/g, '<li class="ml-4 list-disc">$1</li>');
+
+                outputBox.innerHTML = `
+                    <div class="space-y-2 text-slate-700 dark:text-slate-300">
+                        <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 dark:border-slate-800">
+                            <span class="font-bold text-slate-800 dark:text-white"><i class="fa-solid fa-magnifying-glass-chart text-purple-500 mr-1.5"></i> AEO Citation & Visibility Audit</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-purple-500/10 text-purple-600 dark:text-purple-400 font-bold font-mono">Calculated</span>
+                        </div>
+                        <p class="leading-relaxed text-[11px]">${parsedHTML}</p>
+                    </div>
+                `;
+            } catch (err) {
+                outputBox.innerHTML = `<div class="text-rose-500 font-semibold text-[11px]"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> AEO Analysis failed: ${err.message}</div>`;
             } finally {
                 btn.disabled = false;
             }
