@@ -63,6 +63,13 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 20px -3px rgba(147, 51, 234, 0.15), 0 4px 6px -2px rgba(147, 51, 234, 0.05);
         }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 h-screen flex overflow-hidden transition-colors duration-300">
@@ -158,7 +165,7 @@
                 <div class="flex flex-wrap items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-lg text-xs" id="filter-wrapper">
                     <span class="text-slate-500 dark:text-slate-400 font-medium"><i class="fa-regular fa-calendar-days text-purple-500 mr-1"></i> Period:</span>
                     <select id="filter-period" onchange="handlePeriodSelection()" class="bg-transparent text-slate-800 dark:text-white font-bold outline-none cursor-pointer">
-                        <option value="current" selected class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">June 2026</option>
+                        <option value="current" selected class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">Current Month</option>
                         <option value="all" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">All Logs</option>
                         <option value="custom" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">Custom Range...</option>
                     </select>
@@ -235,7 +242,7 @@
                         <h4 class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                             <i class="fa-solid fa-cloud-arrow-up"></i> Firestore Database Link
                         </h4>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Plug in your Firebase Config JSON. Operates in real-time, removing standard local storage fallbacks.</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Plug in your Firebase Config JSON. Operates in real-time and remains saved securely.</p>
                         <textarea id="db-config-input" rows="4" placeholder='{&#10;  "apiKey": "AIzaSy...",&#10;  "authDomain": "...",&#10;  "projectId": "...",&#10;  "appId": "..."&#10;}' class="w-full p-2.5 font-mono text-[11px] bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 text-slate-800 dark:text-white mb-3"></textarea>
                         <div class="flex justify-between items-center text-[11px]">
                             <button onclick="clearCustomDatabase()" class="text-rose-500 hover:text-rose-400 font-bold">Clear Cloud Link</button>
@@ -404,21 +411,21 @@
 
             let firebaseConfig = null;
             
-            // Check if environment config exists, otherwise fallback to localStorage custom config
+            // Check custom configuration, keeping it persistent above fallbacks
             const envConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
             const storedConfig = localStorage.getItem('custom_firebase_config_prod');
             
-            if (envConfig) {
-                try {
-                    firebaseConfig = envConfig;
-                } catch(e) {
-                    console.error("Failed to parse env config:", e);
-                }
-            } else if (storedConfig) {
+            if (storedConfig) {
                 try {
                     firebaseConfig = JSON.parse(storedConfig);
                 } catch(e) {
                     console.error("Failed to parse saved config:", e);
+                }
+            } else if (envConfig) {
+                try {
+                    firebaseConfig = envConfig;
+                } catch(e) {
+                    console.error("Failed to parse env config:", e);
                 }
             }
 
@@ -443,7 +450,7 @@
                     if (user) {
                         const collectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'records');
                         
-                        // Real-time onSnapshot tracking matches RULE 2 fallback memory calculations
+                        // Real-time onSnapshot tracking with auto-seeding logic
                         activeFirestoreListener = onSnapshot(collectionRef, (snapshot) => {
                             const cloudData = {};
                             const currentCategories = Object.keys(window.customSchema);
@@ -451,37 +458,68 @@
                                 cloudData[cat] = [];
                             });
 
+                            let hasCloudRecords = false;
                             snapshot.forEach((doc) => {
+                                hasCloudRecords = true;
                                 const record = doc.data();
                                 const tab = record.tabType;
-                                if (!cloudData[tab]) {
-                                    cloudData[tab] = [];
+                                if (tab) {
+                                    if (!cloudData[tab]) {
+                                        cloudData[tab] = [];
+                                    }
+                                    cloudData[tab].push(record);
                                 }
-                                cloudData[tab].push(record);
                             });
 
-                            // Completely overwrite current app data with real-time cloud data
-                            window.appData = cloudData;
+                            if (!hasCloudRecords) {
+                                // Auto-seed cloud database with offline mock records if it's currently clean/empty
+                                console.log("Cloud Firestore has no records yet. Seeding current state to Firestore...");
+                                currentCategories.forEach(cat => {
+                                    const localRecords = window.appData[cat] || [];
+                                    localRecords.forEach(rec => {
+                                        window.saveRecordToFirestore(rec, cat);
+                                    });
+                                });
+                            } else {
+                                // Smart synchronizer merge: Keep and sync local-only items to prevent view drops
+                                currentCategories.forEach(cat => {
+                                    const merged = [];
+                                    const localRecords = window.appData[cat] || [];
+                                    const cloudRecords = cloudData[cat] || [];
+                                    
+                                    const cloudMap = new Map(cloudRecords.map(r => [r.id, r]));
+                                    cloudRecords.forEach(r => merged.push(r));
+                                    
+                                    localRecords.forEach(r => {
+                                        if (!cloudMap.has(r.id)) {
+                                            merged.push(r);
+                                            window.saveRecordToFirestore(r, cat);
+                                        }
+                                    });
+                                    
+                                    window.appData[cat] = merged;
+                                });
+                            }
                             
-                            // Always mirror down synced cloud state to offline backup storage
+                            // Mirror cloud synchronizations down to local memory safety buffer
                             window.saveDataToLocalStorage();
                             
                             if (typeof window.renderView === 'function') {
                                 window.renderView();
                             }
-                            updateCloudStatusUI(true, "Cloud Syncing");
+                            updateCloudStatusUI(true, "Cloud Synced");
                         }, (error) => {
-                            console.error("Firestore real-time subscription failed:", error);
+                            console.error("Firestore subscription error:", error);
                             updateCloudStatusUI(false, "Sync Error");
                         });
                         isCloudConnected = true;
                     }
                 } catch (e) {
-                    console.warn("Database initialization failed. Operating in offline local fallback.", e);
-                    updateCloudStatusUI(false, "Offline Mode");
+                    console.warn("Database initialization failed. Operating local mode.", e);
+                    updateCloudStatusUI(false, "Local Mode");
                 }
             } else {
-                updateCloudStatusUI(false, "Offline Mode");
+                updateCloudStatusUI(false, "Local Mode");
             }
         }
 
@@ -544,7 +582,12 @@
 
         window.GEMINI_API_KEY = localStorage.getItem('gemini_api_key') || '';
         
-        // Define adjustable default Admin Auth password overrides
+        // Dynamic Period Label Configuration
+        const todayDate = new Date();
+        const yyyy = todayDate.getFullYear();
+        const mm = String(todayDate.getMonth() + 1).padStart(2, '0');
+        activePeriod = `${yyyy}-${mm}`;
+
         window.getAdminPassword = function() {
             return localStorage.getItem('admin_auth_pass_prod') || '@Man1509';
         };
@@ -619,7 +662,7 @@
                 nonSeo: {
                     id: 'nonSeo',
                     title: 'Non-SEO Pages',
-                    desc: 'Log utility sheets, standard directories, legal drafts, or pure operational page URLs (Screenshot 3)',
+                    desc: 'Log utility sheets, standard directories, legal drafts, or pure operational page URLs',
                     icon: 'fa-globe',
                     fields: [
                         { key: 'pageType', label: 'Page Type', type: 'text', required: true, placeholder: 'e.g., Pricing Directory, Resource Hub' },
@@ -761,6 +804,19 @@
                 }, 10);
                 loadCmsCategoryToForm();
                 updateSettingsAuthPanel();
+
+                // Permanently populate stored configuration code inside admin panel
+                const dbConfigInput = document.getElementById('db-config-input');
+                if (dbConfigInput) {
+                    const storedConfig = localStorage.getItem('custom_firebase_config_prod');
+                    if (storedConfig) {
+                        dbConfigInput.value = storedConfig;
+                    } else if (typeof __firebase_config !== 'undefined') {
+                        dbConfigInput.value = JSON.stringify(__firebase_config, null, 2);
+                    } else {
+                        dbConfigInput.value = '';
+                    }
+                }
             }
         };
 
@@ -783,7 +839,7 @@
             showToast("Gemini API key saved!", "success");
         };
 
-        // Date-specific filter calculations including custom date range support (Matches Screenshot 2 design)
+        // Date-specific filter calculations resolving current dynamic period
         function handlePeriodSelection() {
             const selectEl = document.getElementById('filter-period');
             const customDatesWrapper = document.getElementById('custom-date-selectors');
@@ -801,6 +857,9 @@
         function isDateInPeriod(dateStr, periodStr) {
             if (!dateStr) return false;
             if (periodStr === 'all') return true;
+            if (periodStr === 'current') {
+                periodStr = activePeriod; // Substitutes the dynamic dynamic calendar period e.g. "2026-06"
+            }
             if (periodStr === 'custom') {
                 const startVal = document.getElementById('custom-start-date').value;
                 const endVal = document.getElementById('custom-end-date').value;
@@ -854,7 +913,7 @@
             const container = document.getElementById('cms-fields-container');
             const rowId = 'field-row-' + Math.random().toString(36).substr(2, 4);
 
-            const optionsText = ['text', 'number', 'url', 'date', 'select'].map(opt => 
+            const optionsText = ['text', 'number', 'url', 'date', 'select', 'image', 'file'].map(opt => 
                 `<option value="${opt}" ${type === opt ? 'selected' : ''}>${opt}</option>`
             ).join('');
 
@@ -1171,12 +1230,10 @@
 
                     if (item.platform === 'Reddit') {
                         redditViews += viewsVal;
-                        // Count every post/comment/reply + standard comments on the thread
                         redditEngagement += 1 + commentsVal; 
                         redditKarma += Number(item.karma || 0);
                     } else if (item.platform === 'Quora') {
                         quoraViews += viewsVal;
-                        // Count every post/comment/answer/question + comments
                         quoraEngagement += 1 + commentsVal;
                         quoraUpvotes += Number(item.upvotes || 0);
                     }
@@ -1362,13 +1419,9 @@
             const toDelete = Array.from(selectedRows);
             const list = window.appData[activeTab] || [];
             
-            // 1. Instantly update local runtime memory
             window.appData[activeTab] = list.filter(item => !selectedRows.has(item.id));
-            
-            // 2. Instantly persist update to offline backup storage
             window.saveDataToLocalStorage();
 
-            // 3. Fire-and-forget background cloud sync
             for (const id of toDelete) {
                 if (window.isCloudSyncActive && window.isCloudSyncActive()) {
                     await window.deleteRecordFromFirestore(id);
@@ -1431,7 +1484,7 @@
                                     <i class="fa-solid fa-chart-line"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Estimated Traffic (June)</p>
+                                    <p class="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Estimated Traffic</p>
                                     <h4 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${stats.totalTraffic.toLocaleString()}</h4>
                                     <p class="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">SEO active visits</p>
                                 </div>
@@ -1439,7 +1492,7 @@
                         </div>
                     </div>
 
-                    <!-- 2. Reddit & Quora separated statistics panels (Matches Image_31527e.png overview specs) -->
+                    <!-- 2. Reddit & Quora separated statistics panels -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-slate-800 dark:text-slate-100">
                         <!-- Reddit Segment -->
                         <div class="bg-white dark:bg-slate-950 p-6 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm flex flex-col justify-between border-t-4 border-t-orange-500">
@@ -1490,7 +1543,7 @@
                         </div>
                     </div>
 
-                    <!-- Comparison Graphs & Date toggles (Matches Screenshot 2) -->
+                    <!-- Comparison Graphs & Date toggles -->
                     <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 pb-3 border-b border-slate-200 dark:border-slate-800/60 gap-4">
                             <div>
@@ -1503,7 +1556,7 @@
                                 <span class="text-[10px] uppercase font-bold text-slate-400">Layout Select:</span>
                                 <select id="compare-mode-select" onchange="renderMasterCharts()" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1 text-xs text-slate-800 dark:text-white rounded-lg outline-none">
                                     <option value="all" selected>Monthly Timeline</option>
-                                    <option value="mtm">Month-to-Month (May vs June)</option>
+                                    <option value="mtm">Month-to-Month</option>
                                 </select>
                             </div>
                         </div>
@@ -1512,6 +1565,7 @@
                         </div>
                     </div>
 
+                    <!-- expanded criteria parameters -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-100/50 dark:bg-slate-950/40 p-5 rounded-xl border border-slate-200 dark:border-slate-800/60">
                         <div class="space-y-1">
                             <h4 class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase flex items-center gap-1.5">
@@ -1533,7 +1587,7 @@
                         </div>
                     </div>
 
-                    <!-- 3. Expanded Gemini AI Lab Workspace -->
+                    <!-- Expanded Gemini AI Lab Workspace -->
                     <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
                         <div class="flex items-center justify-between pb-3 mb-6 border-b border-slate-200 dark:border-slate-800/60">
                             <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
@@ -1548,7 +1602,7 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <h4 class="text-xs font-extrabold uppercase tracking-wide text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
-                                            <i class="fa-solid fa-circle-check"></i> SEO Page Auditor (A)
+                                            <i class="fa-solid fa-circle-check"></i> SEO Page Auditor
                                         </h4>
                                         <span class="px-2 py-0.5 rounded text-[9px] bg-purple-500/10 text-purple-600 font-mono font-extrabold">Audit</span>
                                     </div>
@@ -1575,7 +1629,7 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <h4 class="text-xs font-extrabold uppercase tracking-wide text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
-                                            <i class="fa-solid fa-lightbulb"></i> Content Planner (B)
+                                            <i class="fa-solid fa-lightbulb"></i> Content Planner
                                         </h4>
                                         <span class="px-2 py-0.5 rounded text-[9px] bg-purple-500/10 text-purple-600 font-mono font-extrabold">Distribution</span>
                                     </div>
@@ -1602,7 +1656,7 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <h4 class="text-xs font-extrabold uppercase tracking-wide text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
-                                            <i class="fa-solid fa-magnifying-glass-chart"></i> LLM AEO Auditor (C)
+                                            <i class="fa-solid fa-magnifying-glass-chart"></i> LLM AEO Auditor
                                         </h4>
                                         <span class="px-2 py-0.5 rounded text-[9px] bg-purple-500/10 text-purple-600 font-mono font-extrabold">AEO Visibility</span>
                                     </div>
@@ -1696,6 +1750,7 @@
                     `;
                 }
 
+                // Render matching schemas cell data dynamically
                 schema.fields.forEach(f => {
                     let val = row[f.key];
                     let disp = (val !== undefined && val !== null && val !== '') ? val : '-';
@@ -1707,6 +1762,28 @@
                                     ${val}
                                 </a>
                                 <button onclick="copyToClipboard('${val}')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-0.5 shrink-0" title="Copy URL">
+                                    <i class="fa-regular fa-copy text-[10px]"></i>
+                                </button>
+                            </div>
+                        `;
+                    } else if (f.type === 'image' && disp !== '-') {
+                        disp = `
+                            <div class="flex items-center gap-1.5">
+                                <img src="${val}" alt="Thumbnail" class="h-8 w-8 object-cover rounded-md border border-slate-200 dark:border-slate-800 cursor-zoom-in hover:scale-105 transition-all" onclick="openLightbox('${val}')" onerror="this.src='https://placehold.co/100x100/f3e8ff/a855f7?text=Image'">
+                                <button onclick="copyToClipboard('${val}')" class="text-slate-400 hover:text-slate-600 p-0.5 shrink-0" title="Copy Image Link">
+                                    <i class="fa-regular fa-copy text-[10px]"></i>
+                                </button>
+                            </div>
+                        `;
+                    } else if (f.type === 'file' && disp !== '-') {
+                        const isBase64 = val.startsWith('data:');
+                        const displayName = isBase64 ? 'Uploaded Asset' : (val.length > 20 ? val.substring(0,20)+'...' : val);
+                        disp = `
+                            <div class="flex items-center gap-1.5">
+                                <a href="${val}" target="_blank" download class="px-2 py-1 bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 text-[10px] rounded font-bold inline-flex items-center gap-1 border border-purple-500/20">
+                                    <i class="fa-solid fa-file-arrow-down"></i> ${displayName}
+                                </a>
+                                <button onclick="copyToClipboard('${val}')" class="text-slate-400 hover:text-slate-600 p-0.5 shrink-0" title="Copy File Link">
                                     <i class="fa-regular fa-copy text-[10px]"></i>
                                 </button>
                             </div>
@@ -1757,6 +1834,26 @@
             `;
         }
 
+        window.openLightbox = function(src) {
+            const lb = document.createElement('div');
+            lb.id = 'lightbox-overlay';
+            lb.className = 'fixed inset-0 bg-slate-950/95 backdrop-blur-md z-[100] flex flex-col items-center justify-center p-4 cursor-zoom-out animate-fade-in';
+            lb.onclick = () => lb.remove();
+            
+            lb.innerHTML = `
+                <div class="relative max-w-4xl max-h-[85vh] flex flex-col items-center">
+                    <img src="${src}" class="max-w-full max-h-[80vh] rounded-lg shadow-2xl border border-slate-800 object-contain">
+                    <button class="absolute -top-10 right-0 text-white bg-slate-800 hover:bg-slate-700 p-2 rounded-full text-sm font-bold flex items-center justify-center border border-slate-700">
+                        <i class="fa-solid fa-xmark px-1"></i>
+                    </button>
+                    <a href="${src}" target="_blank" class="mt-4 px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-lg shadow-lg flex items-center gap-1.5" onclick="event.stopPropagation()">
+                        <i class="fa-solid fa-up-right-from-square"></i> Open Original
+                    </a>
+                </div>
+            `;
+            document.body.appendChild(lb);
+        };
+
         function openModal() {
             if (!window.isAdminActive()) return;
             const schema = window.customSchema[activeTab];
@@ -1773,7 +1870,7 @@
 
             schema.fields.forEach(f => {
                 const id = `input-${f.key}`;
-                const isWideField = f.type === 'url' || f.type === 'text';
+                const isWideField = f.type === 'url' || f.type === 'text' || f.type === 'image' || f.type === 'file';
                 const containerClass = isWideField ? 'md:col-span-2' : '';
 
                 let val = '';
@@ -1790,6 +1887,31 @@
                 if (f.type === 'select') {
                     const optionsHtml = f.options.map(opt => `<option value="${opt}" ${val === opt ? 'selected' : ''}>${opt}</option>`).join('');
                     inputHtml = `<select id="${id}" class="w-full mt-1.5 px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none transition-all">${optionsHtml}</select>`;
+                } else if (f.type === 'image' || f.type === 'file') {
+                    const previewId = `preview-${f.key}`;
+                    const fileInputId = `file-input-${f.key}`;
+                    const hasPreviewClass = val ? '' : 'hidden';
+                    const placeholderText = f.type === 'image' ? 'Paste image URL or upload...' : 'Paste file link or upload...';
+                    
+                    inputHtml = `
+                        <div class="space-y-2 mt-1.5">
+                            <div class="flex gap-2">
+                                <input type="text" id="${id}" value="${val}" placeholder="${placeholderText}" class="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none transition-all" oninput="updateAssetFormPreview('${f.key}', '${f.type}')">
+                                <label class="px-3 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-lg cursor-pointer flex items-center gap-1.5 shrink-0 transition-colors">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+                                    <input type="file" id="${fileInputId}" class="hidden" accept="${f.type === 'image' ? 'image/*' : '*'}" onchange="handleFormAssetUpload(event, '${f.key}', '${f.type}')">
+                                </label>
+                            </div>
+                            <div id="${previewId}" class="${hasPreviewClass} flex items-center gap-3 bg-slate-100 dark:bg-slate-950 p-2 rounded-lg border border-slate-200 dark:border-slate-800">
+                                ${f.type === 'image' ? `<img src="${val}" class="h-10 w-10 object-cover rounded-md border border-slate-300 dark:border-slate-800" id="img-preview-el-${f.key}">` : `<div class="w-10 h-10 rounded bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center text-lg"><i class="fa-solid fa-file"></i></div>`}
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-extrabold">Active Asset Source</p>
+                                    <p class="text-xs text-slate-800 dark:text-slate-300 truncate" id="text-preview-el-${f.key}">${val || 'No source file connected'}</p>
+                                </div>
+                                <button type="button" onclick="clearFormAssetSource('${f.key}')" class="text-rose-500 hover:text-rose-400 p-1 text-sm"><i class="fa-solid fa-circle-xmark"></i></button>
+                            </div>
+                        </div>
+                    `;
                 } else {
                     inputHtml = `<input type="${f.type}" id="${id}" value="${val}" ${f.step ? `step="${f.step}"` : ''} placeholder="${f.placeholder || ''}" class="w-full mt-1.5 px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none transition-all">`;
                 }
@@ -1812,6 +1934,57 @@
                 content.classList.add('scale-100', 'opacity-100');
             }, 10);
         }
+
+        window.handleFormAssetUpload = function(event, key, type) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 500 * 1024) { // 500 KB limit
+                showToast("File is too large! Please keep uploads under 500KB to prevent database latency. Alternatively, paste a direct cloud link.", "error");
+                event.target.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result;
+                const inputEl = document.getElementById(`input-${key}`);
+                if (inputEl) {
+                    inputEl.value = base64Data;
+                    updateAssetFormPreview(key, type);
+                    showToast("Asset uploaded and loaded locally!");
+                }
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.updateAssetFormPreview = function(key, type) {
+            const inputVal = document.getElementById(`input-${key}`).value.trim();
+            const previewWrap = document.getElementById(`preview-${key}`);
+            const textPreview = document.getElementById(`text-preview-el-${key}`);
+            const imgPreview = document.getElementById(`img-preview-el-${key}`);
+
+            if (inputVal) {
+                if (previewWrap) previewWrap.classList.remove('hidden');
+                if (textPreview) textPreview.textContent = inputVal;
+                if (imgPreview && type === 'image') {
+                    imgPreview.src = inputVal;
+                }
+            } else {
+                if (previewWrap) previewWrap.classList.add('hidden');
+            }
+        };
+
+        window.clearFormAssetSource = function(key) {
+            const inputEl = document.getElementById(`input-${key}`);
+            if (inputEl) {
+                inputEl.value = '';
+                const previewWrap = document.getElementById(`preview-${key}`);
+                if (previewWrap) {
+                    previewWrap.classList.add('hidden');
+                }
+            }
+        };
 
         function closeModal() {
             const modal = document.getElementById('modal');
@@ -1852,7 +2025,6 @@
 
             let savedRecord = null;
 
-            // 1. Instantly update memory array
             if (editEntryId) {
                 const index = window.appData[activeTab].findIndex(item => item.id === editEntryId);
                 if (index !== -1) {
@@ -1868,10 +2040,8 @@
                 showToast('New Row Logged!');
             }
 
-            // 2. Instantly save to local browser backup (Offline resilience fallback)
             window.saveDataToLocalStorage();
 
-            // 3. Replicate in background to Cloud Firestore if connected
             if (savedRecord && window.saveRecordToFirestore) {
                 await window.saveRecordToFirestore(savedRecord, activeTab);
             }
@@ -1924,13 +2094,9 @@
         async function executeDeletion() {
             if (!window.isAdminActive()) return;
             if (deleteTargetId) {
-                // 1. Immediately update memory array
                 window.appData[activeTab] = window.appData[activeTab].filter(item => item.id !== deleteTargetId);
-                
-                // 2. Save offline changes immediately
                 window.saveDataToLocalStorage();
 
-                // 3. Sync deletion to cloud in the background
                 if (window.deleteRecordFromFirestore) {
                     await window.deleteRecordFromFirestore(deleteTargetId);
                 }
@@ -2109,31 +2275,26 @@
             }
 
             try {
-                // Smart Forgiving Parser: Strip JS declarations like "const firebaseConfig =" if copied directly from console
                 let cleanedInput = rawInput;
                 cleanedInput = cleanedInput.replace(/^(const|let|var)\s+\w+\s*=\s*/i, '');
                 if (cleanedInput.endsWith(';')) {
                     cleanedInput = cleanedInput.slice(0, -1).trim();
                 }
 
-                // Replace smart/curly quotes with standard straight quotes
                 cleanedInput = cleanedInput.replace(/[\u201C\u201D\u201E\u201F\u201C\u201D]/g, '"');
                 cleanedInput = cleanedInput.replace(/[\u2018\u2019\u201A\u201B]/g, "'");
 
-                // Execute a safe sandbox parser to read unquoted keys, trailing commas, and single quotes
                 const parsedConfig = Function(`"use strict"; return (${cleanedInput});`)();
 
                 if (!parsedConfig || typeof parsedConfig !== 'object') {
                     throw new Error("Invalid object structure");
                 }
 
-                // Verify key fields exist to warn user if they missed pasting something
                 if (!parsedConfig.apiKey || !parsedConfig.projectId) {
                     showToast("Configuration is missing critical Firebase keys.", "error");
                     return;
                 }
 
-                // Re-serialize strictly to clean valid JSON string for saving
                 const strictJsonString = JSON.stringify(parsedConfig, null, 2);
                 localStorage.setItem('custom_firebase_config_prod', strictJsonString);
                 
@@ -2273,6 +2434,18 @@
         }
 
         window.onload = function() {
+            // Setup dynamic calendar months text labels
+            const selectEl = document.getElementById('filter-period');
+            if (selectEl) {
+                const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                const now = new Date();
+                const currentMonthLabel = `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+                const currentOpt = Array.from(selectEl.options).find(opt => opt.value === 'current');
+                if (currentOpt) {
+                    currentOpt.textContent = currentMonthLabel;
+                }
+            }
+
             renderSidebar();
             renderView();
         };
