@@ -386,10 +386,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const appId = 'content-tracker-prod';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'content-tracker-prod';
         let db = null;
         let auth = null;
         let isCloudConnected = false;
@@ -403,8 +403,18 @@
             }
 
             let firebaseConfig = null;
+            
+            // Check if environment config exists, otherwise fallback to localStorage custom config
+            const envConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
             const storedConfig = localStorage.getItem('custom_firebase_config_prod');
-            if (storedConfig) {
+            
+            if (envConfig) {
+                try {
+                    firebaseConfig = envConfig;
+                } catch(e) {
+                    console.error("Failed to parse env config:", e);
+                }
+            } else if (storedConfig) {
                 try {
                     firebaseConfig = JSON.parse(storedConfig);
                 } catch(e) {
@@ -418,8 +428,17 @@
                     db = getFirestore(app);
                     auth = getAuth(app);
                     
-                    const credential = await signInAnonymously(auth);
-                    const user = credential.user;
+                    let userCredential = null;
+                    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+                    // RULE 3 Priority Auth handling
+                    if (initialAuthToken) {
+                        userCredential = await signInWithCustomToken(auth, initialAuthToken);
+                    } else {
+                        userCredential = await signInAnonymously(auth);
+                    }
+                    
+                    const user = userCredential.user;
 
                     if (user) {
                         const collectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'records');
@@ -443,6 +462,9 @@
 
                             // Completely overwrite current app data with real-time cloud data
                             window.appData = cloudData;
+                            
+                            // Always mirror down synced cloud state to offline backup storage
+                            window.saveDataToLocalStorage();
                             
                             if (typeof window.renderView === 'function') {
                                 window.renderView();
@@ -477,9 +499,7 @@
         }
 
         window.saveRecordToFirestore = async function(record, tabType) {
-            // Real-time cloud-sync prioritizes cloud database instantly
-            if (!isCloudConnected || !db) {
-                window.saveDataToLocalStorage();
+            if (!isCloudConnected || !db || !auth || !auth.currentUser) {
                 return;
             }
             try {
@@ -492,8 +512,7 @@
         };
 
         window.deleteRecordFromFirestore = async function(id) {
-            if (!isCloudConnected || !db) {
-                window.saveDataToLocalStorage();
+            if (!isCloudConnected || !db || !auth || !auth.currentUser) {
                 return;
             }
             try {
@@ -505,7 +524,7 @@
         };
 
         window.isCloudSyncActive = function() {
-            return isCloudConnected;
+            return isCloudConnected && auth && auth.currentUser;
         };
 
         window.triggerCloudSyncInit = function() {
@@ -1343,17 +1362,17 @@
             const toDelete = Array.from(selectedRows);
             const list = window.appData[activeTab] || [];
             
-            // Delete directly from Cloud or offline structures
+            // 1. Instantly update local runtime memory
             window.appData[activeTab] = list.filter(item => !selectedRows.has(item.id));
             
+            // 2. Instantly persist update to offline backup storage
+            window.saveDataToLocalStorage();
+
+            // 3. Fire-and-forget background cloud sync
             for (const id of toDelete) {
                 if (window.isCloudSyncActive && window.isCloudSyncActive()) {
                     await window.deleteRecordFromFirestore(id);
                 }
-            }
-
-            if (!window.isCloudSyncActive || !window.isCloudSyncActive()) {
-                window.saveDataToLocalStorage();
             }
 
             selectedRows.clear();
@@ -1831,26 +1850,30 @@
                 return;
             }
 
-            // Save and sync
+            let savedRecord = null;
+
+            // 1. Instantly update memory array
             if (editEntryId) {
                 const index = window.appData[activeTab].findIndex(item => item.id === editEntryId);
                 if (index !== -1) {
                     updatedDoc.id = editEntryId;
                     window.appData[activeTab][index] = { ...window.appData[activeTab][index], ...updatedDoc };
-                    
-                    if (window.saveRecordToFirestore) {
-                        await window.saveRecordToFirestore(window.appData[activeTab][index], activeTab);
-                    }
+                    savedRecord = window.appData[activeTab][index];
                     showToast('Row updated!');
                 }
             } else {
                 updatedDoc.id = 'entry-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4);
                 window.appData[activeTab].push(updatedDoc);
-                
-                if (window.saveRecordToFirestore) {
-                    await window.saveRecordToFirestore(updatedDoc, activeTab);
-                }
+                savedRecord = updatedDoc;
                 showToast('New Row Logged!');
+            }
+
+            // 2. Instantly save to local browser backup (Offline resilience fallback)
+            window.saveDataToLocalStorage();
+
+            // 3. Replicate in background to Cloud Firestore if connected
+            if (savedRecord && window.saveRecordToFirestore) {
+                await window.saveRecordToFirestore(savedRecord, activeTab);
             }
 
             closeModal();
@@ -1901,8 +1924,13 @@
         async function executeDeletion() {
             if (!window.isAdminActive()) return;
             if (deleteTargetId) {
+                // 1. Immediately update memory array
                 window.appData[activeTab] = window.appData[activeTab].filter(item => item.id !== deleteTargetId);
                 
+                // 2. Save offline changes immediately
+                window.saveDataToLocalStorage();
+
+                // 3. Sync deletion to cloud in the background
                 if (window.deleteRecordFromFirestore) {
                     await window.deleteRecordFromFirestore(deleteTargetId);
                 }
@@ -2081,8 +2109,34 @@
             }
 
             try {
-                JSON.parse(rawInput);
-                localStorage.setItem('custom_firebase_config_prod', rawInput);
+                // Smart Forgiving Parser: Strip JS declarations like "const firebaseConfig =" if copied directly from console
+                let cleanedInput = rawInput;
+                cleanedInput = cleanedInput.replace(/^(const|let|var)\s+\w+\s*=\s*/i, '');
+                if (cleanedInput.endsWith(';')) {
+                    cleanedInput = cleanedInput.slice(0, -1).trim();
+                }
+
+                // Replace smart/curly quotes with standard straight quotes
+                cleanedInput = cleanedInput.replace(/[\u201C\u201D\u201E\u201F\u201C\u201D]/g, '"');
+                cleanedInput = cleanedInput.replace(/[\u2018\u2019\u201A\u201B]/g, "'");
+
+                // Execute a safe sandbox parser to read unquoted keys, trailing commas, and single quotes
+                const parsedConfig = Function(`"use strict"; return (${cleanedInput});`)();
+
+                if (!parsedConfig || typeof parsedConfig !== 'object') {
+                    throw new Error("Invalid object structure");
+                }
+
+                // Verify key fields exist to warn user if they missed pasting something
+                if (!parsedConfig.apiKey || !parsedConfig.projectId) {
+                    showToast("Configuration is missing critical Firebase keys.", "error");
+                    return;
+                }
+
+                // Re-serialize strictly to clean valid JSON string for saving
+                const strictJsonString = JSON.stringify(parsedConfig, null, 2);
+                localStorage.setItem('custom_firebase_config_prod', strictJsonString);
+                
                 showToast("Cloud Connection Saved! Reconnecting...");
                 closeSettingsModal();
                 
@@ -2090,7 +2144,8 @@
                     window.triggerCloudSyncInit();
                 }
             } catch(e) {
-                showToast("Configuration is not valid JSON.", "error");
+                console.error("Advanced parse failed: ", e);
+                showToast("Invalid format. Please check your config keys.", "error");
             }
         }
 
