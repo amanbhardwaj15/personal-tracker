@@ -83,24 +83,24 @@
         <div class="px-4 py-3 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-2 text-xs">
             <div class="flex items-center justify-between">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-cloud text-slate-400 dark:text-slate-500"></i> Save Status:
+                    <i class="fa-solid fa-cloud text-slate-400 dark:text-slate-500"></i> Cloud Sync:
                 </span>
-                <span id="cloud-status-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-emerald-500/10 text-emerald-500 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Saved Locally
+                <span id="cloud-status-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-amber-500/10 text-amber-500 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Local Mode
                 </span>
             </div>
             
             <div class="flex items-center justify-between border-t border-slate-200/50 dark:border-slate-800/50 pt-2">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-user-shield text-slate-400 dark:text-slate-500"></i> Session Role:
+                    <i class="fa-solid fa-user-shield text-slate-400 dark:text-slate-500"></i> Role:
                 </span>
                 <span id="role-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                    Administrator
+                    Guest (View)
                 </span>
             </div>
 
             <button onclick="openSettingsModal()" class="w-full mt-1 bg-purple-500/10 hover:bg-purple-500 border border-purple-500/30 hover:border-purple-500 text-[10px] text-purple-600 dark:text-purple-400 hover:text-white font-semibold py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-sliders"></i> CMS Settings Center
+                <i class="fa-solid fa-sliders"></i> Settings & Access
             </button>
         </div>
 
@@ -108,7 +108,7 @@
         <div class="px-4 py-2.5 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-1.5 text-xs">
             <div class="flex items-center justify-between">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-circle-half-stroke text-slate-400 dark:text-slate-500"></i> Appearance:
+                    <i class="fa-solid fa-circle-half-stroke text-slate-400 dark:text-slate-500"></i> Theme:
                 </span>
                 <button onclick="toggleTheme()" class="px-2.5 py-1 bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-700 dark:text-slate-300 font-bold hover:bg-purple-500 hover:text-white dark:hover:bg-purple-500 dark:hover:text-white transition-all flex items-center gap-1.5">
                     <span id="theme-icon"><i class="fa-solid fa-moon"></i></span>
@@ -119,12 +119,12 @@
         
         <!-- Navigation Menu Tabs -->
         <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto" id="nav-menu">
-            <!-- Nav buttons dynamically populated by controller script based on CMS model -->
+            <!-- Dynamic channels populate here -->
         </nav>
 
         <!-- Backup local interactions panel -->
         <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/80 flex flex-col gap-2">
-            <p class="text-[10px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-wider">Local File Backups</p>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-wider">Local Backup Files</p>
             <div class="grid grid-cols-2 gap-2">
                 <button onclick="exportData()" class="px-2 py-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-[11px] font-semibold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1 transition-colors border border-slate-300 dark:border-slate-700">
                     <i class="fa-solid fa-file-export text-purple-500"></i> Export
@@ -146,6 +146,14 @@
             </div>
             
             <div class="flex items-center gap-3">
+                <!-- Bulk Operations actions panel -->
+                <div id="bulk-actions-wrapper" class="hidden flex items-center gap-2 bg-rose-500/10 border border-rose-500/20 px-3 py-1 rounded-lg text-xs">
+                    <span class="text-rose-500 font-bold" id="bulk-count-label">0 Selected</span>
+                    <button onclick="promptBulkDelete()" class="bg-rose-600 hover:bg-rose-500 text-white px-2.5 py-1 rounded text-[11px] font-bold transition-all flex items-center gap-1">
+                        <i class="fa-solid fa-trash-can"></i> Delete Selected
+                    </button>
+                </div>
+
                 <!-- Reporting Period & Customized Calendar Picker -->
                 <div class="flex flex-wrap items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-lg text-xs" id="filter-wrapper">
                     <span class="text-slate-500 dark:text-slate-400 font-medium"><i class="fa-regular fa-calendar-days text-purple-500 mr-1"></i> Period:</span>
@@ -181,9 +189,9 @@
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-950 rounded-t-xl">
                 <div>
                     <h3 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-purple-500"></i> Settings & Dynamic CMS Control Panel
+                        <i class="fa-solid fa-sliders text-purple-500"></i> Settings & Control Center
                     </h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Customize category sections, fields, credentials, and databases.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Customize database configs, user login security, and channel parameters.</p>
                 </div>
                 <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 transition-colors bg-white dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
                     <i class="fa-solid fa-xmark text-lg px-1"></i>
@@ -191,49 +199,63 @@
             </div>
             
             <div class="p-6 space-y-6 overflow-y-auto max-h-[75vh] grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Left half of settings: Database, Credentials & API Keys -->
+                <!-- Left Column: Database & Security Auth -->
                 <div class="lg:col-span-5 space-y-6">
+                    <!-- User Authentication Area (Login/Logout + Change password) -->
+                    <div class="p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-4">
+                        <h4 class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-lock"></i> Administration Auth
+                        </h4>
+                        <div id="settings-auth-status" class="text-xs">
+                            <!-- Populated dynamically (Guest / Admin options) -->
+                        </div>
+                        <div id="settings-password-form" class="hidden border-t border-slate-200 dark:border-slate-800 pt-3 space-y-2">
+                            <label class="text-[10px] uppercase font-bold text-slate-400">Change Admin Password</label>
+                            <div class="flex gap-2">
+                                <input type="password" id="new-admin-password" placeholder="New Password..." class="flex-1 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white outline-none">
+                                <button onclick="saveAdminPassword()" class="bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all">Save</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gemini Credentials Setup -->
                     <div class="p-4 bg-purple-500/5 border border-purple-500/10 rounded-xl">
                         <h4 class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                             <i class="fa-solid fa-key"></i> Gemini AI Studio Key
                         </h4>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Required to operate SEO, Content, and AEO Analyzers. Kept local to your browser.</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Kept persistent locally inside your current browser session.</p>
                         <div class="flex gap-2">
                             <input type="password" id="gemini-key-input" placeholder="Paste your Gemini API Key..." class="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-purple-500">
                             <button onclick="saveGeminiKey()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition-all">Save</button>
                         </div>
                     </div>
 
+                    <!-- Firestore Setup config -->
                     <div class="p-4 bg-amber-500/5 border border-amber-500/10 rounded-xl">
                         <h4 class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> Firestore Connection Setup
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Firestore Database Link
                         </h4>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Provide your Firebase Web SDK config JSON to save entries globally and bypass local limits.</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Plug in your Firebase Config JSON. Operates in real-time, removing standard local storage fallbacks.</p>
                         <textarea id="db-config-input" rows="4" placeholder='{&#10;  "apiKey": "AIzaSy...",&#10;  "authDomain": "...",&#10;  "projectId": "...",&#10;  "appId": "..."&#10;}' class="w-full p-2.5 font-mono text-[11px] bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 text-slate-800 dark:text-white mb-3"></textarea>
                         <div class="flex justify-between items-center text-[11px]">
                             <button onclick="clearCustomDatabase()" class="text-rose-500 hover:text-rose-400 font-bold">Clear Cloud Link</button>
-                            <button onclick="saveCustomDatabase()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-lg shadow-sm transition-colors">Connect Online Storage</button>
+                            <button onclick="saveCustomDatabase()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-lg shadow-sm transition-colors">Connect Online</button>
                         </div>
                     </div>
                 </div>
 
+                <!-- Right Column: Workspace Manager -->
                 <div class="lg:col-span-7 p-4 bg-slate-500/5 border border-slate-500/10 rounded-xl space-y-4">
                     <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                         <i class="fa-solid fa-gears text-purple-500"></i> CMS Workspace Manager (Customize Channels)
                     </h4>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Add new categories, edit their metrics structures, or delete redundant channels. Changes apply immediately.</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Add new categories, edit metrics schemas, or delete trackers. Changes apply immediately.</p>
 
-                    <!-- Categories Selector -->
                     <div class="grid grid-cols-2 gap-3">
                         <div class="flex flex-col">
                             <label class="text-[10px] uppercase font-bold text-slate-400">Select Category to Edit</label>
                             <select id="cms-category-selector" onchange="loadCmsCategoryToForm()" class="mt-1 p-2 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-xs text-slate-800 dark:text-white outline-none">
                                 <option value="new">Create New Category...</option>
-                                <option value="revampedSeo">Revamped SEO Pages/Blogs</option>
-                                <option value="newSeo">New SEO Pages</option>
-                                <option value="linkedin">LinkedIn Newsletter</option>
-                                <option value="nonSeo">Non-SEO Pages</option>
-                                <option value="community">Reddit & Quora Forums</option>
                             </select>
                         </div>
                         <div class="flex flex-col">
@@ -253,7 +275,6 @@
                         </div>
                     </div>
 
-                    <!-- Dynamic Fields Configuration inside category -->
                     <div class="border-t border-slate-200 dark:border-slate-800 pt-3">
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-[10px] uppercase font-bold text-slate-400">Define Schema Fields</span>
@@ -262,7 +283,7 @@
                             </button>
                         </div>
                         <div id="cms-fields-container" class="space-y-2 max-h-40 overflow-y-auto pr-1">
-                            <!-- Populated with field customization objects -->
+                            <!-- Populated dynamic fields configurations list -->
                         </div>
                     </div>
 
@@ -275,6 +296,39 @@
 
             <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-end rounded-b-xl">
                 <button onclick="closeSettingsModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Close Settings Panel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-md flex flex-col transition-all transform scale-95 opacity-0 duration-200 border border-slate-200 dark:border-slate-800" id="login-modal-content">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-950 rounded-t-xl">
+                <div>
+                    <h3 class="text-base font-bold text-slate-800 dark:text-white">Admin Credentials Verification</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Please sign in to unlock CMS configurations.</p>
+                </div>
+                <button onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 transition-colors bg-white dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <i class="fa-solid fa-xmark text-lg px-1"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex flex-col">
+                    <label for="login-email" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Admin Email Address:</label>
+                    <input type="email" id="login-email" class="w-full mt-1.5 p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-850 rounded-lg text-xs outline-none focus:ring-2 focus:ring-purple-500 transition-all text-slate-800 dark:text-white" value="amanbhardwaj1509@gmail.com">
+                </div>
+                <div class="flex flex-col">
+                    <label for="login-password" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Password Code:</label>
+                    <div class="relative mt-1.5">
+                        <input type="password" id="login-password" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-850 rounded-lg text-xs outline-none focus:ring-2 focus:ring-purple-500 transition-all text-slate-800 dark:text-white">
+                        <button onclick="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                            <i class="fa-regular fa-eye" id="password-eye-icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-end gap-2 rounded-b-xl">
+                <button onclick="closeLoginModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Cancel</button>
+                <button onclick="submitAdminLogin()" class="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">Verify & Lock</button>
             </div>
         </div>
     </div>
@@ -293,7 +347,7 @@
             </div>
             <div class="p-6 overflow-y-auto flex-1">
                 <form id="entry-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Config fields dynamic generation -->
+                    <!-- Dynamic form rows generate here -->
                 </form>
             </div>
             <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-end gap-2 rounded-b-xl">
@@ -303,24 +357,24 @@
         </div>
     </div>
 
-    <!-- Non-destructive custom delete confirm modal to bypass native confirm alerts -->
+    <!-- Delete Confirmation Modal (Standard custom alert replacement) -->
     <div id="confirm-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-sm flex flex-col transition-all transform scale-95 opacity-0 duration-200 text-slate-800 dark:text-white border border-slate-200 dark:border-slate-800" id="confirm-modal-content">
             <div class="p-6 text-center">
                 <div class="w-12 h-12 bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center text-xl mx-auto mb-4">
                     <i class="fa-solid fa-triangle-exclamation"></i>
                 </div>
-                <h4 class="text-sm font-bold text-slate-800 dark:text-white">Delete Tracking Record?</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">This action cannot be undone. This record will be permanently deleted from database.</p>
+                <h4 class="text-sm font-bold text-slate-800 dark:text-white" id="confirm-modal-heading">Delete Tracking Record?</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed" id="confirm-modal-body">This action cannot be undone. Selected items will be permanently removed.</p>
             </div>
             <div class="px-6 py-4 bg-slate-50 dark:bg-slate-950 rounded-b-xl border-t border-slate-100 dark:border-slate-800 flex gap-2">
-                <button onclick="closeConfirmModal()" class="flex-1 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Keep Record</button>
+                <button onclick="closeConfirmModal()" class="flex-1 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Keep Data</button>
                 <button id="confirm-delete-btn" class="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">Yes, Delete</button>
             </div>
         </div>
     </div>
 
-    <!-- Action Toast HUD -->
+    <!-- Action Toast HUD notification -->
     <div id="toast" class="fixed bottom-4 right-4 bg-slate-900 dark:bg-slate-950 border border-slate-800 text-white px-5 py-4 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 max-w-md">
         <div class="p-1.5 bg-emerald-500/20 text-emerald-400 rounded-lg" id="toast-icon-wrap">
             <i class="fa-solid fa-circle-check text-base"></i>
@@ -341,7 +395,7 @@
         let isCloudConnected = false;
         let activeFirestoreListener = null;
 
-        // Firebase Sync Engine startup logic
+        // Start Firebase real-time database listener
         async function initializeSyncEngine() {
             if (activeFirestoreListener) {
                 activeFirestoreListener();
@@ -370,9 +424,10 @@
                     if (user) {
                         const collectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'records');
                         
+                        // Real-time onSnapshot tracking matches RULE 2 fallback memory calculations
                         activeFirestoreListener = onSnapshot(collectionRef, (snapshot) => {
                             const cloudData = {};
-                            const currentCategories = Object.keys(window.appData);
+                            const currentCategories = Object.keys(window.customSchema);
                             currentCategories.forEach(cat => {
                                 cloudData[cat] = [];
                             });
@@ -386,28 +441,25 @@
                                 cloudData[tab].push(record);
                             });
 
-                            const hasRecords = Object.values(cloudData).some(arr => arr.length > 0);
-                            if (hasRecords) {
-                                window.appData = { ...window.appData, ...cloudData };
-                                window.saveDataToLocalStorage();
-                            }
+                            // Completely overwrite current app data with real-time cloud data
+                            window.appData = cloudData;
                             
                             if (typeof window.renderView === 'function') {
                                 window.renderView();
                             }
-                            updateCloudStatusUI(true, "Connected & Saved");
+                            updateCloudStatusUI(true, "Cloud Syncing");
                         }, (error) => {
-                            console.error("Firestore loading error:", error);
+                            console.error("Firestore real-time subscription failed:", error);
                             updateCloudStatusUI(false, "Sync Error");
                         });
                         isCloudConnected = true;
                     }
                 } catch (e) {
-                    console.warn("Database initialization failed. Operating in offline/local fallback.", e);
-                    updateCloudStatusUI(false, "Local Mode");
+                    console.warn("Database initialization failed. Operating in offline local fallback.", e);
+                    updateCloudStatusUI(false, "Offline Mode");
                 }
             } else {
-                updateCloudStatusUI(false, "Local Mode");
+                updateCloudStatusUI(false, "Offline Mode");
             }
         }
 
@@ -418,15 +470,18 @@
                     badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-emerald-500/10 text-emerald-500 flex items-center gap-1";
                     badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ${message}`;
                 } else {
-                    badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-emerald-500/10 text-emerald-500 flex items-center gap-1";
-                    badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Saved Locally`;
+                    badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center gap-1";
+                    badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Saved Locally`;
                 }
             }
         }
 
         window.saveRecordToFirestore = async function(record, tabType) {
-            window.saveDataToLocalStorage();
-            if (!isCloudConnected || !db) return;
+            // Real-time cloud-sync prioritizes cloud database instantly
+            if (!isCloudConnected || !db) {
+                window.saveDataToLocalStorage();
+                return;
+            }
             try {
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'records', record.id);
                 const payload = { ...record, tabType, updatedAt: new Date().toISOString() };
@@ -437,8 +492,10 @@
         };
 
         window.deleteRecordFromFirestore = async function(id) {
-            window.saveDataToLocalStorage();
-            if (!isCloudConnected || !db) return;
+            if (!isCloudConnected || !db) {
+                window.saveDataToLocalStorage();
+                return;
+            }
             try {
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'records', id);
                 await deleteDoc(docRef);
@@ -464,10 +521,16 @@
         let editEntryId = null; 
         let deleteTargetId = null;
         let masterLineChartRef = null;
+        let selectedRows = new Set();
 
         window.GEMINI_API_KEY = localStorage.getItem('gemini_api_key') || '';
+        
+        // Define adjustable default Admin Auth password overrides
+        window.getAdminPassword = function() {
+            return localStorage.getItem('admin_auth_pass_prod') || '@Man1509';
+        };
 
-        // Dynamic Custom schemas model (Allows customizable categories and structures inside settings)
+        // Recover customized structures/CMS definitions from persistent Storage
         window.customSchema = null;
         const storedSchema = localStorage.getItem('growth_console_cms_schemas');
         if (storedSchema) {
@@ -478,7 +541,7 @@
             }
         }
 
-        // Setup base schema fallback rules
+        // Setup base schema fallback if empty
         if (!window.customSchema) {
             window.customSchema = {
                 revampedSeo: {
@@ -565,29 +628,28 @@
             };
         }
 
-        // Static initialization block for local application backups
+        // Recover logged metrics local data backup (Only loaded if offline fallback mode)
         const localBackup = localStorage.getItem('growth_tracker_local_data');
         if (localBackup) {
             try {
                 window.appData = JSON.parse(localBackup);
             } catch (e) {
-                console.error("Local recovery parse failed", e);
+                console.error("Local data restore parsing failed", e);
             }
         }
 
-        // Initialize local dataset
         if (!window.appData || typeof window.appData !== 'object') {
             window.appData = {};
         }
 
-        // Make sure all current categories are initialized inside window.appData
+        // Align loaded app data structures with CMS Categories schema keys
         Object.keys(window.customSchema).forEach(cat => {
             if (!window.appData[cat]) {
                 window.appData[cat] = [];
             }
         });
 
-        // Initialize fallback values if completely empty
+        // Dynamic fallbacks initialization
         if (window.appData.revampedSeo && window.appData.revampedSeo.length === 0) {
             window.appData.revampedSeo = [
                 {
@@ -616,24 +678,12 @@
                     entryDate: "2026-06-12",
                     platform: "Reddit",
                     engagementType: "Post",
-                    postTitle: "Self-hosting vs SaaS: The true cost calculation of organic search scaling",
+                    postTitle: "Self-hosting vs SaaS: True cost of search scaling",
                     url: "https://reddit.com/r/marketing/comments/saas-scaling",
                     views: 6500,
                     comments: 38,
                     karma: 210,
                     upvotes: 0
-                },
-                {
-                    id: "comm-2",
-                    entryDate: "2026-05-04",
-                    platform: "Quora",
-                    engagementType: "Answer",
-                    postTitle: "What is the best framework for auditing B2B keywords?",
-                    url: "https://quora.com/best-auditing-framework-b2b",
-                    views: 1200,
-                    comments: 8,
-                    karma: 0,
-                    upvotes: 34
                 }
             ];
         }
@@ -642,7 +692,7 @@
             localStorage.setItem('growth_tracker_local_data', JSON.stringify(window.appData));
         };
 
-        // Theme management setup
+        // Theme management parameters
         if (localStorage.getItem('theme-preference') === 'light') {
             document.documentElement.classList.remove('dark');
         } else {
@@ -678,6 +728,7 @@
             if (keyInput && window.GEMINI_API_KEY) {
                 keyInput.value = window.GEMINI_API_KEY;
             }
+            updateSettingsAuthPanel();
         }, 50);
 
         window.openSettingsModal = function() {
@@ -690,6 +741,7 @@
                     content.classList.add('scale-100', 'opacity-100');
                 }, 10);
                 loadCmsCategoryToForm();
+                updateSettingsAuthPanel();
             }
         };
 
@@ -722,6 +774,8 @@
             } else {
                 customDatesWrapper.classList.add('hidden');
             }
+            selectedRows.clear();
+            updateBulkActionsBar();
             renderView();
         }
 
@@ -928,9 +982,130 @@
 
         function switchTab(tabId) {
             activeTab = tabId;
+            selectedRows.clear();
+            updateBulkActionsBar();
             renderSidebar();
             renderView();
         }
+
+        window.isAdminActive = function() {
+            return localStorage.getItem('growth_console_admin_auth') === 'true';
+        };
+
+        function updateSettingsAuthPanel() {
+            const wrapper = document.getElementById('settings-auth-status');
+            const passForm = document.getElementById('settings-password-form');
+            const roleBadge = document.getElementById('role-badge');
+            const addEntryBtn = document.getElementById('add-entry-btn');
+
+            if (!wrapper) return;
+
+            const isAuthorized = window.isAdminActive();
+            if (isAuthorized) {
+                wrapper.innerHTML = `
+                    <div class="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg space-y-2">
+                        <p class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-check"></i> Session Status: Administrator Signed In
+                        </p>
+                        <button onclick="submitAdminLogout()" class="w-full py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-[10px] rounded transition-all">Sign Out Admin</button>
+                    </div>
+                `;
+                if (passForm) passForm.classList.remove('hidden');
+                if (roleBadge) {
+                    roleBadge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center gap-1 border border-purple-500/30";
+                    roleBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span> Administrator`;
+                }
+                if (addEntryBtn && activeTab !== 'masterDashboard') addEntryBtn.classList.remove('hidden');
+            } else {
+                wrapper.innerHTML = `
+                    <div class="p-3 bg-slate-500/10 border border-slate-500/20 rounded-lg space-y-2">
+                        <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-shield"></i> Session Status: Guest view-only status
+                        </p>
+                        <button onclick="openLoginModal()" class="w-full py-1.5 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] rounded transition-all">Verify Credentials</button>
+                    </div>
+                `;
+                if (passForm) passForm.classList.add('hidden');
+                if (roleBadge) {
+                    roleBadge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400";
+                    roleBadge.innerHTML = `Guest (View)`;
+                }
+                if (addEntryBtn) addEntryBtn.classList.add('hidden');
+            }
+        }
+
+        window.openLoginModal = function() {
+            closeSettingsModal();
+            const modal = document.getElementById('login-modal');
+            const content = document.getElementById('login-modal-content');
+            if (modal && content) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    content.classList.remove('scale-95', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                }, 10);
+            }
+        };
+
+        window.closeLoginModal = function() {
+            const modal = document.getElementById('login-modal');
+            const content = document.getElementById('login-modal-content');
+            if (modal && content) {
+                content.classList.remove('scale-100', 'opacity-100');
+                content.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 200);
+            }
+        };
+
+        window.togglePasswordVisibility = function() {
+            const input = document.getElementById('login-password');
+            const icon = document.getElementById('password-eye-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-regular fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-regular fa-eye';
+            }
+        };
+
+        window.submitAdminLogin = function() {
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-password').value;
+
+            const targetEmail = "amanbhardwaj1509@gmail.com";
+            const targetPass = window.getAdminPassword();
+
+            if (email === targetEmail && pass === targetPass) {
+                localStorage.setItem('growth_console_admin_auth', 'true');
+                showToast("Administrative capabilities unlocked!");
+                closeLoginModal();
+                updateSettingsAuthPanel();
+                renderView();
+            } else {
+                showToast("Verification failed. Invalid credentials.", "error");
+            }
+        };
+
+        window.submitAdminLogout = function() {
+            localStorage.removeItem('growth_console_admin_auth');
+            showToast("Returned to Guest viewing mode.");
+            updateSettingsAuthPanel();
+            renderView();
+        };
+
+        window.saveAdminPassword = function() {
+            const val = document.getElementById('new-admin-password').value.trim();
+            if (val.length < 4) {
+                showToast("Password must contain at least 4 characters.", "error");
+                return;
+            }
+            localStorage.setItem('admin_auth_pass_prod', val);
+            showToast("Admin password updated successfully!");
+            document.getElementById('new-admin-password').value = '';
+        };
 
         function calculateMasterStats() {
             let totalDemos = 0;
@@ -938,14 +1113,13 @@
             let totalTraffic = 0;
             
             let redditViews = 0;
-            let redditEngagement = 0; // Rule: every post, comment, reply logged
+            let redditEngagement = 0; // Every post, comment, reply
             let redditKarma = 0;
 
             let quoraViews = 0;
-            let quoraEngagement = 0; // Rule: every post, comment, answer, question asked
+            let quoraEngagement = 0; // Every post, comment, answer, question asked
             let quoraUpvotes = 0;
 
-            const allEntries = [];
             const selectEl = document.getElementById('filter-period');
             const targetPeriod = selectEl ? selectEl.value : 'current';
 
@@ -978,10 +1152,12 @@
 
                     if (item.platform === 'Reddit') {
                         redditViews += viewsVal;
+                        // Count every post/comment/reply + standard comments on the thread
                         redditEngagement += 1 + commentsVal; 
                         redditKarma += Number(item.karma || 0);
                     } else if (item.platform === 'Quora') {
                         quoraViews += viewsVal;
+                        // Count every post/comment/answer/question + comments
                         quoraEngagement += 1 + commentsVal;
                         quoraUpvotes += Number(item.upvotes || 0);
                     }
@@ -1019,12 +1195,10 @@
             let labels = ['March 2026', 'April 2026', 'May 2026', 'June 2026'];
             const datasets = [];
 
-            // Grab chart type selection parameter
             const compareSelect = document.getElementById('compare-mode-select');
             const selectedMode = compareSelect ? compareSelect.value : 'all';
 
             if (selectedMode === 'all') {
-                // Compile standard timeline plots
                 let colorIndex = 0;
                 const palette = ['#a855f7', '#10b981', '#38bdf8', '#f43f5e'];
 
@@ -1048,7 +1222,6 @@
                     }
                 });
             } else {
-                // Focus strictly on Month-to-Month comparison (May 2026 vs June 2026 - Screenshot 2)
                 labels = ['May 2026', 'June 2026'];
                 let mayTotal = 0;
                 let juneTotal = 0;
@@ -1101,10 +1274,100 @@
             });
         }
 
+        window.toggleRowSelection = function(id) {
+            if (selectedRows.has(id)) {
+                selectedRows.delete(id);
+            } else {
+                selectedRows.add(id);
+            }
+            updateBulkActionsBar();
+        };
+
+        window.toggleSelectAllRows = function() {
+            const masterCheckbox = document.getElementById('select-all-checkbox');
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+            
+            if (masterCheckbox && masterCheckbox.checked) {
+                rowCheckboxes.forEach(cb => {
+                    cb.checked = true;
+                    selectedRows.add(cb.value);
+                });
+            } else {
+                rowCheckboxes.forEach(cb => {
+                    cb.checked = false;
+                    selectedRows.delete(cb.value);
+                });
+            }
+            updateBulkActionsBar();
+        };
+
+        function updateBulkActionsBar() {
+            const bar = document.getElementById('bulk-actions-wrapper');
+            const label = document.getElementById('bulk-count-label');
+            const count = selectedRows.size;
+
+            if (count > 0 && activeTab !== 'masterDashboard' && window.isAdminActive()) {
+                if (bar) bar.classList.remove('hidden');
+                if (label) label.textContent = `${count} Selected`;
+            } else {
+                if (bar) bar.classList.add('hidden');
+            }
+        }
+
+        window.promptBulkDelete = function() {
+            if (!window.isAdminActive()) return;
+            const count = selectedRows.size;
+            
+            const heading = document.getElementById('confirm-modal-heading');
+            const body = document.getElementById('confirm-modal-body');
+            const btn = document.getElementById('confirm-delete-btn');
+
+            heading.textContent = `Delete ${count} Selected Logs?`;
+            body.textContent = "Are you absolutely sure? This will permanently delete all selected items from the online storage instance.";
+            
+            const modal = document.getElementById('confirm-modal');
+            const content = document.getElementById('confirm-modal-content');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+
+            btn.onclick = async function() {
+                executeBulkDeletion();
+            };
+        };
+
+        async function executeBulkDeletion() {
+            const toDelete = Array.from(selectedRows);
+            const list = window.appData[activeTab] || [];
+            
+            // Delete directly from Cloud or offline structures
+            window.appData[activeTab] = list.filter(item => !selectedRows.has(item.id));
+            
+            for (const id of toDelete) {
+                if (window.isCloudSyncActive && window.isCloudSyncActive()) {
+                    await window.deleteRecordFromFirestore(id);
+                }
+            }
+
+            if (!window.isCloudSyncActive || !window.isCloudSyncActive()) {
+                window.saveDataToLocalStorage();
+            }
+
+            selectedRows.clear();
+            updateBulkActionsBar();
+            closeConfirmModal();
+            renderView();
+            showToast("Successfully cleared selected records!");
+        }
+
         function renderView() {
             const panel = document.getElementById('main-content-panel');
             const addEntryBtn = document.getElementById('add-entry-btn');
             const filterWrapper = document.getElementById('filter-wrapper');
+            const isAuthorized = window.isAdminActive();
 
             if (activeTab === 'masterDashboard') {
                 addEntryBtn.classList.add('hidden'); 
@@ -1122,7 +1385,6 @@
                             <span class="text-[10px] bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded font-bold">Search Analytics</span>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-800 dark:text-slate-100">
-                            <!-- Card: Demos Captured -->
                             <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-lg bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl shrink-0">
                                     <i class="fa-solid fa-users"></i>
@@ -1134,7 +1396,6 @@
                                 </div>
                             </div>
 
-                            <!-- Card: Revenue Secured -->
                             <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shrink-0">
                                     <i class="fa-solid fa-dollar-sign"></i>
@@ -1146,7 +1407,6 @@
                                 </div>
                             </div>
 
-                            <!-- Card: Estimated June Traffic -->
                             <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 flex items-center justify-center text-xl shrink-0">
                                     <i class="fa-solid fa-chart-line"></i>
@@ -1323,7 +1583,7 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <h4 class="text-xs font-extrabold uppercase tracking-wide text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
-                                            <i class="fa-solid fa-magnifying-glass-chart"></i> LLM AEO citation Auditor (C)
+                                            <i class="fa-solid fa-magnifying-glass-chart"></i> LLM AEO Auditor (C)
                                         </h4>
                                         <span class="px-2 py-0.5 rounded text-[9px] bg-purple-500/10 text-purple-600 font-mono font-extrabold">AEO Visibility</span>
                                     </div>
@@ -1332,7 +1592,7 @@
                                     <div class="space-y-3">
                                         <input type="url" id="ai-aeo-url" placeholder="e.g., https://example.com/blog/marketing-audit" class="w-full px-3 py-2 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white outline-none focus:border-purple-500">
                                         <button onclick="runAeoAudit()" id="btn-aeo-audit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg text-xs transition-colors flex items-center justify-center gap-2">
-                                            <i class="fa-solid fa-microchip"></i> Audit AEO citation
+                                            <i class="fa-solid fa-microchip"></i> Audit AEO Citation
                                         </button>
                                     </div>
                                 </div>
@@ -1351,7 +1611,11 @@
                 renderMasterCharts();
 
             } else {
-                addEntryBtn.classList.remove('hidden');
+                if (isAuthorized) {
+                    addEntryBtn.classList.remove('hidden');
+                } else {
+                    addEntryBtn.classList.add('hidden');
+                }
                 filterWrapper.classList.remove('hidden');
 
                 const schema = window.customSchema[activeTab];
@@ -1370,6 +1634,7 @@
 
         function generateCategoryTableMarkup(tabKey, dataSet) {
             const schema = window.customSchema[tabKey];
+            const isAuthorized = window.isAdminActive();
 
             if (dataSet.length === 0) {
                 return `
@@ -1382,15 +1647,36 @@
             }
 
             let thead = `<thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider font-bold sticky top-0 z-20"><tr>`;
+            
+            if (isAuthorized) {
+                thead += `
+                    <th class="px-5 py-4 w-10 text-center">
+                        <input type="checkbox" id="select-all-checkbox" onchange="toggleSelectAllRows()" class="w-4 h-4 rounded text-purple-600 focus:ring-purple-500 border-slate-300 dark:border-slate-700">
+                    </th>
+                `;
+            }
+            
             schema.fields.forEach(f => {
                 thead += `<th class="px-5 py-4 font-bold whitespace-nowrap">${f.label}</th>`;
             });
-            thead += `<th class="px-5 py-4 text-center font-bold whitespace-nowrap text-slate-500 dark:text-slate-400 w-28">Actions</th>`;
+            if (isAuthorized) {
+                thead += `<th class="px-5 py-4 text-center font-bold whitespace-nowrap text-slate-500 dark:text-slate-400 w-28">Actions</th>`;
+            }
             thead += `</tr></thead>`;
 
             let tbody = `<tbody class="divide-y divide-slate-200 dark:divide-slate-800/80 text-xs bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-300">`;
             dataSet.sort((a,b) => new Date(b.entryDate) - new Date(a.entryDate)).forEach(row => {
+                const isChecked = selectedRows.has(row.id);
                 tbody += `<tr class="hover:bg-slate-50 dark:hover:bg-slate-900/40 transition-colors">`;
+                
+                if (isAuthorized) {
+                    tbody += `
+                        <td class="px-5 py-3.5 text-center whitespace-nowrap">
+                            <input type="checkbox" value="${row.id}" onchange="toggleRowSelection('${row.id}')" ${isChecked ? 'checked' : ''} class="row-checkbox w-4 h-4 rounded text-purple-600 focus:ring-purple-500 border-slate-300 dark:border-slate-700">
+                        </td>
+                    `;
+                }
+
                 schema.fields.forEach(f => {
                     let val = row[f.key];
                     let disp = (val !== undefined && val !== null && val !== '') ? val : '-';
@@ -1424,17 +1710,20 @@
                     tbody += `<td class="px-5 py-3.5 whitespace-nowrap">${disp}</td>`;
                 });
 
-                tbody += `
-                    <td class="px-5 py-3.5 whitespace-nowrap text-center font-semibold">
-                        <div class="flex items-center justify-center gap-1.5">
-                            <button onclick="editEntry('${row.id}')" class="text-purple-600 dark:text-purple-400 hover:underline hover:text-purple-500 transition-all text-sm" title="Edit Entry">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </button>
-                            <button onclick="promptDeleteEntry('${row.id}')" class="text-rose-600 hover:underline hover:text-rose-500 transition-all text-sm" title="Delete Entry">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </div>
-                    </td></tr>`;
+                if (isAuthorized) {
+                    tbody += `
+                        <td class="px-5 py-3.5 whitespace-nowrap text-center font-semibold">
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button onclick="editEntry('${row.id}')" class="text-purple-600 dark:text-purple-400 hover:underline hover:text-purple-500 transition-all text-sm" title="Edit Entry">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                                <button onclick="promptDeleteEntry('${row.id}')" class="text-rose-600 hover:underline hover:text-rose-500 transition-all text-sm" title="Delete Entry">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </td>`;
+                }
+                tbody += `</tr>`;
             });
             tbody += `</tbody>`;
 
@@ -1450,6 +1739,7 @@
         }
 
         function openModal() {
+            if (!window.isAdminActive()) return;
             const schema = window.customSchema[activeTab];
             const form = document.getElementById('entry-form');
             form.innerHTML = '';
@@ -1517,6 +1807,7 @@
         }
 
         async function saveEntry() {
+            if (!window.isAdminActive()) return;
             const schema = window.customSchema[activeTab];
             let isValid = true;
             const updatedDoc = {};
@@ -1547,10 +1838,8 @@
                     updatedDoc.id = editEntryId;
                     window.appData[activeTab][index] = { ...window.appData[activeTab][index], ...updatedDoc };
                     
-                    if (window.isCloudSyncActive && window.isCloudSyncActive()) {
+                    if (window.saveRecordToFirestore) {
                         await window.saveRecordToFirestore(window.appData[activeTab][index], activeTab);
-                    } else {
-                        window.saveDataToLocalStorage();
                     }
                     showToast('Row updated!');
                 }
@@ -1558,10 +1847,8 @@
                 updatedDoc.id = 'entry-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4);
                 window.appData[activeTab].push(updatedDoc);
                 
-                if (window.isCloudSyncActive && window.isCloudSyncActive()) {
+                if (window.saveRecordToFirestore) {
                     await window.saveRecordToFirestore(updatedDoc, activeTab);
-                } else {
-                    window.saveDataToLocalStorage();
                 }
                 showToast('New Row Logged!');
             }
@@ -1576,7 +1863,16 @@
         }
 
         function promptDeleteEntry(id) {
+            if (!window.isAdminActive()) return;
             deleteTargetId = id;
+            
+            const heading = document.getElementById('confirm-modal-heading');
+            const body = document.getElementById('confirm-modal-body');
+            const btn = document.getElementById('confirm-delete-btn');
+
+            heading.textContent = "Delete Tracking Record?";
+            body.textContent = "This action cannot be undone. This record will be permanently deleted from the database instance.";
+
             const modal = document.getElementById('confirm-modal');
             const content = document.getElementById('confirm-modal-content');
             
@@ -1586,7 +1882,7 @@
                 content.classList.add('scale-100', 'opacity-100');
             }, 10);
 
-            document.getElementById('confirm-delete-btn').onclick = function() {
+            btn.onclick = function() {
                 executeDeletion();
             };
         }
@@ -1603,132 +1899,20 @@
         }
 
         async function executeDeletion() {
+            if (!window.isAdminActive()) return;
             if (deleteTargetId) {
                 window.appData[activeTab] = window.appData[activeTab].filter(item => item.id !== deleteTargetId);
                 
-                if (window.isCloudSyncActive && window.isCloudSyncActive()) {
+                if (window.deleteRecordFromFirestore) {
                     await window.deleteRecordFromFirestore(deleteTargetId);
-                } else {
-                    window.saveDataToLocalStorage();
                 }
 
+                selectedRows.delete(deleteTargetId);
+                updateBulkActionsBar();
                 closeConfirmModal();
                 renderView();
                 showToast('Entry permanently deleted.', 'delete');
             }
-        }
-
-        function exportReport(elementId, filename) {
-            const element = document.getElementById(elementId);
-            if (!element) return;
-            const text = element.innerText;
-            const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `${filename}-${new Date().toISOString().split('T')[0]}.txt`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            showToast("Report downloaded successfully!");
-        }
-
-        function copyElementText(elementId) {
-            const element = document.getElementById(elementId);
-            if (!element) return;
-            const text = element.innerText;
-            copyToClipboard(text);
-            showToast("Report text copied to clipboard!");
-        }
-
-        function copyToClipboard(text) {
-            const temp = document.createElement('textarea');
-            temp.value = text;
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand('copy');
-            document.body.removeChild(temp);
-        }
-
-        function saveCustomDatabase() {
-            const rawInput = document.getElementById('db-config-input').value.trim();
-            if (!rawInput) {
-                showToast("Please enter a valid Firebase configuration JSON object.", "error");
-                return;
-            }
-
-            try {
-                JSON.parse(rawInput);
-                localStorage.setItem('custom_firebase_config_prod', rawInput);
-                showToast("Cloud Connection Saved! Reconnecting...");
-                closeSettingsModal();
-                
-                if (window.triggerCloudSyncInit) {
-                    window.triggerCloudSyncInit();
-                }
-            } catch(e) {
-                showToast("Configuration is not valid JSON.", "error");
-            }
-        }
-
-        function clearCustomDatabase() {
-            localStorage.removeItem('custom_firebase_config_prod');
-            document.getElementById('db-config-input').value = '';
-            showToast("Cloud credentials cleared. Operating offline.", "delete");
-            closeSettingsModal();
-            
-            if (window.triggerCloudSyncInit) {
-                window.triggerCloudSyncInit();
-            }
-        }
-
-        function exportData() {
-            const content = JSON.stringify(window.appData, null, 2);
-            const blob = new Blob([content], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const dateStr = new Date().toISOString().split('T')[0];
-
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `growth-tracker-backup-${dateStr}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            showToast('JSON backup exported.');
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                try {
-                    const parsed = JSON.parse(e.target.result);
-                    window.appData = parsed;
-                    window.saveDataToLocalStorage();
-                    
-                    if (window.isCloudSyncActive && window.isCloudSyncActive()) {
-                        const tabs = Object.keys(window.customSchema);
-                        for (const tab of tabs) {
-                            if (window.appData[tab]) {
-                                for (const record of window.appData[tab]) {
-                                    await window.saveRecordToFirestore(record, tab);
-                                }
-                            }
-                        }
-                    }
-
-                    renderView();
-                    showToast('Local database restored successfully!');
-                } catch (err) {
-                    showToast('Invalid JSON database structure.', 'error');
-                }
-                event.target.value = ''; 
-            };
-            reader.readAsText(file);
         }
 
         async function fetchGeminiInsight(prompt, systemInstruction) {
@@ -1887,6 +2071,150 @@
             } finally {
                 btn.disabled = false;
             }
+        }
+
+        function saveCustomDatabase() {
+            const rawInput = document.getElementById('db-config-input').value.trim();
+            if (!rawInput) {
+                showToast("Please enter a valid Firebase configuration JSON object.", "error");
+                return;
+            }
+
+            try {
+                JSON.parse(rawInput);
+                localStorage.setItem('custom_firebase_config_prod', rawInput);
+                showToast("Cloud Connection Saved! Reconnecting...");
+                closeSettingsModal();
+                
+                if (window.triggerCloudSyncInit) {
+                    window.triggerCloudSyncInit();
+                }
+            } catch(e) {
+                showToast("Configuration is not valid JSON.", "error");
+            }
+        }
+
+        function clearCustomDatabase() {
+            localStorage.removeItem('custom_firebase_config_prod');
+            document.getElementById('db-config-input').value = '';
+            showToast("Cloud credentials cleared. Operating offline.", "delete");
+            closeSettingsModal();
+            
+            if (window.triggerCloudSyncInit) {
+                window.triggerCloudSyncInit();
+            }
+        }
+
+        function exportReport(elementId, filename) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            const text = element.innerText;
+            const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${filename}-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            showToast("Report exported successfully!");
+        }
+
+        function copyElementText(elementId) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            const text = element.innerText;
+            copyToClipboard(text);
+            showToast("Copied to clipboard!");
+        }
+
+        function copyToClipboard(text) {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+        }
+
+        function exportData() {
+            const content = JSON.stringify(window.appData, null, 2);
+            const blob = new Blob([content], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const dateStr = new Date().toISOString().split('T')[0];
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `growth-tracker-backup-${dateStr}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            showToast('JSON backup exported.');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    window.appData = parsed;
+                    
+                    if (window.isCloudSyncActive && window.isCloudSyncActive()) {
+                        const tabs = Object.keys(window.customSchema);
+                        for (const tab of tabs) {
+                            if (window.appData[tab]) {
+                                for (const record of window.appData[tab]) {
+                                    await window.saveRecordToFirestore(record, tab);
+                                }
+                            }
+                        }
+                    } else {
+                        window.saveDataToLocalStorage();
+                    }
+
+                    renderView();
+                    showToast('Local database restored successfully!');
+                } catch (err) {
+                    showToast('Invalid JSON database structure.', 'error');
+                }
+                event.target.value = ''; 
+            };
+            reader.readAsText(file);
+        }
+
+        let toastTimeout;
+        function showToast(message, type = "success") {
+            const toast = document.getElementById('toast');
+            const wrap = document.getElementById('toast-icon-wrap');
+            const msg = document.getElementById('toast-message');
+
+            if (!toast) return;
+            msg.textContent = message;
+
+            if (type === "success") {
+                wrap.className = "p-1.5 bg-emerald-500/20 text-emerald-400 rounded-lg";
+                wrap.innerHTML = `<i class="fa-solid fa-circle-check text-base"></i>`;
+            } else if (type === "delete") {
+                wrap.className = "p-1.5 bg-amber-500/20 text-amber-400 rounded-lg";
+                wrap.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-base"></i>`;
+            } else {
+                wrap.className = "p-1.5 bg-rose-500/20 text-rose-400 rounded-lg";
+                wrap.innerHTML = `<i class="fa-solid fa-circle-xmark text-base"></i>`;
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
         }
 
         window.onload = function() {
