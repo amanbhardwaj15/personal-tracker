@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Growth Console & Content Tracker</title>
-    <!-- Tailwind CSS for modern design with custom color schemes -->
+    <title>Growth Console & CMS Content Tracker</title>
+    <!-- Tailwind CSS for high-end customization -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome 6.4.0 for premium icons -->
+    <!-- FontAwesome for interactive dashboard icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js for beautiful analytics visualization -->
+    <!-- Chart.js for beautiful historical analytics plotting -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <script>
@@ -74,44 +74,43 @@
                 <i class="fa-solid fa-chart-line text-purple-500 text-lg"></i>
                 <div class="flex flex-col">
                     <span>Growth Console</span>
-                    <span class="text-[9px] text-purple-500 uppercase tracking-widest font-extrabold">Content Monitor</span>
+                    <span class="text-[9px] text-purple-500 uppercase tracking-widest font-extrabold">CMS Monitor</span>
                 </div>
             </h1>
         </div>
 
-        <!-- Unified Core System Diagnostics Indicator -->
-        <div class="px-4 py-3 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-2.5 text-xs">
+        <!-- Connection & CMS Status Hub -->
+        <div class="px-4 py-3 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-2 text-xs">
             <div class="flex items-center justify-between">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-cloud text-slate-400 dark:text-slate-500"></i> Cloud Sync:
+                    <i class="fa-solid fa-cloud text-slate-400 dark:text-slate-500"></i> Save Status:
                 </span>
-                <span id="cloud-status-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center gap-1">
-                    Checking...
+                <span id="cloud-status-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-emerald-500/10 text-emerald-500 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Saved Locally
                 </span>
             </div>
             
             <div class="flex items-center justify-between border-t border-slate-200/50 dark:border-slate-800/50 pt-2">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-user-shield text-slate-400 dark:text-slate-500"></i> Role:
+                    <i class="fa-solid fa-user-shield text-slate-400 dark:text-slate-500"></i> Session Role:
                 </span>
-                <span id="role-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center gap-1">
-                    Guest
+                <span id="role-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                    Administrator
                 </span>
             </div>
 
-            <!-- Global Unified Settings Button -->
             <button onclick="openSettingsModal()" class="w-full mt-1 bg-purple-500/10 hover:bg-purple-500 border border-purple-500/30 hover:border-purple-500 text-[10px] text-purple-600 dark:text-purple-400 hover:text-white font-semibold py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-sliders"></i> Console Settings
+                <i class="fa-solid fa-sliders"></i> CMS Settings Center
             </button>
         </div>
 
-        <!-- Theme Controls HUD -->
-        <div class="px-4 py-3 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-1.5 text-xs">
+        <!-- Theme Controls -->
+        <div class="px-4 py-2.5 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-1.5 text-xs">
             <div class="flex items-center justify-between">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-circle-half-stroke text-slate-400 dark:text-slate-500"></i> Mode:
+                    <i class="fa-solid fa-circle-half-stroke text-slate-400 dark:text-slate-500"></i> Appearance:
                 </span>
-                <button onclick="toggleTheme()" class="px-3 py-1 bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-700 dark:text-slate-300 font-bold hover:bg-purple-500 hover:text-white dark:hover:bg-purple-500 dark:hover:text-white transition-all flex items-center gap-1.5">
+                <button onclick="toggleTheme()" class="px-2.5 py-1 bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-700 dark:text-slate-300 font-bold hover:bg-purple-500 hover:text-white dark:hover:bg-purple-500 dark:hover:text-white transition-all flex items-center gap-1.5">
                     <span id="theme-icon"><i class="fa-solid fa-moon"></i></span>
                     <span id="theme-text">Dark Mode</span>
                 </button>
@@ -120,136 +119,162 @@
         
         <!-- Navigation Menu Tabs -->
         <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto" id="nav-menu">
-            <!-- Nav buttons dynamically populated by controller script -->
+            <!-- Nav buttons dynamically populated by controller script based on CMS model -->
         </nav>
 
         <!-- Backup local interactions panel -->
         <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/80 flex flex-col gap-2">
-            <p class="text-[10px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-wider">Local Backup Tools</p>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-wider">Local File Backups</p>
             <div class="grid grid-cols-2 gap-2">
-                <button onclick="exportData()" class="px-2.5 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-[11px] font-semibold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1.5 transition-colors border border-slate-300 dark:border-slate-700">
-                    <i class="fa-solid fa-file-export text-purple-500"></i> Backup
+                <button onclick="exportData()" class="px-2 py-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-[11px] font-semibold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1 transition-colors border border-slate-300 dark:border-slate-700">
+                    <i class="fa-solid fa-file-export text-purple-500"></i> Export
                 </button>
-                <label class="px-2.5 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-[11px] font-semibold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-slate-300 dark:border-slate-700">
-                    <i class="fa-solid fa-file-import text-purple-500"></i> Restore
+                <label class="px-2 py-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-[11px] font-semibold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1 transition-colors cursor-pointer border border-slate-300 dark:border-slate-700">
+                    <i class="fa-solid fa-file-import text-purple-500"></i> Import
                     <input type="file" id="import-file" class="hidden" accept=".json" onchange="importData(event)">
                 </label>
             </div>
         </div>
     </aside>
 
-    <!-- Right Main Content Canvas -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
         <!-- Sticky Main Controller Header -->
-        <header class="bg-white dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800/80 px-8 py-5 flex items-center justify-between shrink-0 transition-colors duration-300">
+        <header class="bg-white dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800/80 px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between shrink-0 gap-4 transition-colors duration-300">
             <div>
-                <h2 id="view-title" class="text-xl font-bold text-slate-800 dark:text-white tracking-tight">Master Summary Dashboard</h2>
-                <p id="view-desc" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Cross-channel marketing performance, historical trends, and live metrics overview.</p>
+                <h2 id="view-title" class="text-lg font-bold text-slate-800 dark:text-white tracking-tight">Master Summary Dashboard</h2>
+                <p id="view-desc" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Cross-channel marketing performance, historical trends, and live metrics overview.</p>
             </div>
             
-            <div class="flex items-center gap-4">
-                <!-- Reporting Period & Custom Date Option Selector -->
+            <div class="flex items-center gap-3">
+                <!-- Reporting Period & Customized Calendar Picker -->
                 <div class="flex flex-wrap items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-lg text-xs" id="filter-wrapper">
-                    <span class="text-slate-500 dark:text-slate-400 font-medium"><i class="fa-regular fa-calendar-days text-purple-500 mr-1.5"></i> Period:</span>
+                    <span class="text-slate-500 dark:text-slate-400 font-medium"><i class="fa-regular fa-calendar-days text-purple-500 mr-1"></i> Period:</span>
                     <select id="filter-period" onchange="handlePeriodSelection()" class="bg-transparent text-slate-800 dark:text-white font-bold outline-none cursor-pointer">
                         <option value="current" selected class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">June 2026</option>
-                        <option value="all" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">All Logged Months</option>
+                        <option value="all" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">All Logs</option>
                         <option value="custom" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white">Custom Range...</option>
                     </select>
 
-                    <!-- Interactive Custom Date pickers -->
+                    <!-- Calendar Date range pickers (Matches Screenshot 2 criteria) -->
                     <div id="custom-date-selectors" class="hidden flex items-center gap-1.5 ml-2 pl-2 border-l border-slate-200 dark:border-slate-800">
-                        <input type="date" id="custom-start-date" onchange="renderView()" class="bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded px-2 py-0.5 text-[10px] text-slate-800 dark:text-white outline-none focus:border-purple-500">
+                        <input type="date" id="custom-start-date" onchange="renderView()" class="bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded px-2 py-0.5 text-[11px] text-slate-800 dark:text-white outline-none focus:border-purple-500">
                         <span class="text-slate-400">to</span>
-                        <input type="date" id="custom-end-date" onchange="renderView()" class="bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded px-2 py-0.5 text-[10px] text-slate-800 dark:text-white outline-none focus:border-purple-500">
+                        <input type="date" id="custom-end-date" onchange="renderView()" class="bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded px-2 py-0.5 text-[11px] text-slate-800 dark:text-white outline-none focus:border-purple-500">
                     </div>
                 </div>
 
                 <!-- Add Tracking Entry Button (Controlled Access) -->
-                <button id="add-entry-btn" onclick="openModal()" class="hidden bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 text-xs font-bold rounded-lg shadow-lg shadow-purple-500/10 hover:shadow-purple-500/20 transition-all flex items-center gap-2">
+                <button id="add-entry-btn" onclick="openModal()" class="hidden bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 text-xs font-bold rounded-lg shadow-lg shadow-purple-500/10 hover:shadow-purple-500/20 transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-plus text-[10px]"></i> Add Entry
                 </button>
             </div>
         </header>
 
         <!-- Dynamic Data Render View Panel -->
-        <div class="flex-1 overflow-y-auto p-8" id="main-content-panel">
+        <div class="flex-1 overflow-y-auto p-8 space-y-8" id="main-content-panel">
             <!-- Dynamically managed content displays here -->
         </div>
     </main>
 
-    <!-- Unified Console Settings Control Modal -->
     <div id="settings-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-2xl flex flex-col transition-all transform scale-95 opacity-0 duration-200 border border-slate-200 dark:border-slate-800" id="settings-modal-content">
+        <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-4xl flex flex-col transition-all transform scale-95 opacity-0 duration-200 border border-slate-200 dark:border-slate-800" id="settings-modal-content">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-950 rounded-t-xl">
                 <div>
                     <h3 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-purple-500"></i> Console Control panel
+                        <i class="fa-solid fa-sliders text-purple-500"></i> Settings & Dynamic CMS Control Panel
                     </h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Manage credentials, API keys, and connection configurations.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Customize category sections, fields, credentials, and databases.</p>
                 </div>
                 <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 transition-colors bg-white dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
                     <i class="fa-solid fa-xmark text-lg px-1"></i>
                 </button>
             </div>
             
-            <div class="p-6 space-y-6 overflow-y-auto max-h-[75vh]">
-                <!-- Section 1: Gemini AI Key Setup -->
-                <div class="p-4 bg-purple-500/5 border border-purple-500/10 rounded-xl">
-                    <h4 class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <i class="fa-solid fa-key"></i> Gemini AI Studio Key
-                    </h4>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Required to operate SEO, Distribution, and AEO Analyzers. Keys remain local to your browser.</p>
-                    <div class="flex gap-2">
-                        <input type="password" id="gemini-key-input" placeholder="Paste your Gemini API Key..." class="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-slate-100 outline-none focus:ring-2 focus:ring-purple-500">
-                        <button onclick="saveGeminiKey()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition-all">Save Key</button>
-                    </div>
-                </div>
-
-                <!-- Section 2: Firestore Online Database Config -->
-                <div class="p-4 bg-amber-500/5 border border-amber-500/10 rounded-xl">
-                    <h4 class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Google Firestore Database Setup
-                    </h4>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Provide your Firebase Web SDK config JSON object to sync entries globally.</p>
-                    <textarea id="db-config-input" rows="5" placeholder='{&#10;  "apiKey": "AIzaSy...",&#10;  "authDomain": "...",&#10;  "projectId": "...",&#10;  "appId": "..."&#10;}' class="w-full p-3 font-mono text-[11px] bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 text-slate-800 dark:text-slate-100 mb-3"></textarea>
-                    <div class="flex justify-between items-center">
-                        <button onclick="clearCustomDatabase()" class="text-rose-500 hover:text-rose-400 text-xs font-bold">Disconnect & Clear</button>
-                        <button onclick="saveCustomDatabase()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">Connect DB</button>
-                    </div>
-                </div>
-
-                <!-- Section 3: Administrative Access (Login/Logout) -->
-                <div class="p-4 bg-slate-500/5 border border-slate-500/10 rounded-xl">
-                    <h4 class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <i class="fa-solid fa-user-shield"></i> Administration Authentication
-                    </h4>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Guests operate view-only. Log in to activate manual record entries, updates, or backup restoring.</p>
-                    
-                    <div id="settings-login-fields" class="space-y-3">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <input type="email" id="login-email" placeholder="example@gmail.com" class="p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-purple-500" value="amanbhardwaj1509@gmail.com">
-                            <div class="relative">
-                                <input type="password" id="login-password" placeholder="••••••••" class="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-purple-500">
-                                <button onclick="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-purple-500">
-                                    <i class="fa-regular fa-eye" id="password-eye-icon"></i>
-                                </button>
-                            </div>
+            <div class="p-6 space-y-6 overflow-y-auto max-h-[75vh] grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left half of settings: Database, Credentials & API Keys -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="p-4 bg-purple-500/5 border border-purple-500/10 rounded-xl">
+                        <h4 class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-key"></i> Gemini AI Studio Key
+                        </h4>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Required to operate SEO, Content, and AEO Analyzers. Kept local to your browser.</p>
+                        <div class="flex gap-2">
+                            <input type="password" id="gemini-key-input" placeholder="Paste your Gemini API Key..." class="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-purple-500">
+                            <button onclick="saveGeminiKey()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition-all">Save</button>
                         </div>
-                        <button onclick="submitAdminLogin()" class="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">Authorize & Login</button>
                     </div>
 
-                    <div id="settings-logout-fields" class="hidden flex items-center justify-between">
-                        <span class="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Authorized Administrative Session Active
-                        </span>
-                        <button onclick="triggerLogout()" class="px-4 py-2 bg-rose-600/20 hover:bg-rose-600 border border-rose-500/30 hover:border-rose-500 text-rose-600 dark:text-rose-400 hover:text-white text-xs font-semibold rounded-lg transition-all">Sign Out Admin</button>
+                    <div class="p-4 bg-amber-500/5 border border-amber-500/10 rounded-xl">
+                        <h4 class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Firestore Connection Setup
+                        </h4>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Provide your Firebase Web SDK config JSON to save entries globally and bypass local limits.</p>
+                        <textarea id="db-config-input" rows="4" placeholder='{&#10;  "apiKey": "AIzaSy...",&#10;  "authDomain": "...",&#10;  "projectId": "...",&#10;  "appId": "..."&#10;}' class="w-full p-2.5 font-mono text-[11px] bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 text-slate-800 dark:text-white mb-3"></textarea>
+                        <div class="flex justify-between items-center text-[11px]">
+                            <button onclick="clearCustomDatabase()" class="text-rose-500 hover:text-rose-400 font-bold">Clear Cloud Link</button>
+                            <button onclick="saveCustomDatabase()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-lg shadow-sm transition-colors">Connect Online Storage</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 p-4 bg-slate-500/5 border border-slate-500/10 rounded-xl space-y-4">
+                    <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-gears text-purple-500"></i> CMS Workspace Manager (Customize Channels)
+                    </h4>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Add new categories, edit their metrics structures, or delete redundant channels. Changes apply immediately.</p>
+
+                    <!-- Categories Selector -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex flex-col">
+                            <label class="text-[10px] uppercase font-bold text-slate-400">Select Category to Edit</label>
+                            <select id="cms-category-selector" onchange="loadCmsCategoryToForm()" class="mt-1 p-2 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-xs text-slate-800 dark:text-white outline-none">
+                                <option value="new">Create New Category...</option>
+                                <option value="revampedSeo">Revamped SEO Pages/Blogs</option>
+                                <option value="newSeo">New SEO Pages</option>
+                                <option value="linkedin">LinkedIn Newsletter</option>
+                                <option value="nonSeo">Non-SEO Pages</option>
+                                <option value="community">Reddit & Quora Forums</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="text-[10px] uppercase font-bold text-slate-400">Category Tab Title</label>
+                            <input type="text" id="cms-cat-title" placeholder="e.g. YouTube Tracker" class="mt-1 p-2 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-xs text-slate-800 dark:text-white outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex flex-col">
+                            <label class="text-[10px] uppercase font-bold text-slate-400">Description</label>
+                            <input type="text" id="cms-cat-desc" placeholder="Track specific media assets..." class="mt-1 p-2 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-xs text-slate-800 dark:text-white outline-none">
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="text-[10px] uppercase font-bold text-slate-400">Icon CSS Class</label>
+                            <input type="text" id="cms-cat-icon" placeholder="fa-video" class="mt-1 p-2 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-xs text-slate-800 dark:text-white outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Fields Configuration inside category -->
+                    <div class="border-t border-slate-200 dark:border-slate-800 pt-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[10px] uppercase font-bold text-slate-400">Define Schema Fields</span>
+                            <button onclick="addCmsFieldRow()" class="px-2 py-1 bg-purple-600/15 hover:bg-purple-600 text-purple-600 dark:text-purple-400 hover:text-white text-[10px] font-bold rounded flex items-center gap-1">
+                                <i class="fa-solid fa-plus"></i> Add Field Row
+                            </button>
+                        </div>
+                        <div id="cms-fields-container" class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                            <!-- Populated with field customization objects -->
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-800">
+                        <button onclick="deleteCmsCategory()" class="text-rose-500 hover:text-rose-400 text-xs font-bold">Delete Category Track</button>
+                        <button onclick="saveCmsCategory()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-lg shadow-sm transition-colors">Apply Structure Layout</button>
                     </div>
                 </div>
             </div>
 
             <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-end rounded-b-xl">
-                <button onclick="closeSettingsModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Close Settings</button>
+                <button onclick="closeSettingsModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Close Settings Panel</button>
             </div>
         </div>
     </div>
@@ -305,10 +330,9 @@
         </div>
     </div>
 
-    <!-- Firestore and Core Cloud Logic Integration -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const appId = 'content-tracker-prod';
@@ -317,132 +341,7 @@
         let isCloudConnected = false;
         let activeFirestoreListener = null;
 
-        window.isAdminActive = function() {
-            return localStorage.getItem('growth_console_admin_auth') === 'true';
-        };
-
-        // Static initialization block for local application backups
-        const localBackup = localStorage.getItem('growth_tracker_local_data');
-        if (localBackup) {
-            try {
-                window.appData = JSON.parse(localBackup);
-            } catch (e) {
-                console.error("Local recovery parse failed", e);
-            }
-        }
-
-        // Setup window.appData standard structure if not previously defined
-        if (!window.appData || typeof window.appData !== 'object') {
-            window.appData = {
-                revampedSeo: [
-                    {
-                        id: "rev-1",
-                        entryDate: "2026-06-15",
-                        pageType: "Blog Post",
-                        keyword: "B2B Marketing Audit",
-                        url: "https://example.com/blog/b2b-marketing-audit",
-                        contentDoc: "https://docs.google.com/document/d/1B2B_doc_example",
-                        demos: 12,
-                        amt: 4800,
-                        rankPrev: 32,
-                        rankAfter: 3,
-                        trafficMarch: 120,
-                        trafficApril: 340,
-                        trafficMay: 890,
-                        trafficJune: 2100
-                    },
-                    {
-                        id: "rev-2",
-                        entryDate: "2026-06-18",
-                        pageType: "Comparison Guide",
-                        keyword: "Self-Hosting Pricing Calculator",
-                        url: "https://example.com/calculators/saas-vs-self-hosting",
-                        contentDoc: "https://docs.google.com/document/d/1Calc_doc_example",
-                        demos: 28,
-                        amt: 12400,
-                        rankPrev: 18,
-                        rankAfter: 2,
-                        trafficMarch: 400,
-                        trafficApril: 800,
-                        trafficMay: 1400,
-                        trafficJune: 4100
-                    }
-                ],
-                newSeo: [
-                    {
-                        id: "new-1",
-                        entryDate: "2026-06-12",
-                        pageType: "Product Page",
-                        keyword: "AI Growth Console",
-                        url: "https://example.com/product/ai-growth-console",
-                        contentDoc: "https://docs.google.com/document/d/1AI_doc_example",
-                        demos: 45,
-                        amt: 19500,
-                        ranking: 8,
-                        trafficMarch: 0,
-                        trafficApril: 110,
-                        trafficMay: 980,
-                        trafficJune: 5200
-                    }
-                ],
-                linkedin: [
-                    {
-                        id: "li-1",
-                        entryDate: "2026-06-10",
-                        title: "Why SEO ROI matters more than pure raw sessions",
-                        docLink: "https://docs.google.com/document/d/1LI_doc_1",
-                        url: "https://linkedin.com/pulse/seo-roi-matters-growth-console"
-                    }
-                ],
-                nonSeo: [
-                    {
-                        id: "non-1",
-                        entryDate: "2026-06-08",
-                        pageType: "Pricing Directory Tracker",
-                        url: "https://example.com/pricing"
-                    },
-                    {
-                        id: "non-2",
-                        entryDate: "2026-06-20",
-                        pageType: "Self-Audit Interactive Spreadsheet",
-                        url: "https://example.com/interactive-sheet"
-                    }
-                ],
-                community: [
-                    {
-                        id: "comm-1",
-                        entryDate: "2026-06-12",
-                        platform: "Reddit",
-                        engagementType: "Post",
-                        postTitle: "Self-hosting vs SaaS: The true cost calculation of organic search scaling",
-                        url: "https://reddit.com/r/marketing/comments/saas-scaling",
-                        views: 6500,
-                        comments: 38,
-                        karma: 210,
-                        upvotes: 0
-                    },
-                    {
-                        id: "comm-2",
-                        entryDate: "2026-05-04",
-                        platform: "Quora",
-                        engagementType: "Answer",
-                        postTitle: "What is the best framework for auditing B2B keywords?",
-                        url: "https://quora.com/best-auditing-framework-b2b",
-                        views: 1200,
-                        comments: 8,
-                        karma: 0,
-                        upvotes: 34
-                    }
-                ]
-            };
-        }
-
-        // Local Storage sync failsafe fallback
-        window.saveDataToLocalStorage = function() {
-            localStorage.setItem('growth_tracker_local_data', JSON.stringify(window.appData));
-        };
-
-        // Initialize Firebase Connection Engine
+        // Firebase Sync Engine startup logic
         async function initializeSyncEngine() {
             if (activeFirestoreListener) {
                 activeFirestoreListener();
@@ -459,59 +358,37 @@
                 }
             }
 
-            const isCurrentlyAdmin = window.isAdminActive();
-
             if (firebaseConfig) {
                 try {
                     const app = initializeApp(firebaseConfig);
                     db = getFirestore(app);
                     auth = getAuth(app);
                     
-                    let user;
-                    if (isCurrentlyAdmin) {
-                        const storedEmail = localStorage.getItem('growth_console_admin_email');
-                        const storedPass = localStorage.getItem('growth_console_admin_pass');
-                        if (storedEmail && storedPass) {
-                            try {
-                                const credential = await signInWithEmailAndPassword(auth, storedEmail, storedPass);
-                                user = credential.user;
-                            } catch (authErr) {
-                                console.warn("Real Firebase email auth failed. Authenticating anonymously for read access.", authErr);
-                                const credential = await signInAnonymously(auth);
-                                user = credential.user;
-                            }
-                        } else {
-                            const credential = await signInAnonymously(auth);
-                            user = credential.user;
-                        }
-                    } else {
-                        const credential = await signInAnonymously(auth);
-                        user = credential.user;
-                    }
+                    const credential = await signInAnonymously(auth);
+                    const user = credential.user;
 
                     if (user) {
                         const collectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'records');
                         
                         activeFirestoreListener = onSnapshot(collectionRef, (snapshot) => {
-                            const cloudData = {
-                                revampedSeo: [],
-                                newSeo: [],
-                                linkedin: [],
-                                nonSeo: [],
-                                community: []
-                            };
+                            const cloudData = {};
+                            const currentCategories = Object.keys(window.appData);
+                            currentCategories.forEach(cat => {
+                                cloudData[cat] = [];
+                            });
 
                             snapshot.forEach((doc) => {
                                 const record = doc.data();
                                 const tab = record.tabType;
-                                if (cloudData[tab]) {
-                                    cloudData[tab].push(record);
+                                if (!cloudData[tab]) {
+                                    cloudData[tab] = [];
                                 }
+                                cloudData[tab].push(record);
                             });
 
                             const hasRecords = Object.values(cloudData).some(arr => arr.length > 0);
                             if (hasRecords) {
-                                window.appData = cloudData;
+                                window.appData = { ...window.appData, ...cloudData };
                                 window.saveDataToLocalStorage();
                             }
                             
@@ -532,96 +409,23 @@
             } else {
                 updateCloudStatusUI(false, "Local Mode");
             }
-            
-            updateAccessRoleUI();
         }
 
         function updateCloudStatusUI(isConnected, message) {
             const badge = document.getElementById('cloud-status-badge');
             if (badge) {
                 if (isConnected) {
-                    badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-emerald-500/10 text-emerald-400 flex items-center gap-1";
+                    badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-emerald-500/10 text-emerald-500 flex items-center gap-1";
                     badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ${message}`;
                 } else {
-                    badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-amber-500/10 text-amber-400 flex items-center gap-1";
-                    badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-50"></span> ${message}`;
+                    badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-emerald-500/10 text-emerald-500 flex items-center gap-1";
+                    badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Saved Locally`;
                 }
             }
         }
-
-        function updateAccessRoleUI() {
-            const badge = document.getElementById('role-badge');
-            const loginFields = document.getElementById('settings-login-fields');
-            const logoutFields = document.getElementById('settings-logout-fields');
-            const isAdmin = window.isAdminActive();
-
-            if (badge) {
-                if (isAdmin) {
-                    badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-purple-500/10 text-purple-400 flex items-center gap-1 border border-purple-500/20";
-                    badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span> Admin`;
-                    if (loginFields) loginFields.classList.add('hidden');
-                    if (logoutFields) logoutFields.classList.remove('hidden');
-                } else {
-                    badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center gap-1 border border-slate-300 dark:border-slate-700/60";
-                    badge.innerHTML = `Guest`;
-                    if (loginFields) loginFields.classList.remove('hidden');
-                    if (logoutFields) logoutFields.classList.add('hidden');
-                }
-            }
-        }
-
-        window.processAdminLogin = async function(email, password) {
-            const targetEmail = "amanbhardwaj1509@gmail.com";
-            const targetPass = "@Man1509";
-
-            if (email === targetEmail && password === targetPass) {
-                localStorage.setItem('growth_console_admin_auth', 'true');
-                localStorage.setItem('growth_console_admin_email', email);
-                localStorage.setItem('growth_console_admin_pass', password);
-
-                if (auth && db) {
-                    try {
-                        await signInWithEmailAndPassword(auth, email, password);
-                    } catch(e) {
-                        console.warn("Firebase Auth is offline. Admin status saved locally.", e);
-                    }
-                }
-
-                showToast("Admin access unlocked!", "success");
-                updateAccessRoleUI();
-                await initializeSyncEngine();
-                if (typeof window.renderSidebar === 'function') window.renderSidebar();
-                if (typeof window.renderView === 'function') window.renderView();
-                return true;
-            } else {
-                showToast("Invalid credentials.", "error");
-                return false;
-            }
-        };
-
-        window.processAdminLogout = async function() {
-            localStorage.removeItem('growth_console_admin_auth');
-            localStorage.removeItem('growth_console_admin_email');
-            localStorage.removeItem('growth_console_admin_pass');
-
-            if (auth) {
-                try {
-                    await signOut(auth);
-                } catch(e) {
-                    console.error("Signout error:", e);
-                }
-            }
-
-            showToast("Returned to Guest View Mode", "delete");
-            updateAccessRoleUI();
-            await initializeSyncEngine();
-            if (typeof window.renderSidebar === 'function') window.renderSidebar();
-            if (typeof window.renderView === 'function') window.renderView();
-        };
 
         window.saveRecordToFirestore = async function(record, tabType) {
             window.saveDataToLocalStorage();
-            if (!window.isAdminActive()) return;
             if (!isCloudConnected || !db) return;
             try {
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'records', record.id);
@@ -634,7 +438,6 @@
 
         window.deleteRecordFromFirestore = async function(id) {
             window.saveDataToLocalStorage();
-            if (!window.isAdminActive()) return;
             if (!isCloudConnected || !db) return;
             try {
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'records', id);
@@ -660,165 +463,24 @@
         let activeTab = 'masterDashboard';
         let editEntryId = null; 
         let deleteTargetId = null;
-
         let masterLineChartRef = null;
 
-        // Fallback or user input Gemini API key
         window.GEMINI_API_KEY = localStorage.getItem('gemini_api_key') || '';
 
-        // Initialize user theme from localStorage or default to dark (since class="dark" is initially on html)
-        if (localStorage.getItem('theme-preference') === 'light') {
-            document.documentElement.classList.remove('dark');
-        } else {
-            document.documentElement.classList.add('dark');
+        // Dynamic Custom schemas model (Allows customizable categories and structures inside settings)
+        window.customSchema = null;
+        const storedSchema = localStorage.getItem('growth_console_cms_schemas');
+        if (storedSchema) {
+            try {
+                window.customSchema = JSON.parse(storedSchema);
+            } catch(e) {
+                console.error("Schema config recovery parse failed", e);
+            }
         }
 
-        // Handle Theme Toggling
-        window.toggleTheme = function() {
-            const html = document.documentElement;
-            const isDark = html.classList.toggle('dark');
-            localStorage.setItem('theme-preference', isDark ? 'dark' : 'light');
-            updateThemeUIElements(isDark);
-            showToast(`Switched to ${isDark ? 'Dark' : 'Light'} Mode!`);
-        };
-
-        function updateThemeUIElements(isDark) {
-            const icon = document.getElementById('theme-icon');
-            const text = document.getElementById('theme-text');
-            if (isDark) {
-                icon.innerHTML = `<i class="fa-solid fa-moon text-purple-400"></i>`;
-                text.textContent = "Dark Mode";
-            } else {
-                icon.innerHTML = `<i class="fa-solid fa-sun text-amber-500"></i>`;
-                text.textContent = "Light Mode";
-            }
-            renderView(); // Redraw view elements and recreate chart context with corresponding font colors
-        }
-
-        // Render theme UI on start
-        window.setTimeout(() => {
-            const isDark = document.documentElement.classList.contains('dark');
-            updateThemeUIElements(isDark);
-            
-            // Populate key input if exists
-            const keyInput = document.getElementById('gemini-key-input');
-            if (keyInput && window.GEMINI_API_KEY) {
-                keyInput.value = window.GEMINI_API_KEY;
-            }
-        }, 50);
-
-        window.openSettingsModal = function() {
-            const modal = document.getElementById('settings-modal');
-            const content = document.getElementById('settings-modal-content');
-            if (modal && content) {
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    content.classList.remove('scale-95', 'opacity-0');
-                    content.classList.add('scale-100', 'opacity-100');
-                }, 10);
-            }
-        };
-
-        window.closeSettingsModal = function() {
-            const modal = document.getElementById('settings-modal');
-            const content = document.getElementById('settings-modal-content');
-            if (modal && content) {
-                content.classList.remove('scale-100', 'opacity-100');
-                content.classList.add('scale-95', 'opacity-0');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                }, 200);
-            }
-        };
-
-        window.saveGeminiKey = function() {
-            const val = document.getElementById('gemini-key-input').value.trim();
-            localStorage.setItem('gemini_api_key', val);
-            window.GEMINI_API_KEY = val;
-            showToast("Gemini API key saved!", "success");
-        };
-
-        window.triggerLogout = function() {
-            if (window.processAdminLogout) {
-                window.processAdminLogout();
-            }
-        };
-
-        window.togglePasswordVisibility = function() {
-            const passInput = document.getElementById('login-password');
-            const icon = document.getElementById('password-eye-icon');
-            if (passInput && icon) {
-                if (passInput.type === 'password') {
-                    passInput.type = 'text';
-                    icon.className = 'fa-regular fa-eye-slash';
-                } else {
-                    passInput.type = 'password';
-                    icon.className = 'fa-regular fa-eye';
-                }
-            }
-        };
-
-        window.submitAdminLogin = async function() {
-            const emailInput = document.getElementById('login-email');
-            const passInput = document.getElementById('login-password');
-            if (!emailInput || !passInput) return;
-
-            const email = emailInput.value.trim();
-            const pass = passInput.value;
-
-            if (!email || !pass) {
-                showToast("Please provide both email and password.", "error");
-                return;
-            }
-
-            if (window.processAdminLogin) {
-                const success = await window.processAdminLogin(email, pass);
-                if (success) {
-                    passInput.value = '';
-                }
-            }
-        };
-
-        // Date-specific filter calculations including custom date range support
-        function handlePeriodSelection() {
-            const selectEl = document.getElementById('filter-period');
-            const customDatesWrapper = document.getElementById('custom-date-selectors');
-            
-            if (selectEl.value === 'custom') {
-                customDatesWrapper.classList.remove('hidden');
-            } else {
-                customDatesWrapper.classList.add('hidden');
-            }
-            renderView();
-        }
-
-        function isDateInPeriod(dateStr, periodStr) {
-            if (!dateStr) return false;
-            if (periodStr === 'all') return true;
-            if (periodStr === 'custom') {
-                const startVal = document.getElementById('custom-start-date').value;
-                const endVal = document.getElementById('custom-end-date').value;
-                if (!startVal && !endVal) return true;
-                const itemDate = new Date(dateStr);
-                
-                if (startVal) {
-                    const startDate = new Date(startVal);
-                    startDate.setHours(0,0,0,0);
-                    if (itemDate < startDate) return false;
-                }
-                if (endVal) {
-                    const endDate = new Date(endVal);
-                    endDate.setHours(23,59,59,999);
-                    if (itemDate > endDate) return false;
-                }
-                return true;
-            }
-            return dateStr.startsWith(periodStr); // matches e.g. "2026-06"
-        }
-
-        // Schema Configurations Definition
-        function getActiveSchema() {
-            return {
+        // Setup base schema fallback rules
+        if (!window.customSchema) {
+            window.customSchema = {
                 revampedSeo: {
                     id: 'revampedSeo',
                     title: 'Revamped SEO Pages/Blogs',
@@ -875,7 +537,7 @@
                 nonSeo: {
                     id: 'nonSeo',
                     title: 'Non-SEO Pages',
-                    desc: 'Log utility sheets, standard directories, legal drafts, or pure operational page URLs',
+                    desc: 'Log utility sheets, standard directories, legal drafts, or pure operational page URLs (Screenshot 3)',
                     icon: 'fa-globe',
                     fields: [
                         { key: 'pageType', label: 'Page Type', type: 'text', required: true, placeholder: 'e.g., Pricing Directory, Resource Hub' },
@@ -903,14 +565,321 @@
             };
         }
 
-        // Sidebar render implementation
+        // Static initialization block for local application backups
+        const localBackup = localStorage.getItem('growth_tracker_local_data');
+        if (localBackup) {
+            try {
+                window.appData = JSON.parse(localBackup);
+            } catch (e) {
+                console.error("Local recovery parse failed", e);
+            }
+        }
+
+        // Initialize local dataset
+        if (!window.appData || typeof window.appData !== 'object') {
+            window.appData = {};
+        }
+
+        // Make sure all current categories are initialized inside window.appData
+        Object.keys(window.customSchema).forEach(cat => {
+            if (!window.appData[cat]) {
+                window.appData[cat] = [];
+            }
+        });
+
+        // Initialize fallback values if completely empty
+        if (window.appData.revampedSeo && window.appData.revampedSeo.length === 0) {
+            window.appData.revampedSeo = [
+                {
+                    id: "rev-1",
+                    entryDate: "2026-06-15",
+                    pageType: "Blog Post",
+                    keyword: "Auto attendant phone system",
+                    url: "https://www.spyne.ai/blogs/auto-attendant-phone-system",
+                    contentDoc: "https://docs.google.com/document/d/1kEa9Puz5kETFbck6X3SKuVfMkiMJt_5czqTluXYwWY0/edit?usp=sharing",
+                    demos: 12,
+                    amt: 4800,
+                    rankPrev: 61,
+                    rankAfter: 3,
+                    trafficMarch: 120,
+                    trafficApril: 340,
+                    trafficMay: 890,
+                    trafficJune: 2100
+                }
+            ];
+        }
+
+        if (window.appData.community && window.appData.community.length === 0) {
+            window.appData.community = [
+                {
+                    id: "comm-1",
+                    entryDate: "2026-06-12",
+                    platform: "Reddit",
+                    engagementType: "Post",
+                    postTitle: "Self-hosting vs SaaS: The true cost calculation of organic search scaling",
+                    url: "https://reddit.com/r/marketing/comments/saas-scaling",
+                    views: 6500,
+                    comments: 38,
+                    karma: 210,
+                    upvotes: 0
+                },
+                {
+                    id: "comm-2",
+                    entryDate: "2026-05-04",
+                    platform: "Quora",
+                    engagementType: "Answer",
+                    postTitle: "What is the best framework for auditing B2B keywords?",
+                    url: "https://quora.com/best-auditing-framework-b2b",
+                    views: 1200,
+                    comments: 8,
+                    karma: 0,
+                    upvotes: 34
+                }
+            ];
+        }
+
+        window.saveDataToLocalStorage = function() {
+            localStorage.setItem('growth_tracker_local_data', JSON.stringify(window.appData));
+        };
+
+        // Theme management setup
+        if (localStorage.getItem('theme-preference') === 'light') {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+
+        window.toggleTheme = function() {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('theme-preference', isDark ? 'dark' : 'light');
+            updateThemeUIElements(isDark);
+            showToast(`Switched to ${isDark ? 'Dark' : 'Light'} Mode!`);
+        };
+
+        function updateThemeUIElements(isDark) {
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            if (isDark) {
+                if (icon) icon.innerHTML = `<i class="fa-solid fa-moon text-purple-400"></i>`;
+                if (text) text.textContent = "Dark Mode";
+            } else {
+                if (icon) icon.innerHTML = `<i class="fa-solid fa-sun text-amber-500"></i>`;
+                if (text) text.textContent = "Light Mode";
+            }
+            renderView();
+        }
+
+        window.setTimeout(() => {
+            const isDark = document.documentElement.classList.contains('dark');
+            updateThemeUIElements(isDark);
+            
+            const keyInput = document.getElementById('gemini-key-input');
+            if (keyInput && window.GEMINI_API_KEY) {
+                keyInput.value = window.GEMINI_API_KEY;
+            }
+        }, 50);
+
+        window.openSettingsModal = function() {
+            const modal = document.getElementById('settings-modal');
+            const content = document.getElementById('settings-modal-content');
+            if (modal && content) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    content.classList.remove('scale-95', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                }, 10);
+                loadCmsCategoryToForm();
+            }
+        };
+
+        window.closeSettingsModal = function() {
+            const modal = document.getElementById('settings-modal');
+            const content = document.getElementById('settings-modal-content');
+            if (modal && content) {
+                content.classList.remove('scale-100', 'opacity-100');
+                content.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 200);
+            }
+        };
+
+        window.saveGeminiKey = function() {
+            const val = document.getElementById('gemini-key-input').value.trim();
+            localStorage.setItem('gemini_api_key', val);
+            window.GEMINI_API_KEY = val;
+            showToast("Gemini API key saved!", "success");
+        };
+
+        // Date-specific filter calculations including custom date range support (Matches Screenshot 2 design)
+        function handlePeriodSelection() {
+            const selectEl = document.getElementById('filter-period');
+            const customDatesWrapper = document.getElementById('custom-date-selectors');
+            
+            if (selectEl.value === 'custom') {
+                customDatesWrapper.classList.remove('hidden');
+            } else {
+                customDatesWrapper.classList.add('hidden');
+            }
+            renderView();
+        }
+
+        function isDateInPeriod(dateStr, periodStr) {
+            if (!dateStr) return false;
+            if (periodStr === 'all') return true;
+            if (periodStr === 'custom') {
+                const startVal = document.getElementById('custom-start-date').value;
+                const endVal = document.getElementById('custom-end-date').value;
+                if (!startVal && !endVal) return true;
+                const itemDate = new Date(dateStr);
+                
+                if (startVal) {
+                    const startDate = new Date(startVal);
+                    startDate.setHours(0,0,0,0);
+                    if (itemDate < startDate) return false;
+                }
+                if (endVal) {
+                    const endDate = new Date(endVal);
+                    endDate.setHours(23,59,59,999);
+                    if (itemDate > endDate) return false;
+                }
+                return true;
+            }
+            return dateStr.startsWith(periodStr); // matches e.g. "2026-06"
+        }
+
+        function loadCmsCategoryToForm() {
+            const select = document.getElementById('cms-category-selector');
+            const catId = select.value;
+
+            const titleInput = document.getElementById('cms-cat-title');
+            const descInput = document.getElementById('cms-cat-desc');
+            const iconInput = document.getElementById('cms-cat-icon');
+            const fieldsContainer = document.getElementById('cms-fields-container');
+
+            fieldsContainer.innerHTML = '';
+
+            if (catId === 'new') {
+                titleInput.value = '';
+                descInput.value = '';
+                iconInput.value = 'fa-folder';
+                addCmsFieldRow("entryDate", "Publish Date", "date", true);
+            } else {
+                const category = window.customSchema[catId];
+                titleInput.value = category.title;
+                descInput.value = category.desc;
+                iconInput.value = category.icon;
+
+                category.fields.forEach(f => {
+                    addCmsFieldRow(f.key, f.label, f.type, f.required);
+                });
+            }
+        }
+
+        function addCmsFieldRow(key = '', label = '', type = 'text', required = false) {
+            const container = document.getElementById('cms-fields-container');
+            const rowId = 'field-row-' + Math.random().toString(36).substr(2, 4);
+
+            const optionsText = ['text', 'number', 'url', 'date', 'select'].map(opt => 
+                `<option value="${opt}" ${type === opt ? 'selected' : ''}>${opt}</option>`
+            ).join('');
+
+            const rowHTML = `
+                <div id="${rowId}" class="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded-lg">
+                    <input type="text" placeholder="Key (e.g. url)" value="${key}" class="field-key w-1/4 p-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-xs text-slate-800 dark:text-white outline-none">
+                    <input type="text" placeholder="Label Name" value="${label}" class="field-label w-1/3 p-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-xs text-slate-800 dark:text-white outline-none">
+                    <select class="field-type w-1/4 p-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded text-xs text-slate-800 dark:text-white outline-none">
+                        ${optionsText}
+                    </select>
+                    <label class="flex items-center gap-1 text-[10px] text-slate-500 font-semibold cursor-pointer">
+                        <input type="checkbox" class="field-req" ${required ? 'checked' : ''}> Req
+                    </label>
+                    <button onclick="document.getElementById('${rowId}').remove()" class="text-rose-500 hover:text-rose-400 p-1 text-xs">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', rowHTML);
+        }
+
+        function saveCmsCategory() {
+            const select = document.getElementById('cms-category-selector');
+            const selection = select.value;
+
+            const title = document.getElementById('cms-cat-title').value.trim();
+            const desc = document.getElementById('cms-cat-desc').value.trim();
+            const icon = document.getElementById('cms-cat-icon').value.trim();
+
+            if (!title) {
+                showToast("Please specify a category title.", "error");
+                return;
+            }
+
+            const catId = (selection === 'new') ? title.replace(/[^A-Za-z0-9]/g, '') : selection;
+
+            // Compile fields lists
+            const fieldsRows = document.querySelectorAll('#cms-fields-container > div');
+            const fields = [];
+
+            fieldsRows.forEach(row => {
+                const key = row.querySelector('.field-key').value.trim();
+                const label = row.querySelector('.field-label').value.trim();
+                const type = row.querySelector('.field-type').value;
+                const required = row.querySelector('.field-req').checked;
+
+                if (key && label) {
+                    fields.push({ key, label, type, required });
+                }
+            });
+
+            if (fields.length === 0) {
+                showToast("Your category tracker needs at least one metric field.", "error");
+                return;
+            }
+
+            window.customSchema[catId] = { id: catId, title, desc, icon, fields };
+            localStorage.setItem('growth_console_cms_schemas', JSON.stringify(window.customSchema));
+
+            if (!window.appData[catId]) {
+                window.appData[catId] = [];
+            }
+
+            showToast(`Category structure ${title} finalized!`);
+            closeSettingsModal();
+            renderSidebar();
+            
+            if (activeTab === 'masterDashboard') {
+                renderView();
+            } else {
+                switchTab(catId);
+            }
+        }
+
+        function deleteCmsCategory() {
+            const select = document.getElementById('cms-category-selector');
+            const selection = select.value;
+
+            if (selection === 'new') {
+                showToast("Cannot delete a non-existent category tracking model.", "error");
+                return;
+            }
+
+            delete window.customSchema[selection];
+            localStorage.setItem('growth_console_cms_schemas', JSON.stringify(window.customSchema));
+
+            showToast("Category structure cleared.", "delete");
+            closeSettingsModal();
+            renderSidebar();
+            switchTab('masterDashboard');
+        }
+
         function renderSidebar() {
             const navMenu = document.getElementById('nav-menu');
             if (!navMenu) return;
 
             navMenu.innerHTML = '';
 
-            // Master Dashboard navigation button
             const isDashboardActive = activeTab === 'masterDashboard';
             const dashBtn = document.createElement('button');
             dashBtn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
@@ -925,15 +894,13 @@
             `;
             navMenu.appendChild(dashBtn);
 
-            // Channel separation line
             const separator = document.createElement('div');
             separator.className = "py-2 text-[9px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-widest pl-3 mt-4 border-t border-slate-200 dark:border-slate-800/80";
-            separator.innerText = "Channels";
+            separator.innerText = "Channels Index";
             navMenu.appendChild(separator);
 
-            // Dynamically generate other channel view links
-            const schemas = getActiveSchema();
-            Object.values(schemas).forEach(schema => {
+            // Populate CMS categories
+            Object.values(window.customSchema).forEach(schema => {
                 const isActive = activeTab === schema.id;
                 const btn = document.createElement('button');
                 btn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
@@ -942,12 +909,21 @@
                 btn.onclick = () => switchTab(schema.id);
                 btn.innerHTML = `
                     <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isActive ? 'bg-purple-50/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
-                        <i class="fa-solid ${schema.icon}"></i>
+                        <i class="fa-solid ${schema.icon || 'fa-folder'}"></i>
                     </div> 
                     <span class="truncate">${schema.title}</span>
                 `;
                 navMenu.appendChild(btn);
             });
+
+            // Rebuild CMS select element dynamically
+            const categorySelector = document.getElementById('cms-category-selector');
+            if (categorySelector) {
+                categorySelector.innerHTML = '<option value="new">Create New Category...</option>';
+                Object.values(window.customSchema).forEach(schema => {
+                    categorySelector.insertAdjacentHTML('beforeend', `<option value="${schema.id}">${schema.title}</option>`);
+                });
+            }
         }
 
         function switchTab(tabId) {
@@ -956,84 +932,44 @@
             renderView();
         }
 
-        // Master Overview Metrics Aggregations
         function calculateMasterStats() {
             let totalDemos = 0;
             let totalRevenue = 0.0;
             let totalTraffic = 0;
             
-            // Reddit & Quora separated calculation nodes
             let redditViews = 0;
-            let redditEngagement = 0; // Includes every post, comment, or reply done on Reddit
+            let redditEngagement = 0; // Rule: every post, comment, reply logged
             let redditKarma = 0;
 
             let quoraViews = 0;
-            let quoraEngagement = 0; // Includes every post, comment, answer, or questions asked
+            let quoraEngagement = 0; // Rule: every post, comment, answer, question asked
             let quoraUpvotes = 0;
 
             const allEntries = [];
             const selectEl = document.getElementById('filter-period');
             const targetPeriod = selectEl ? selectEl.value : 'current';
 
-            // 1. Parse Revamped SEO
+            // 1. Compile Revamped SEO Pages
             const revList = window.appData.revampedSeo || [];
             revList.forEach(item => {
                 if (isDateInPeriod(item.entryDate, targetPeriod)) {
                     totalDemos += Number(item.demos || 0);
                     totalRevenue += Number(item.amt || 0);
                     totalTraffic += Number(item.trafficJune || 0);
-                    allEntries.push({
-                        id: item.id,
-                        source: 'Revamped SEO',
-                        entryDate: item.entryDate,
-                        details: `${item.keyword} (${item.pageType})`
-                    });
                 }
             });
 
-            // 2. Parse New SEO
+            // 2. Compile New SEO Pages
             const newList = window.appData.newSeo || [];
             newList.forEach(item => {
                 if (isDateInPeriod(item.entryDate, targetPeriod)) {
                     totalDemos += Number(item.demos || 0);
                     totalRevenue += Number(item.amt || 0);
                     totalTraffic += Number(item.trafficJune || 0);
-                    allEntries.push({
-                        id: item.id,
-                        source: 'New SEO',
-                        entryDate: item.entryDate,
-                        details: `${item.keyword} (${item.pageType})`
-                    });
                 }
             });
 
-            // 3. Parse Newsletters
-            const liList = window.appData.linkedin || [];
-            liList.forEach(item => {
-                if (isDateInPeriod(item.entryDate, targetPeriod)) {
-                    allEntries.push({
-                        id: item.id,
-                        source: 'LinkedIn Newsletter',
-                        entryDate: item.entryDate,
-                        details: item.title
-                    });
-                }
-            });
-
-            // 4. Parse Non-SEO
-            const nonList = window.appData.nonSeo || [];
-            nonList.forEach(item => {
-                if (isDateInPeriod(item.entryDate, targetPeriod)) {
-                    allEntries.push({
-                        id: item.id,
-                        source: 'Non-SEO Page',
-                        entryDate: item.entryDate,
-                        details: `${item.pageType} (${item.url})`
-                    });
-                }
-            });
-
-            // 5. Parse Forum Community entries (Reddit and Quora stats)
+            // 3. Compile Forum analytics (Reddit & Quora rules)
             const commList = window.appData.community || [];
             commList.forEach(item => {
                 if (isDateInPeriod(item.entryDate, targetPeriod)) {
@@ -1042,28 +978,12 @@
 
                     if (item.platform === 'Reddit') {
                         redditViews += viewsVal;
-                        // Reddit Engagement includes every logged interaction done on reddit (Post, Comment, Reply entries)
                         redditEngagement += 1 + commentsVal; 
                         redditKarma += Number(item.karma || 0);
-
-                        allEntries.push({
-                            id: item.id,
-                            source: 'Forum: Reddit',
-                            entryDate: item.entryDate,
-                            details: `[${item.engagementType}] ${item.postTitle}`
-                        });
                     } else if (item.platform === 'Quora') {
                         quoraViews += viewsVal;
-                        // Quora Engagement includes every logged interaction done on quora (Post, Comment, Answer, Question)
                         quoraEngagement += 1 + commentsVal;
                         quoraUpvotes += Number(item.upvotes || 0);
-
-                        allEntries.push({
-                            id: item.id,
-                            source: 'Forum: Quora',
-                            entryDate: item.entryDate,
-                            details: `[${item.engagementType}] ${item.postTitle}`
-                        });
                     }
                 }
             });
@@ -1077,12 +997,10 @@
                 redditKarma,
                 quoraViews,
                 quoraEngagement,
-                quoraUpvotes,
-                allEntries: allEntries.sort((a,b) => new Date(b.entryDate) - new Date(a.entryDate))
+                quoraUpvotes
             };
         }
 
-        // Generates GSC line datasets for all available SEO content targets
         function renderMasterCharts() {
             const ctx = document.getElementById('masterLineChart');
             if (!ctx) return;
@@ -1092,71 +1010,71 @@
                 masterLineChartRef = null;
             }
 
-            const chartDatasets = [];
-            const colorPalette = [
-                '#a855f7', '#10b981', '#38bdf8', '#fbbf24', '#f43f5e', 
-                '#6366f1', '#ec4899', '#14b8a6', '#f97316', '#06b6d4'
-            ];
-            let colorIndex = 0;
-
             const selectPeriodEl = document.getElementById('filter-period');
             const targetPeriod = selectPeriodEl ? selectPeriodEl.value : 'current';
 
-            // Gather elements from Revamped SEO
             const revList = window.appData.revampedSeo || [];
-            revList.forEach(item => {
-                if (isDateInPeriod(item.entryDate, targetPeriod)) {
-                    chartDatasets.push({
-                        label: `${item.keyword} (Revamped)`,
-                        data: [
-                            Number(item.trafficMarch || 0),
-                            Number(item.trafficApril || 0),
-                            Number(item.trafficMay || 0),
-                            Number(item.trafficJune || 0)
-                        ],
-                        borderColor: colorPalette[colorIndex % colorPalette.length],
-                        backgroundColor: 'transparent',
-                        borderWidth: 2.5,
-                        tension: 0.3,
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    });
-                    colorIndex++;
-                }
-            });
-
-            // Gather elements from New SEO
             const newList = window.appData.newSeo || [];
-            newList.forEach(item => {
-                if (isDateInPeriod(item.entryDate, targetPeriod)) {
-                    chartDatasets.push({
-                        label: `${item.keyword} (New)`,
-                        data: [
-                            Number(item.trafficMarch || 0),
-                            Number(item.trafficApril || 0),
-                            Number(item.trafficMay || 0),
-                            Number(item.trafficJune || 0)
-                        ],
-                        borderColor: colorPalette[colorIndex % colorPalette.length],
-                        backgroundColor: 'transparent',
-                        borderWidth: 2.5,
-                        tension: 0.3,
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    });
-                    colorIndex++;
-                }
-            });
 
-            // Create blank state dataset if nothing is currently tracked
-            if (chartDatasets.length === 0) {
-                chartDatasets.push({
-                    label: 'No SEO Data Loaded',
+            let labels = ['March 2026', 'April 2026', 'May 2026', 'June 2026'];
+            const datasets = [];
+
+            // Grab chart type selection parameter
+            const compareSelect = document.getElementById('compare-mode-select');
+            const selectedMode = compareSelect ? compareSelect.value : 'all';
+
+            if (selectedMode === 'all') {
+                // Compile standard timeline plots
+                let colorIndex = 0;
+                const palette = ['#a855f7', '#10b981', '#38bdf8', '#f43f5e'];
+
+                revList.concat(newList).forEach(item => {
+                    if (isDateInPeriod(item.entryDate, targetPeriod)) {
+                        datasets.push({
+                            label: `${item.keyword || 'SaaS Keyword'}`,
+                            data: [
+                                Number(item.trafficMarch || 0),
+                                Number(item.trafficApril || 0),
+                                Number(item.trafficMay || 0),
+                                Number(item.trafficJune || 0)
+                            ],
+                            borderColor: palette[colorIndex % palette.length],
+                            backgroundColor: 'transparent',
+                            borderWidth: 2.5,
+                            tension: 0.35,
+                            pointRadius: 4
+                        });
+                        colorIndex++;
+                    }
+                });
+            } else {
+                // Focus strictly on Month-to-Month comparison (May 2026 vs June 2026 - Screenshot 2)
+                labels = ['May 2026', 'June 2026'];
+                let mayTotal = 0;
+                let juneTotal = 0;
+
+                revList.concat(newList).forEach(item => {
+                    mayTotal += Number(item.trafficMay || 0);
+                    juneTotal += Number(item.trafficJune || 0);
+                });
+
+                datasets.push({
+                    label: 'SEO Pages Total Traffic',
+                    data: [mayTotal, juneTotal],
+                    borderColor: '#a855f7',
+                    backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.2
+                });
+            }
+
+            if (datasets.length === 0) {
+                datasets.push({
+                    label: 'No Data Records Found',
                     data: [0, 0, 0, 0],
-                    borderColor: '#475569',
-                    backgroundColor: 'transparent',
-                    borderWidth: 1,
-                    tension: 0.1
+                    borderColor: '#64748b',
+                    borderWidth: 1
                 });
             }
 
@@ -1166,40 +1084,18 @@
 
             masterLineChartRef = new Chart(ctx, {
                 type: 'line',
-                data: {
-                    labels: ['March 2026', 'April 2026', 'May 2026', 'June 2026'],
-                    datasets: chartDatasets
-                },
+                data: { labels, datasets },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: tickColor,
-                                font: { size: 10, weight: 'bold' },
-                                boxWidth: 10
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: isDark ? '#0f172a' : '#ffffff',
-                            titleColor: isDark ? '#ffffff' : '#0f172a',
-                            bodyColor: isDark ? '#cbd5e1' : '#334155',
-                            borderColor: isDark ? '#334155' : '#e2e8f0',
-                            borderWidth: 1,
-                            padding: 10
+                            labels: { color: tickColor, font: { size: 10, weight: 'bold' } }
                         }
                     },
                     scales: {
-                        x: {
-                            grid: { color: gridColor },
-                            ticks: { color: tickColor, font: { size: 10 } }
-                        },
-                        y: {
-                            grid: { color: gridColor },
-                            ticks: { color: tickColor, font: { size: 10 } }
-                        }
+                        x: { grid: { color: gridColor }, ticks: { color: tickColor } },
+                        y: { grid: { color: gridColor }, ticks: { color: tickColor } }
                     }
                 }
             });
@@ -1209,7 +1105,6 @@
             const panel = document.getElementById('main-content-panel');
             const addEntryBtn = document.getElementById('add-entry-btn');
             const filterWrapper = document.getElementById('filter-wrapper');
-            const isAdmin = window.isAdminActive ? window.isAdminActive() : false;
 
             if (activeTab === 'masterDashboard') {
                 addEntryBtn.classList.add('hidden'); 
@@ -1218,16 +1113,16 @@
                 const stats = calculateMasterStats();
 
                 panel.innerHTML = `
-                    <!-- 1. High-Level SEO Metrics Dashboard (Above Reddit/Quora) -->
-                    <div class="mb-6">
+                    <!-- 1. High-Level SEO Metrics Dashboard -->
+                    <div>
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-xs font-extrabold uppercase tracking-wider text-purple-600 dark:text-purple-400 flex items-center gap-2">
-                                <i class="fa-solid fa-chart-pie"></i> SEO Pages Performance
+                                <i class="fa-solid fa-chart-pie"></i> SEO Pages Core Metrics
                             </h3>
-                            <span class="text-[10px] bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded font-bold">SEO Core Engine</span>
+                            <span class="text-[10px] bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded font-bold">Search Analytics</span>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-slate-800 dark:text-slate-100">
-                            <!-- Metric Card: Demos Captured -->
+                            <!-- Card: Demos Captured -->
                             <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-lg bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl shrink-0">
                                     <i class="fa-solid fa-users"></i>
@@ -1239,7 +1134,7 @@
                                 </div>
                             </div>
 
-                            <!-- Metric Card: Revenue Secured -->
+                            <!-- Card: Revenue Secured -->
                             <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shrink-0">
                                     <i class="fa-solid fa-dollar-sign"></i>
@@ -1251,7 +1146,7 @@
                                 </div>
                             </div>
 
-                            <!-- Metric Card: Traffic June -->
+                            <!-- Card: Estimated June Traffic -->
                             <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 flex items-center justify-center text-xl shrink-0">
                                     <i class="fa-solid fa-chart-line"></i>
@@ -1265,10 +1160,9 @@
                         </div>
                     </div>
 
-                    <!-- 2. Reddit & Quora separated statistics panels -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 text-slate-800 dark:text-slate-100">
-                        
-                        <!-- Reddit Dashboard Card Block -->
+                    <!-- 2. Reddit & Quora separated statistics panels (Matches Image_31527e.png overview specs) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-slate-800 dark:text-slate-100">
+                        <!-- Reddit Segment -->
                         <div class="bg-white dark:bg-slate-950 p-6 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm flex flex-col justify-between border-t-4 border-t-orange-500">
                             <div class="flex items-center justify-between mb-4">
                                 <span class="text-xs text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider flex items-center gap-1.5">
@@ -1276,24 +1170,23 @@
                                 </span>
                                 <span class="text-[10px] bg-orange-500/10 text-orange-500 px-2 py-0.5 rounded font-mono font-bold">Forum Engine</span>
                             </div>
-                            
-                            <div class="grid grid-cols-3 gap-2">
-                                <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50">
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="bg-slate-50 dark:bg-slate-900/60 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50">
                                     <span class="text-[9px] dark:text-slate-400 font-semibold uppercase tracking-wider">Total Views</span>
-                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1.5">${stats.redditViews.toLocaleString()}</h4>
+                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1">${stats.redditViews.toLocaleString()}</h4>
                                 </div>
-                                <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50" title="Includes posts, comments, or replies done on reddit">
+                                <div class="bg-slate-50 dark:bg-slate-900/60 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50" title="Every post, comment, reply we did on reddit">
                                     <span class="text-[9px] dark:text-slate-400 font-semibold uppercase tracking-wider flex items-center justify-center gap-1">Engagement <i class="fa-solid fa-circle-info text-[8px] text-slate-400"></i></span>
-                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1.5">${stats.redditEngagement}</h4>
+                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1">${stats.redditEngagement}</h4>
                                 </div>
-                                <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50">
-                                    <span class="text-[9px] dark:text-slate-400 font-semibold uppercase tracking-wider">Karma</span>
-                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1.5">${stats.redditKarma}</h4>
+                                <div class="bg-slate-50 dark:bg-slate-900/60 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50">
+                                    <span class="text-[9px] dark:text-slate-400 font-semibold uppercase tracking-wider">Total Karma</span>
+                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1">${stats.redditKarma}</h4>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Quora Dashboard Card Block -->
+                        <!-- Quora Segment -->
                         <div class="bg-white dark:bg-slate-950 p-6 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm flex flex-col justify-between border-t-4 border-t-rose-600">
                             <div class="flex items-center justify-between mb-4">
                                 <span class="text-xs text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider flex items-center gap-1.5">
@@ -1301,44 +1194,73 @@
                                 </span>
                                 <span class="text-[10px] bg-rose-500/10 text-rose-500 px-2 py-0.5 rounded font-mono font-bold">Forum Engine</span>
                             </div>
-                            
-                            <div class="grid grid-cols-3 gap-2">
-                                <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50">
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="bg-slate-50 dark:bg-slate-900/60 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50">
                                     <span class="text-[9px] dark:text-slate-400 font-semibold uppercase tracking-wider">Total Views</span>
-                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1.5">${stats.quoraViews.toLocaleString()}</h4>
+                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1">${stats.quoraViews.toLocaleString()}</h4>
                                 </div>
-                                <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50" title="Includes posts, comments, answers, or questions asked">
+                                <div class="bg-slate-50 dark:bg-slate-900/60 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50" title="Every post, comment, answer, or questions asked">
                                     <span class="text-[9px] dark:text-slate-400 font-semibold uppercase tracking-wider flex items-center justify-center gap-1">Engagement <i class="fa-solid fa-circle-info text-[8px] text-slate-400"></i></span>
-                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1.5">${stats.quoraEngagement}</h4>
+                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1">${stats.quoraEngagement}</h4>
                                 </div>
-                                <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50">
+                                <div class="bg-slate-50 dark:bg-slate-900/60 p-4 rounded-lg text-center border border-slate-100 dark:border-slate-800/50">
                                     <span class="text-[9px] dark:text-slate-400 font-semibold uppercase tracking-wider">Upvotes</span>
-                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1.5">${stats.quoraUpvotes}</h4>
+                                    <h4 class="text-xl font-black text-slate-800 dark:text-white mt-1">${stats.quoraUpvotes}</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Visual Analytics Graphical Interface -->
-                    <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl p-6 mb-8 shadow-sm">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 pb-3 border-b border-slate-200 dark:border-slate-800/60 gap-2">
-                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
-                                <i class="fa-solid fa-arrow-trend-up text-purple-500"></i> Traffic and Search Volume trends
-                            </h3>
-                            <span class="text-[10px] text-purple-500 dark:text-purple-400 font-mono font-bold bg-purple-500/10 border border-purple-500/20 px-2.5 py-1 rounded">Organic Page Plots</span>
+                    <!-- Comparison Graphs & Date toggles (Matches Screenshot 2) -->
+                    <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 pb-3 border-b border-slate-200 dark:border-slate-800/60 gap-4">
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                                    <i class="fa-solid fa-arrow-trend-up text-purple-500"></i> Traffic and Search Volume trends
+                                </h3>
+                                <p class="text-xs text-slate-400">Compare cumulative monthly or customized month-over-month periods.</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] uppercase font-bold text-slate-400">Layout Select:</span>
+                                <select id="compare-mode-select" onchange="renderMasterCharts()" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1 text-xs text-slate-800 dark:text-white rounded-lg outline-none">
+                                    <option value="all" selected>Monthly Timeline</option>
+                                    <option value="mtm">Month-to-Month (May vs June)</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="h-80 relative">
                             <canvas id="masterLineChart"></canvas>
                         </div>
                     </div>
 
-                    <!-- 3. Expanded Gemini AI Lab Workspace with new Feature C (AEO Visibility) -->
-                    <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl p-6 mb-8 shadow-sm">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-100/50 dark:bg-slate-950/40 p-5 rounded-xl border border-slate-200 dark:border-slate-800/60">
+                        <div class="space-y-1">
+                            <h4 class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-code"></i> SEO Optimization Criteria
+                            </h4>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Rate meta lengths, canonical alignments, absolute schema implementation, semantic anchor weightings, and internal link mapping structures.</p>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-book"></i> Content Evaluation Criteria
+                            </h4>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Assess visual flow layout, structured tables usage, readability score depth, exact-match user intent answers, and CTA positioning conversion metrics.</p>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-microchip"></i> AEO Citation Criteria
+                            </h4>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Determine direct conversational questions coverage, bulleted key points extractability, explicit answers formatting, and semantic entities density.</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. Expanded Gemini AI Lab Workspace -->
+                    <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl p-6 shadow-sm">
                         <div class="flex items-center justify-between pb-3 mb-6 border-b border-slate-200 dark:border-slate-800/60">
                             <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
                                 <i class="fa-solid fa-wand-magic-sparkles text-purple-500 animate-pulse"></i> Gemini Content Lab Workspace
                             </h3>
-                            <span class="px-2 py-0.5 bg-purple-500/10 text-purple-600 dark:text-purple-400 text-[10px] rounded font-bold font-mono">Gemini-3-Flash Engine</span>
+                            <span class="px-2 py-0.5 bg-purple-500/10 text-purple-600 dark:text-purple-400 text-[10px] rounded font-bold font-mono">Gemini-3-Flash</span>
                         </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -1360,8 +1282,12 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div id="audit-output" class="mt-4 p-4 bg-white dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs hidden overflow-y-auto max-h-60">
-                                    <!-- Dynamic response stream -->
+                                <div id="audit-output-wrapper" class="hidden mt-4 space-y-2">
+                                    <div id="audit-output" class="p-4 bg-white dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs overflow-y-auto max-h-60"></div>
+                                    <div class="flex gap-2">
+                                        <button onclick="exportReport('audit-output', 'seo-audit-report')" class="flex-1 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-[11px] font-bold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1"><i class="fa-solid fa-download"></i> Download</button>
+                                        <button onclick="copyElementText('audit-output')" class="flex-1 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-[11px] font-bold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1"><i class="fa-solid fa-copy"></i> Copy</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1370,7 +1296,7 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-2">
                                         <h4 class="text-xs font-extrabold uppercase tracking-wide text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
-                                            <i class="fa-solid fa-lightbulb"></i> Social hook architect (B)
+                                            <i class="fa-solid fa-lightbulb"></i> Content Planner (B)
                                         </h4>
                                         <span class="px-2 py-0.5 rounded text-[9px] bg-purple-500/10 text-purple-600 font-mono font-extrabold">Distribution</span>
                                     </div>
@@ -1383,8 +1309,12 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div id="planner-output" class="mt-4 p-4 bg-white dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs hidden overflow-y-auto max-h-60">
-                                    <!-- Dynamic response stream -->
+                                <div id="planner-output-wrapper" class="hidden mt-4 space-y-2">
+                                    <div id="planner-output" class="p-4 bg-white dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs overflow-y-auto max-h-60"></div>
+                                    <div class="flex gap-2">
+                                        <button onclick="exportReport('planner-output', 'content-plan-report')" class="flex-1 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-[11px] font-bold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1"><i class="fa-solid fa-download"></i> Download</button>
+                                        <button onclick="copyElementText('planner-output')" class="flex-1 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-[11px] font-bold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1"><i class="fa-solid fa-copy"></i> Copy</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1406,8 +1336,12 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div id="aeo-output" class="mt-4 p-4 bg-white dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs hidden overflow-y-auto max-h-60">
-                                    <!-- Dynamic response stream -->
+                                <div id="aeo-output-wrapper" class="hidden mt-4 space-y-2">
+                                    <div id="aeo-output" class="p-4 bg-white dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 text-xs overflow-y-auto max-h-60"></div>
+                                    <div class="flex gap-2">
+                                        <button onclick="exportReport('aeo-output', 'aeo-citation-report')" class="flex-1 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-[11px] font-bold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1"><i class="fa-solid fa-download"></i> Download</button>
+                                        <button onclick="copyElementText('aeo-output')" class="flex-1 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-[11px] font-bold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1"><i class="fa-solid fa-copy"></i> Copy</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1416,124 +1350,11 @@
 
                 renderMasterCharts();
 
-            } else if (activeTab === 'community') {
-                if (isAdmin) {
-                    addEntryBtn.classList.remove('hidden');
-                } else {
-                    addEntryBtn.classList.add('hidden');
-                }
-                filterWrapper.classList.remove('hidden');
-
-                let rawData = window.appData.community || [];
-                const selectPeriodEl = document.getElementById('filter-period');
-                const targetPeriod = selectPeriodEl ? selectPeriodEl.value : 'current';
-                rawData = rawData.filter(item => isDateInPeriod(item.entryDate, targetPeriod));
-
-                // Compute Reddit Metrics
-                const redditData = rawData.filter(item => item.platform === 'Reddit');
-                const redditMetrics = {
-                    posts: redditData.filter(item => item.engagementType === 'Post').length,
-                    views: redditData.reduce((acc, curr) => acc + Number(curr.views || 0), 0),
-                    comments: redditData.reduce((acc, curr) => acc + Number(curr.comments || 0), 0),
-                    karma: redditData.reduce((acc, curr) => acc + Number(curr.karma || 0), 0)
-                };
-
-                // Compute Quora Metrics
-                const quoraData = rawData.filter(item => item.platform === 'Quora');
-                const quoraMetrics = {
-                    posts: quoraData.filter(item => item.engagementType === 'Post' || item.engagementType === 'Question').length,
-                    views: quoraData.reduce((acc, curr) => acc + Number(curr.views || 0), 0),
-                    comments: quoraData.reduce((acc, curr) => acc + Number(curr.comments || 0), 0),
-                    upvotes: quoraData.reduce((acc, curr) => acc + Number(curr.upvotes || 0), 0)
-                };
-
-                document.getElementById('view-title').textContent = "Reddit & Quora Forums";
-                document.getElementById('view-desc').textContent = "Track individual channel impressions, upvotes, responses, and submissions";
-
-                panel.innerHTML = `
-                    <!-- Forum performance aggregation cards -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 text-slate-800 dark:text-slate-100">
-                        
-                        <!-- Reddit Dashboard Segment -->
-                        <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm">
-                            <div class="flex items-center gap-2 pb-3 mb-4 border-b border-orange-100 dark:border-slate-800">
-                                <div class="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 flex items-center justify-center text-lg">
-                                    <i class="fa-brands fa-reddit-alien"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-wide">Reddit Channel Metrics</h4>
-                                    <p class="text-[10px] text-slate-400">Total metrics filtered by selected period bounds</p>
-                                </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                <div class="bg-orange-50/50 dark:bg-slate-900 p-3 rounded-lg border border-orange-100/50 dark:border-slate-800/80 text-center">
-                                    <span class="text-[10px] uppercase font-bold text-orange-700/80 dark:text-orange-400 tracking-wider">Posts</span>
-                                    <h5 class="text-lg font-black text-slate-800 dark:text-white mt-1">${redditMetrics.posts}</h5>
-                                </div>
-                                <div class="bg-orange-50/50 dark:bg-slate-900 p-3 rounded-lg border border-orange-100/50 dark:border-slate-800/80 text-center">
-                                    <span class="text-[10px] uppercase font-bold text-orange-700/80 dark:text-orange-400 tracking-wider">Views</span>
-                                    <h5 class="text-lg font-black text-slate-800 dark:text-white mt-1">${redditMetrics.views.toLocaleString()}</h5>
-                                </div>
-                                <div class="bg-orange-50/50 dark:bg-slate-900 p-3 rounded-lg border border-orange-100/50 dark:border-slate-800/80 text-center">
-                                    <span class="text-[10px] uppercase font-bold text-orange-700/80 dark:text-orange-400 tracking-wider">Comments</span>
-                                    <h5 class="text-lg font-black text-slate-800 dark:text-white mt-1">${redditMetrics.comments}</h5>
-                                </div>
-                                <div class="bg-orange-50/50 dark:bg-slate-900 p-3 rounded-lg border border-orange-100/50 dark:border-slate-800/80 text-center">
-                                    <span class="text-[10px] uppercase font-bold text-orange-700/80 dark:text-orange-400 tracking-wider">Karma</span>
-                                    <h5 class="text-lg font-black text-slate-800 dark:text-white mt-1">${redditMetrics.karma}</h5>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Quora Dashboard Segment -->
-                        <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm">
-                            <div class="flex items-center gap-2 pb-3 mb-4 border-b border-rose-100 dark:border-slate-800">
-                                <div class="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-lg">
-                                    <i class="fa-brands fa-quora"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-wide">Quora Channel Metrics</h4>
-                                    <p class="text-[10px] text-slate-400">Total metrics filtered by selected period bounds</p>
-                                </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                <div class="bg-rose-50/50 dark:bg-slate-900 p-3 rounded-lg border border-rose-100/50 dark:border-slate-800/80 text-center">
-                                    <span class="text-[10px] uppercase font-bold text-rose-700/80 dark:text-rose-400 tracking-wider">Posts</span>
-                                    <h5 class="text-lg font-black text-slate-800 dark:text-white mt-1">${quoraMetrics.posts}</h5>
-                                </div>
-                                <div class="bg-rose-50/50 dark:bg-slate-900 p-3 rounded-lg border border-rose-100/50 dark:border-slate-800/80 text-center">
-                                    <span class="text-[10px] uppercase font-bold text-rose-700/80 dark:text-rose-400 tracking-wider">Views</span>
-                                    <h5 class="text-lg font-black text-slate-800 dark:text-white mt-1">${quoraMetrics.views.toLocaleString()}</h5>
-                                </div>
-                                <div class="bg-rose-50/50 dark:bg-slate-900 p-3 rounded-lg border border-rose-100/50 dark:border-slate-800/80 text-center">
-                                    <span class="text-[10px] uppercase font-bold text-rose-700/80 dark:text-rose-400 tracking-wider">Comments</span>
-                                    <h5 class="text-lg font-black text-slate-800 dark:text-white mt-1">${quoraMetrics.comments}</h5>
-                                </div>
-                                <div class="bg-rose-50/50 dark:bg-slate-900 p-3 rounded-lg border border-rose-100/50 dark:border-slate-800/80 text-center">
-                                    <span class="text-[10px] uppercase font-bold text-rose-700/80 dark:text-rose-400 tracking-wider">Upvotes</span>
-                                    <h5 class="text-lg font-black text-slate-800 dark:text-white mt-1">${quoraMetrics.upvotes}</h5>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- Rendered Table Segment -->
-                    ${generateCategoryTableMarkup('community', rawData)}
-                `;
-
             } else {
-                if (isAdmin) {
-                    addEntryBtn.classList.remove('hidden');
-                } else {
-                    addEntryBtn.classList.add('hidden');
-                }
+                addEntryBtn.classList.remove('hidden');
                 filterWrapper.classList.remove('hidden');
 
-                const schemas = getActiveSchema();
-                const schema = schemas[activeTab];
+                const schema = window.customSchema[activeTab];
                 let rawData = window.appData[activeTab] || [];
 
                 const selectPeriodEl = document.getElementById('filter-period');
@@ -1548,13 +1369,11 @@
         }
 
         function generateCategoryTableMarkup(tabKey, dataSet) {
-            const schemas = getActiveSchema();
-            const schema = schemas[tabKey];
-            const isAdmin = window.isAdminActive ? window.isAdminActive() : false;
+            const schema = window.customSchema[tabKey];
 
             if (dataSet.length === 0) {
                 return `
-                    <div class="bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800/80 p-16 flex flex-col items-center justify-center text-slate-500 text-center animate-fade-in">
+                    <div class="bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800/80 p-16 flex flex-col items-center justify-center text-slate-500 text-center">
                         <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center mb-4 text-slate-400 dark:text-slate-600 text-2xl"><i class="fa-solid fa-folder-open"></i></div>
                         <p class="text-base font-bold text-slate-700 dark:text-slate-300">No content records located</p>
                         <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mt-1">There are no logged items matching this selection context. Click "Add Entry" to begin tracking.</p>
@@ -1562,17 +1381,13 @@
                 `;
             }
 
-            // Table headers generators
             let thead = `<thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider font-bold sticky top-0 z-20"><tr>`;
             schema.fields.forEach(f => {
                 thead += `<th class="px-5 py-4 font-bold whitespace-nowrap">${f.label}</th>`;
             });
-            if (isAdmin) {
-                thead += `<th class="px-5 py-4 text-center font-bold whitespace-nowrap text-slate-500 dark:text-slate-400 w-28">Actions</th>`;
-            }
+            thead += `<th class="px-5 py-4 text-center font-bold whitespace-nowrap text-slate-500 dark:text-slate-400 w-28">Actions</th>`;
             thead += `</tr></thead>`;
 
-            // Table values rows generators
             let tbody = `<tbody class="divide-y divide-slate-200 dark:divide-slate-800/80 text-xs bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-300">`;
             dataSet.sort((a,b) => new Date(b.entryDate) - new Date(a.entryDate)).forEach(row => {
                 tbody += `<tr class="hover:bg-slate-50 dark:hover:bg-slate-900/40 transition-colors">`;
@@ -1580,11 +1395,10 @@
                     let val = row[f.key];
                     let disp = (val !== undefined && val !== null && val !== '') ? val : '-';
 
-                    // Direct url styling overrides
                     if (f.type === 'url' && disp !== '-') {
                         disp = `
                             <div class="flex items-center gap-1.5 max-w-[280px]">
-                                <a href="${val}" target="_blank" class="text-purple-600 dark:text-purple-400 hover:underline truncate block animate-pulse-once" title="${val}">
+                                <a href="${val}" target="_blank" class="text-purple-600 dark:text-purple-400 hover:underline truncate block" title="${val}">
                                     ${val}
                                 </a>
                                 <button onclick="copyToClipboard('${val}')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-0.5 shrink-0" title="Copy URL">
@@ -1610,20 +1424,17 @@
                     tbody += `<td class="px-5 py-3.5 whitespace-nowrap">${disp}</td>`;
                 });
 
-                if (isAdmin) {
-                    tbody += `
-                        <td class="px-5 py-3.5 whitespace-nowrap text-center font-semibold">
-                            <div class="flex items-center justify-center gap-1.5">
-                                <button onclick="editEntry('${row.id}')" class="text-purple-600 dark:text-purple-400 hover:underline hover:text-purple-500 transition-all" title="Edit Entry">
-                                    <i class="fa-regular fa-pen-to-square text-sm"></i>
-                                </button>
-                                <button onclick="promptDeleteEntry('${row.id}')" class="text-rose-600 hover:underline hover:text-rose-500 transition-all" title="Delete Entry">
-                                    <i class="fa-solid fa-trash-can text-sm"></i>
-                                </button>
-                            </div>
-                        </td>`;
-                }
-                tbody += `</tr>`;
+                tbody += `
+                    <td class="px-5 py-3.5 whitespace-nowrap text-center font-semibold">
+                        <div class="flex items-center justify-center gap-1.5">
+                            <button onclick="editEntry('${row.id}')" class="text-purple-600 dark:text-purple-400 hover:underline hover:text-purple-500 transition-all text-sm" title="Edit Entry">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="promptDeleteEntry('${row.id}')" class="text-rose-600 hover:underline hover:text-rose-500 transition-all text-sm" title="Delete Entry">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </td></tr>`;
             });
             tbody += `</tbody>`;
 
@@ -1638,28 +1449,8 @@
             `;
         }
 
-        // Bridge function linking master stream directly to sub-panel editor context
-        function editMasterRow(id, sourceLabel) {
-            if (!window.isAdminActive()) return;
-            let targetTab = 'revampedSeo';
-            if (sourceLabel.includes('New')) targetTab = 'newSeo';
-            if (sourceLabel.includes('LinkedIn')) targetTab = 'linkedin';
-            if (sourceLabel.includes('Non-SEO')) targetTab = 'nonSeo';
-            if (sourceLabel.includes('Forum')) targetTab = 'community';
-
-            activeTab = targetTab;
-            editEntryId = id;
-            renderSidebar();
-            openModal();
-        }
-
         function openModal() {
-            if (!window.isAdminActive()) {
-                showToast("Access Denied: Log in using Console Settings to edit entries.", "error");
-                return;
-            }
-            const schemas = getActiveSchema();
-            const schema = schemas[activeTab];
+            const schema = window.customSchema[activeTab];
             const form = document.getElementById('entry-form');
             form.innerHTML = '';
 
@@ -1689,9 +1480,9 @@
                 let inputHtml = '';
                 if (f.type === 'select') {
                     const optionsHtml = f.options.map(opt => `<option value="${opt}" ${val === opt ? 'selected' : ''}>${opt}</option>`).join('');
-                    inputHtml = `<select id="${id}" class="w-full mt-1.5 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white outline-none transition-all">${optionsHtml}</select>`;
+                    inputHtml = `<select id="${id}" class="w-full mt-1.5 px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none transition-all">${optionsHtml}</select>`;
                 } else {
-                    inputHtml = `<input type="${f.type}" id="${id}" value="${val}" ${f.step ? `step="${f.step}"` : ''} placeholder="${f.placeholder || ''}" class="w-full mt-1.5 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:bg-white outline-none transition-all">`;
+                    inputHtml = `<input type="${f.type}" id="${id}" value="${val}" ${f.step ? `step="${f.step}"` : ''} placeholder="${f.placeholder || ''}" class="w-full mt-1.5 px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none transition-all">`;
                 }
 
                 form.innerHTML += `
@@ -1726,12 +1517,7 @@
         }
 
         async function saveEntry() {
-            if (!window.isAdminActive()) {
-                showToast("Access Denied: Guest view-only status.", "error");
-                return;
-            }
-            const schemas = getActiveSchema();
-            const schema = schemas[activeTab];
+            const schema = window.customSchema[activeTab];
             let isValid = true;
             const updatedDoc = {};
 
@@ -1761,7 +1547,7 @@
                     updatedDoc.id = editEntryId;
                     window.appData[activeTab][index] = { ...window.appData[activeTab][index], ...updatedDoc };
                     
-                    if (window.isCloudSyncActive()) {
+                    if (window.isCloudSyncActive && window.isCloudSyncActive()) {
                         await window.saveRecordToFirestore(window.appData[activeTab][index], activeTab);
                     } else {
                         window.saveDataToLocalStorage();
@@ -1772,7 +1558,7 @@
                 updatedDoc.id = 'entry-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4);
                 window.appData[activeTab].push(updatedDoc);
                 
-                if (window.isCloudSyncActive()) {
+                if (window.isCloudSyncActive && window.isCloudSyncActive()) {
                     await window.saveRecordToFirestore(updatedDoc, activeTab);
                 } else {
                     window.saveDataToLocalStorage();
@@ -1790,10 +1576,6 @@
         }
 
         function promptDeleteEntry(id) {
-            if (!window.isAdminActive()) {
-                showToast("Access Denied: Guests cannot delete data.", "error");
-                return;
-            }
             deleteTargetId = id;
             const modal = document.getElementById('confirm-modal');
             const content = document.getElementById('confirm-modal-content');
@@ -1821,14 +1603,10 @@
         }
 
         async function executeDeletion() {
-            if (!window.isAdminActive()) {
-                showToast("Access Denied: Guests cannot execute deletion.", "error");
-                return;
-            }
             if (deleteTargetId) {
                 window.appData[activeTab] = window.appData[activeTab].filter(item => item.id !== deleteTargetId);
                 
-                if (window.isCloudSyncActive()) {
+                if (window.isCloudSyncActive && window.isCloudSyncActive()) {
                     await window.deleteRecordFromFirestore(deleteTargetId);
                 } else {
                     window.saveDataToLocalStorage();
@@ -1840,11 +1618,40 @@
             }
         }
 
+        function exportReport(elementId, filename) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            const text = element.innerText;
+            const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${filename}-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            showToast("Report downloaded successfully!");
+        }
+
+        function copyElementText(elementId) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            const text = element.innerText;
+            copyToClipboard(text);
+            showToast("Report text copied to clipboard!");
+        }
+
+        function copyToClipboard(text) {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+        }
+
         function saveCustomDatabase() {
-            if (!window.isAdminActive()) {
-                showToast("Access Denied: Guests cannot write configuration.", "error");
-                return;
-            }
             const rawInput = document.getElementById('db-config-input').value.trim();
             if (!rawInput) {
                 showToast("Please enter a valid Firebase configuration JSON object.", "error");
@@ -1866,10 +1673,6 @@
         }
 
         function clearCustomDatabase() {
-            if (!window.isAdminActive()) {
-                showToast("Access Denied: Guests cannot clear credentials.", "error");
-                return;
-            }
             localStorage.removeItem('custom_firebase_config_prod');
             document.getElementById('db-config-input').value = '';
             showToast("Cloud credentials cleared. Operating offline.", "delete");
@@ -1880,17 +1683,6 @@
             }
         }
 
-        function copyToClipboard(text) {
-            const temp = document.createElement('textarea');
-            temp.value = text;
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand('copy');
-            document.body.removeChild(temp);
-            showToast("URL copied to clipboard!");
-        }
-
-        // Export data to local JSON file backup
         function exportData() {
             const content = JSON.stringify(window.appData, null, 2);
             const blob = new Blob([content], { type: "application/json" });
@@ -1907,13 +1699,7 @@
             showToast('JSON backup exported.');
         }
 
-        // Restore backup JSON file
         function importData(event) {
-            if (!window.isAdminActive()) {
-                showToast("Access Denied: Log in to restore files.", "error");
-                event.target.value = '';
-                return;
-            }
             const file = event.target.files[0];
             if (!file) return;
 
@@ -1921,26 +1707,22 @@
             reader.onload = async function(e) {
                 try {
                     const parsed = JSON.parse(e.target.result);
-                    if (parsed.revampedSeo && parsed.newSeo && parsed.linkedin && parsed.nonSeo && parsed.community) {
-                        window.appData = parsed;
-                        window.saveDataToLocalStorage();
-                        
-                        if (window.isCloudSyncActive()) {
-                            const tabs = ['revampedSeo', 'newSeo', 'linkedin', 'nonSeo', 'community'];
-                            for (const tab of tabs) {
-                                if (window.appData[tab]) {
-                                    for (const record of window.appData[tab]) {
-                                        await window.saveRecordToFirestore(record, tab);
-                                    }
+                    window.appData = parsed;
+                    window.saveDataToLocalStorage();
+                    
+                    if (window.isCloudSyncActive && window.isCloudSyncActive()) {
+                        const tabs = Object.keys(window.customSchema);
+                        for (const tab of tabs) {
+                            if (window.appData[tab]) {
+                                for (const record of window.appData[tab]) {
+                                    await window.saveRecordToFirestore(record, tab);
                                 }
                             }
                         }
-
-                        renderView();
-                        showToast('Local database restored successfully!');
-                    } else {
-                        throw new Error('Key validation failed.');
                     }
+
+                    renderView();
+                    showToast('Local database restored successfully!');
                 } catch (err) {
                     showToast('Invalid JSON database structure.', 'error');
                 }
@@ -1949,11 +1731,10 @@
             reader.readAsText(file);
         }
 
-        // Main Core API connection caller for Gemini Integration
         async function fetchGeminiInsight(prompt, systemInstruction) {
             const key = window.GEMINI_API_KEY || '';
             if (!key) {
-                throw new Error("No Gemini API key detected. Save your key in Console Settings first.");
+                throw new Error("No Gemini API key detected. Save your key in settings first.");
             }
 
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${key}`;
@@ -1982,6 +1763,7 @@
         // Feature A: Run SEO Audit and Output Report
         async function runSeoAudit() {
             const urlInput = document.getElementById('ai-audit-url').value.trim();
+            const wrapper = document.getElementById('audit-output-wrapper');
             const outputBox = document.getElementById('audit-output');
             const btn = document.getElementById('btn-seo-audit');
 
@@ -1990,11 +1772,11 @@
                 return;
             }
 
-            outputBox.classList.remove('hidden');
-            outputBox.innerHTML = `<div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold"><i class="fa-solid fa-circle-notch animate-spin"></i> Gemini is auditing page tags and index alignment...</div>`;
+            wrapper.classList.remove('hidden');
+            outputBox.innerHTML = `<div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold"><i class="fa-solid fa-circle-notch animate-spin"></i> Auditing against target SEO/Content criteria...</div>`;
             btn.disabled = true;
 
-            const systemPrompt = "You are a senior technical SEO Auditor. Critique the given URL thoroughly. Rate its layout and likely optimization status on a clear, bold scale of 1 to 10. Give exactly 3 bullet points showing direct content gaps, 2 bullet points showing critical on-page issues, and 3 high-impact semantic keywords they must incorporate to capture market space.";
+            const systemPrompt = "You are a senior technical SEO Auditor. Rate the layout and optimization status of the URL on a clear, bold scale of 1 to 10. Outline Content gaps, critical on-page tags errors, and evaluate anchor linking weightings against competitive metrics.";
             const userQuery = `Audit the following website address: ${urlInput}`;
 
             try {
@@ -2009,7 +1791,7 @@
                     <div class="space-y-2 text-slate-700 dark:text-slate-300">
                         <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 dark:border-slate-800">
                             <span class="font-bold text-slate-800 dark:text-white"><i class="fa-solid fa-clipboard-check text-purple-500 mr-1.5"></i> Audit Result</span>
-                            <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold font-mono">Success</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-500 font-bold">Success</span>
                         </div>
                         <p class="leading-relaxed text-[11px]">${parsedHTML}</p>
                     </div>
@@ -2024,6 +1806,7 @@
         // Feature B: Run Content Distribution Plan
         async function runContentPlanner() {
             const urlInput = document.getElementById('ai-planner-url').value.trim();
+            const wrapper = document.getElementById('planner-output-wrapper');
             const outputBox = document.getElementById('planner-output');
             const btn = document.getElementById('btn-content-planner');
 
@@ -2032,12 +1815,12 @@
                 return;
             }
 
-            outputBox.classList.remove('hidden');
-            outputBox.innerHTML = `<div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold"><i class="fa-solid fa-circle-notch animate-spin"></i> Gemini is parsing semantics and drafting hooks...</div>`;
+            wrapper.classList.remove('hidden');
+            outputBox.innerHTML = `<div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold"><i class="fa-solid fa-circle-notch animate-spin"></i> Formulating content planner schedule and distribution plan...</div>`;
             btn.disabled = true;
 
-            const systemPrompt = "You are a viral growth loop specialist. Analyze the target URL topic. Deliver a complete distribution blueprint: 1. List 3 high-intent questions on Quora that this page answers beautifully, 2. Provide a compelling, ready-to-use post hook and outline tailored for subreddits like r/saas or r/marketing, 3. Outline 3 secondary content angles to build a search cluster.";
-            const userQuery = `Formulate a forum distribution strategy for: ${urlInput}`;
+            const systemPrompt = "You are a viral growth loop specialist. Analyze the target topic. Provide a comprehensive content distribution and secondary keyword cluster planner with specific Quora conversation questions and Reddit post outline hooks.";
+            const userQuery = `Formulate forum distribution strategy for: ${urlInput}`;
 
             try {
                 const responseText = await fetchGeminiInsight(userQuery, systemPrompt);
@@ -2051,13 +1834,13 @@
                     <div class="space-y-2 text-slate-700 dark:text-slate-300">
                         <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 dark:border-slate-800">
                             <span class="font-bold text-slate-800 dark:text-white"><i class="fa-solid fa-bullhorn text-purple-500 mr-1.5"></i> Distribution Strategy Blueprint</span>
-                            <span class="px-2 py-0.5 rounded text-[10px] bg-purple-500/10 text-purple-600 dark:text-purple-400 font-bold font-mono">Formulated</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-purple-500/10 text-purple-600 dark:text-purple-400 font-bold">Formulated</span>
                         </div>
                         <p class="leading-relaxed text-[11px]">${parsedHTML}</p>
                     </div>
                 `;
             } catch (err) {
-                outputBox.innerHTML = `<div class="text-rose-500 font-semibold text-[11px]"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Blueprint generation failed: ${err.message}</div>`;
+                outputBox.innerHTML = `<div class="text-rose-500 font-semibold text-[11px]"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Planner failed: ${err.message}</div>`;
             } finally {
                 btn.disabled = false;
             }
@@ -2066,6 +1849,7 @@
         // Feature C: Answer Engine Optimization (AEO) Blog Citation Analyzer
         async function runAeoAudit() {
             const urlInput = document.getElementById('ai-aeo-url').value.trim();
+            const wrapper = document.getElementById('aeo-output-wrapper');
             const outputBox = document.getElementById('aeo-output');
             const btn = document.getElementById('btn-aeo-audit');
 
@@ -2074,11 +1858,11 @@
                 return;
             }
 
-            outputBox.classList.remove('hidden');
-            outputBox.innerHTML = `<div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold"><i class="fa-solid fa-circle-notch animate-spin"></i> Gemini is auditing LLM citation likelihood...</div>`;
+            wrapper.classList.remove('hidden');
+            outputBox.innerHTML = `<div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold"><i class="fa-solid fa-circle-notch animate-spin"></i> Analyzing AEO Citation potential...</div>`;
             btn.disabled = true;
 
-            const systemPrompt = "You are an AI Search Specialist and pioneer in Answer Engine Optimization (AEO). Analyze the target URL topic. Estimate its citation probability in Gemini, Perplexity, and ChatGPT Search on a scale from 0% to 100%. Highlight: 1. 3 direct question prompts that this blog currently answers perfectly, 2. 3 highly optimized direct-question prompts the author should include directly inside the blog, and 3. How to structure the answer format under those questions so AI crawlers cite it.";
+            const systemPrompt = "You are an AI Search Specialist and pioneer in Answer Engine Optimization (AEO). Rate this blog's citation probability inside Perplexity, SearchGPT, and Gemini Search from 0% to 100%. Highlight direct user-prompt questions it currently answers perfectly, suggest structured prompts to integrate into headings, and formulate concise bullet point layouts matching AI crawler extractors.";
             const userQuery = `Audit AEO visibility and citation potential for: ${urlInput}`;
 
             try {
@@ -2093,7 +1877,7 @@
                     <div class="space-y-2 text-slate-700 dark:text-slate-300">
                         <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 dark:border-slate-800">
                             <span class="font-bold text-slate-800 dark:text-white"><i class="fa-solid fa-magnifying-glass-chart text-purple-500 mr-1.5"></i> AEO Citation & Visibility Audit</span>
-                            <span class="px-2 py-0.5 rounded text-[10px] bg-purple-500/10 text-purple-600 dark:text-purple-400 font-bold font-mono">Calculated</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] bg-purple-500/10 text-purple-600 dark:text-purple-400 font-bold">Calculated</span>
                         </div>
                         <p class="leading-relaxed text-[11px]">${parsedHTML}</p>
                     </div>
@@ -2103,35 +1887,6 @@
             } finally {
                 btn.disabled = false;
             }
-        }
-
-        let toastTimeout;
-        function showToast(message, type = "success") {
-            const toast = document.getElementById('toast');
-            const wrap = document.getElementById('toast-icon-wrap');
-            const msg = document.getElementById('toast-message');
-
-            msg.textContent = message;
-
-            if (type === "success") {
-                wrap.className = "p-1.5 bg-emerald-500/20 text-emerald-400 rounded-lg";
-                wrap.innerHTML = `<i class="fa-solid fa-circle-check text-base"></i>`;
-            } else if (type === "delete") {
-                wrap.className = "p-1.5 bg-amber-500/20 text-amber-400 rounded-lg";
-                wrap.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-base"></i>`;
-            } else {
-                wrap.className = "p-1.5 bg-rose-500/20 text-rose-400 rounded-lg";
-                wrap.innerHTML = `<i class="fa-solid fa-circle-xmark text-base"></i>`;
-            }
-
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
         }
 
         window.onload = function() {
