@@ -107,7 +107,7 @@
             </div>
 
             <button onclick="openSettingsModal()" class="w-full mt-1 bg-purple-500/10 hover:bg-purple-500 border border-purple-500/30 hover:border-purple-500 text-[10px] text-purple-600 dark:text-purple-400 hover:text-white font-semibold py-1.5 rounded-lg transition-all flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-sliders"></i> Settings & Access
+                <i class="fa-solid fa-sliders animate-pulse"></i> Diagnostics & Settings
             </button>
         </div>
 
@@ -208,6 +208,23 @@
             <div class="p-6 space-y-6 overflow-y-auto max-h-[75vh] grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <!-- Left Column: Database & Security Auth -->
                 <div class="lg:col-span-5 space-y-6">
+                    <!-- Live Connection Diagnostics & Helper Card -->
+                    <div id="diagnostics-panel" class="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-3">
+                        <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-nodes text-purple-500"></i> Live Connection Analyzer
+                        </h4>
+                        <div id="diagnostic-badge" class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-600">
+                            Checking Status...
+                        </div>
+                        <p id="diagnostic-desc" class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                            Awaiting database links. Fill in your Firebase JSON config below to initiate connection.
+                        </p>
+                        <div id="diagnostic-action-box" class="hidden p-2.5 bg-purple-500/10 border border-purple-500/20 rounded-lg text-[11px] text-purple-700 dark:text-purple-300 space-y-1.5">
+                            <p class="font-bold flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation"></i> Action Required:</p>
+                            <p id="diagnostic-action-text"></p>
+                        </div>
+                    </div>
+
                     <!-- User Authentication Area (Login/Logout + Change password) -->
                     <div class="p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-4">
                         <h4 class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -393,7 +410,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'content-tracker-prod';
@@ -401,6 +418,40 @@
         let auth = null;
         let isCloudConnected = false;
         let activeFirestoreListener = null;
+
+        // Diagnostic UI updater
+        function updateDiagnosticsUI(status, description, actionText = '') {
+            const panel = document.getElementById('diagnostics-panel');
+            const badge = document.getElementById('diagnostic-badge');
+            const desc = document.getElementById('diagnostic-desc');
+            const actionBox = document.getElementById('diagnostic-action-box');
+            const actionTextEl = document.getElementById('diagnostic-action-text');
+
+            if (!panel) return;
+
+            if (status === 'connected') {
+                badge.className = "inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-500";
+                badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 mt-1 animate-pulse"></span> Connected & Online`;
+                desc.textContent = description;
+                actionBox.classList.add('hidden');
+            } else if (status === 'error') {
+                badge.className = "inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-500";
+                badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1 mt-1"></span> Connection Blocked`;
+                desc.textContent = description;
+                
+                if (actionText) {
+                    actionBox.classList.remove('hidden');
+                    actionTextEl.innerHTML = actionText;
+                } else {
+                    actionBox.classList.add('hidden');
+                }
+            } else {
+                badge.className = "inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 dark:bg-slate-800 text-slate-500";
+                badge.textContent = "Offline Mode";
+                desc.textContent = description;
+                actionBox.classList.add('hidden');
+            }
+        }
 
         // Start Firebase real-time database listener
         async function initializeSyncEngine() {
@@ -410,8 +461,6 @@
             }
 
             let firebaseConfig = null;
-            
-            // Check custom configuration, keeping it persistent above fallbacks
             const envConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
             const storedConfig = localStorage.getItem('custom_firebase_config_prod');
             
@@ -437,12 +486,40 @@
                     
                     let userCredential = null;
                     const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                    const isAdmin = localStorage.getItem('growth_console_admin_auth') === 'true';
+                    const adminEmail = "amanbhardwaj1509@gmail.com";
+                    const adminPass = localStorage.getItem('admin_auth_pass_prod') || '@Man1509';
 
-                    // RULE 3 Priority Auth handling
-                    if (initialAuthToken) {
-                        userCredential = await signInWithCustomToken(auth, initialAuthToken);
-                    } else {
-                        userCredential = await signInAnonymously(auth);
+                    try {
+                        if (initialAuthToken) {
+                            userCredential = await signInWithCustomToken(auth, initialAuthToken);
+                        } else if (isAdmin) {
+                            try {
+                                userCredential = await signInWithEmailAndPassword(auth, adminEmail, adminPass);
+                            } catch (e) {
+                                console.warn("Admin auth rejected, attempting anonymous backup...", e);
+                                userCredential = await signInAnonymously(auth);
+                            }
+                        } else {
+                            userCredential = await signInAnonymously(auth);
+                        }
+                    } catch (authError) {
+                        console.error("Firebase Authentication process failed:", authError);
+                        
+                        let solutionMessage = "Your configuration key might be correct, but the authentication route failed.";
+                        if (authError.code === 'auth/operation-not-allowed') {
+                            solutionMessage = `<strong>Anonymous Sign-In is disabled in Firebase!</strong><br><br>
+                            To fix this instantly, do the following:<br>
+                            1. Go to your <a href="https://console.firebase.google.com/" target="_blank" class="underline text-purple-600">Firebase Console</a>.<br>
+                            2. Click <strong>Authentication</strong> -> <strong>Sign-in method</strong>.<br>
+                            3. Click <strong>Add new provider</strong>, select <strong>Anonymous</strong>, click the <strong>Enable</strong> switch, and press <strong>Save</strong>.`;
+                        } else if (authError.code === 'auth/invalid-api-key') {
+                            solutionMessage = "The <strong>apiKey</strong> inside your configuration config is invalid. Double check your Project Settings copy/paste.";
+                        }
+                        
+                        updateDiagnosticsUI('error', `Authentication failed: ${authError.message}`, solutionMessage);
+                        updateCloudStatusUI(false, "Auth Blocked");
+                        return; // Exit safely to prevent loop crashes
                     }
                     
                     const user = userCredential.user;
@@ -472,8 +549,7 @@
                             });
 
                             if (!hasCloudRecords) {
-                                // Auto-seed cloud database with offline mock records if it's currently clean/empty
-                                console.log("Cloud Firestore has no records yet. Seeding current state to Firestore...");
+                                console.log("Cloud Firestore is clean. Auto-syncing offline state...");
                                 currentCategories.forEach(cat => {
                                     const localRecords = window.appData[cat] || [];
                                     localRecords.forEach(rec => {
@@ -481,7 +557,6 @@
                                     });
                                 });
                             } else {
-                                // Smart synchronizer merge: Keep and sync local-only items to prevent view drops
                                 currentCategories.forEach(cat => {
                                     const merged = [];
                                     const localRecords = window.appData[cat] || [];
@@ -501,25 +576,38 @@
                                 });
                             }
                             
-                            // Mirror cloud synchronizations down to local memory safety buffer
                             window.saveDataToLocalStorage();
                             
                             if (typeof window.renderView === 'function') {
                                 window.renderView();
                             }
                             updateCloudStatusUI(true, "Cloud Synced");
+                            updateDiagnosticsUI('connected', "Your console is securely bridged with the live cloud Firestore instance. All records are backed up instantly.");
                         }, (error) => {
-                            console.error("Firestore subscription error:", error);
-                            updateCloudStatusUI(false, "Sync Error");
+                            console.error("Firestore database connection failed:", error);
+                            
+                            let resolution = "Ensure you have published correct Security Rules on your Firebase Console.";
+                            if (error.message && error.message.includes("permission-denied")) {
+                                resolution = `<strong>Firestore permissions blocked!</strong><br><br>
+                                Please update your database rules in Firebase console:<br>
+                                1. Go to <strong>Firestore Database</strong> -> <strong>Rules</strong> tab.<br>
+                                2. Change the read/write rule to allow public logs access:<br>
+                                <pre class="bg-slate-900 text-slate-100 p-2 rounded text-[10px] font-mono mt-1 select-all">allow read, write: if true;</pre>`;
+                            }
+                            
+                            updateDiagnosticsUI('error', `Firestore subscription error: ${error.message}`, resolution);
+                            updateCloudStatusUI(false, "Sync Stopped");
                         });
                         isCloudConnected = true;
                     }
                 } catch (e) {
-                    console.warn("Database initialization failed. Operating local mode.", e);
+                    console.warn("Database initialization failed. Operating in local mode.", e);
                     updateCloudStatusUI(false, "Local Mode");
+                    updateDiagnosticsUI('error', `Initialization Error: ${e.message}`, "Please confirm your Firebase Config JSON has correct quotes, keys, and values.");
                 }
             } else {
                 updateCloudStatusUI(false, "Local Mode");
+                updateDiagnosticsUI('offline', "Operating in offline memory. Fill in your configuration to enable real-time multiplayer sharing.");
             }
         }
 
@@ -567,6 +655,16 @@
 
         window.triggerCloudSyncInit = function() {
             initializeSyncEngine();
+        };
+
+        window.logoutFromFirebase = async function() {
+            if (auth) {
+                try {
+                    await signOut(auth);
+                } catch (e) {
+                    console.error("Firebase signout error", e);
+                }
+            }
         };
 
         initializeSyncEngine();
@@ -1161,6 +1259,10 @@
                 showToast("Administrative capabilities unlocked!");
                 closeLoginModal();
                 updateSettingsAuthPanel();
+                // Trigger cloud re-initialization to authenticate inside Firebase
+                if (window.triggerCloudSyncInit) {
+                    window.triggerCloudSyncInit();
+                }
                 renderView();
             } else {
                 showToast("Verification failed. Invalid credentials.", "error");
@@ -1170,6 +1272,14 @@
         window.submitAdminLogout = function() {
             localStorage.removeItem('growth_console_admin_auth');
             showToast("Returned to Guest viewing mode.");
+            // Call Firebase logout to fallback securely
+            if (window.logoutFromFirebase) {
+                window.logoutFromFirebase().then(() => {
+                    if (window.triggerCloudSyncInit) window.triggerCloudSyncInit();
+                });
+            } else {
+                if (window.triggerCloudSyncInit) window.triggerCloudSyncInit();
+            }
             updateSettingsAuthPanel();
             renderView();
         };
