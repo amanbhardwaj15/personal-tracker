@@ -17,7 +17,6 @@
             theme: {
                 extend: {
                     colors: {
-                        // Dynamically reference CSS variables for customizable active palettes
                         brand: {
                             50: 'var(--color-brand-50)',
                             100: 'var(--color-brand-100)',
@@ -75,14 +74,14 @@
         }
         .dashboard-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px -3px rgba(var(--color-brand-500), 0.15);
+            box-shadow: 0 12px 24px -5px rgba(168, 85, 247, 0.15);
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
+            from { opacity: 0; transform: scale(0.97); }
             to { opacity: 1; transform: scale(1); }
         }
         .animate-fade-in {
-            animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         #confetti-canvas {
             position: fixed;
@@ -105,7 +104,7 @@
         <!-- Dashboard Branding -->
         <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-800/80">
             <h1 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2.5">
-                <i class="fa-solid fa-chart-line text-brand-500 text-lg"></i>
+                <i class="fa-solid fa-chart-line text-brand-500 text-lg animate-pulse"></i>
                 <div class="flex flex-col">
                     <span>Growth Console</span>
                     <span class="text-[9px] text-brand-500 uppercase tracking-widest font-extrabold">CMS Command</span>
@@ -181,7 +180,7 @@
             
             <div class="flex items-center gap-3">
                 <!-- Bulk Operations actions panel -->
-                <div id="bulk-actions-wrapper" class="hidden flex items-center gap-2 bg-rose-500/10 border border-rose-500/20 px-3 py-1 rounded-lg text-xs">
+                <div id="bulk-actions-wrapper" class="hidden flex items-center gap-2 bg-rose-500/10 border border-rose-500/20 px-3 py-1.5 rounded-lg text-xs animate-pulse">
                     <span class="text-rose-500 font-bold" id="bulk-count-label">0 Selected</span>
                     <button onclick="promptBulkDelete()" class="bg-rose-600 hover:bg-rose-500 text-white px-2.5 py-1 rounded text-[11px] font-bold transition-all flex items-center gap-1">
                         <i class="fa-solid fa-trash-can"></i> Delete Selected
@@ -238,7 +237,7 @@
             <div class="p-6 space-y-6 overflow-y-auto max-h-[75vh] grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <!-- Configuration Columns -->
                 <div class="lg:col-span-5 space-y-6">
-                    <!-- Session Status & Login Gateway (FIXED: Added this wrapper to prevent JS from aborting) -->
+                    <!-- Session Status & Login Gateway -->
                     <div id="settings-auth-status" class="space-y-2"></div>
 
                     <!-- Dynamic Theme Selector -->
@@ -734,7 +733,12 @@
         let chatHistory = []; 
         let activeAiAuditRecordId = null; 
         let activeAlerts = []; 
-        let activePersona = 'auditor'; 
+        
+        // AI Generator Control studio global variables - refer image_8f2e62.png
+        window.activePersona = 'auditor'; 
+        window.activeTone = 'professional';
+        window.activeStyle = 'analytical';
+        window.activeLength = 'medium';
 
         // Dynamic console color customization choices
         window.activeTheme = localStorage.getItem('console_brand_theme') || 'purple';
@@ -1124,7 +1128,6 @@
             container.innerHTML = html;
         }
 
-        // Actionable triggers on notification tap
         window.handleNotificationAction = function(actionType, targetTab, targetId) {
             const drawer = document.getElementById('notification-drawer');
             if (drawer) drawer.style.display = 'none';
@@ -1197,12 +1200,93 @@
             }
         };
 
+        window.saveCmsCategory = function() {
+            const select = document.getElementById('cms-category-selector');
+            const catIdInput = select.value;
+            const title = document.getElementById('cms-cat-title').value.trim();
+            const desc = document.getElementById('cms-cat-desc').value.trim();
+            const icon = document.getElementById('cms-cat-icon').value.trim() || 'fa-folder';
+
+            if (!title) {
+                showToast("Please enter a category title", "error");
+                return;
+            }
+
+            let finalCatId = catIdInput;
+            if (catIdInput === 'new') {
+                finalCatId = 'cat_' + Date.now();
+            }
+
+            const fields = [];
+            const rows = document.querySelectorAll('#cms-fields-container > div');
+            rows.forEach(row => {
+                const keyInput = row.querySelector('.field-key');
+                const labelInput = row.querySelector('.field-label');
+                const typeSelect = row.querySelector('.field-type');
+                const reqCheckbox = row.querySelector('.field-req');
+
+                if (keyInput && keyInput.value.trim()) {
+                    fields.push({
+                        key: keyInput.value.trim(),
+                        label: labelInput.value.trim() || keyInput.value.trim(),
+                        type: typeSelect.value,
+                        required: reqCheckbox ? reqCheckbox.checked : false
+                    });
+                }
+            });
+
+            if (!fields.some(f => f.key === 'entryDate')) {
+                fields.push({ key: 'entryDate', label: 'Publish Date', type: 'date', required: true, defaultToday: true });
+            }
+
+            window.customSchema[finalCatId] = {
+                id: finalCatId,
+                title,
+                desc,
+                icon,
+                fields
+            };
+
+            localStorage.setItem('growth_console_cms_schemas', JSON.stringify(window.customSchema));
+
+            if (!window.appData[finalCatId]) {
+                window.appData[finalCatId] = [];
+            }
+            window.saveDataToLocalStorage();
+
+            showToast(`Category structure "${title}" successfully saved!`);
+            closeSettingsModal();
+            switchTab(finalCatId);
+        };
+
+        window.deleteCmsCategory = function() {
+            const select = document.getElementById('cms-category-selector');
+            const catId = select.value;
+
+            if (catId === 'new') {
+                showToast("No saved category selected for deletion", "error");
+                return;
+            }
+
+            const title = window.customSchema[catId]?.title || catId;
+
+            delete window.customSchema[catId];
+            delete window.appData[catId];
+
+            localStorage.setItem('growth_console_cms_schemas', JSON.stringify(window.customSchema));
+            window.saveDataToLocalStorage();
+
+            showToast(`Deleted category "${title}"`, "delete");
+            closeSettingsModal();
+            switchTab('masterDashboard');
+        };
+
         function renderSectionCalendarPicker() {
             const container = document.getElementById('tab-calendar-container');
             if (!container) return;
 
             if (activeTab === 'aiAssistant') {
-                container.innerHTML = `<span class="text-slate-400 font-semibold"><i class="fa-solid fa-brain mr-1.5 text-brand-500"></i> AI Workspace</span>`;
+                container.innerHTML = `<span class="text-slate-400 font-semibold"><i class="fa-solid fa-brain mr-1.5 text-brand-500 animate-pulse"></i> AI Studio Controls</span>`;
                 return;
             }
             if (activeTab === 'googleFeed') {
@@ -1891,15 +1975,19 @@
         }
 
         window.promptBulkDelete = function() {
-            if (!window.isAdminActive()) return;
+            if (!window.isAdminActive()) {
+                showToast("Admin authorization required for bulk adjustments.", "error");
+                return;
+            }
             const count = selectedRows.size;
+            if (count === 0) return;
             
             const heading = document.getElementById('confirm-modal-heading');
             const body = document.getElementById('confirm-modal-body');
             const btn = document.getElementById('confirm-delete-btn');
 
             heading.textContent = `Delete ${count} Selected Logs?`;
-            body.textContent = "Are you absolutely sure? This will permanently delete all selected items.";
+            body.textContent = "Are you absolutely sure? This will permanently delete all selected items from local cache and active synchronization engines.";
             
             const modal = document.getElementById('confirm-modal');
             const content = document.getElementById('confirm-modal-content');
@@ -1912,7 +2000,7 @@
                 }, 10);
             }
 
-            btn.onclick = async function() { executeBulkDeletion(); };
+            btn.onclick = async function() { await executeBulkDeletion(); };
         };
 
         async function executeBulkDeletion() {
@@ -2068,13 +2156,13 @@
                     <div class="p-5 bg-slate-100 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl space-y-4">
                         <h4 class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Launch New A/B Metadata Split-Test</h4>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                            <div class="flex flex-col"><label class="font-bold mb-1 text-slate-500">Target Asset/Blog Title</label><input type="text" id="ab-page-name" placeholder="e.g., Attendant Blog" class="p-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-850 rounded-lg outline-none"></div>
-                            <div class="flex flex-col"><label class="font-bold mb-1 text-slate-500">Control Meta Title</label><input type="text" id="ab-control-title" placeholder="e.g., Old Headline" class="p-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-850 rounded-lg outline-none"></div>
-                            <div class="flex flex-col"><label class="font-bold mb-1 text-slate-500">Experiment Variant Title</label><input type="text" id="ab-variant-title" placeholder="e.g., New Copy-Write hook" class="p-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-850 rounded-lg outline-none"></div>
+                            <div class="flex flex-col"><label class="font-bold mb-1 text-slate-500">Target Asset/Blog Title</label><input type="text" id="ab-page-name" placeholder="e.g., Attendant Blog" class="p-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-855 rounded-lg outline-none"></div>
+                            <div class="flex flex-col"><label class="font-bold mb-1 text-slate-500">Control Meta Title</label><input type="text" id="ab-control-title" placeholder="e.g., Old Headline" class="p-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-855 rounded-lg outline-none"></div>
+                            <div class="flex flex-col"><label class="font-bold mb-1 text-slate-500">Experiment Variant Title</label><input type="text" id="ab-variant-title" placeholder="e.g., New Copy-Write hook" class="p-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-855 rounded-lg outline-none"></div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                            <div class="flex flex-col"><label class="font-bold mb-1 text-slate-500">Control Initial CTR (%)</label><input type="number" step="0.01" id="ab-control-ctr" class="p-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-850 rounded-lg outline-none"></div>
-                            <div class="flex flex-col"><label class="font-bold mb-1 text-slate-500">Experiment CTR (%)</label><input type="number" step="0.01" id="ab-variant-ctr" class="p-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-850 rounded-lg outline-none"></div>
+                            <div class="flex flex-col"><label class="font-bold mb-1 text-slate-500">Control Initial CTR (%)</label><input type="number" step="0.01" id="ab-control-ctr" class="p-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-855 rounded-lg outline-none"></div>
+                            <div class="flex flex-col"><label class="font-bold mb-1 text-slate-500">Experiment CTR (%)</label><input type="number" step="0.01" id="ab-variant-ctr" class="p-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-855 rounded-lg outline-none"></div>
                         </div>
                         <div class="flex justify-end pt-2">
                             <button onclick="saveAbTest()" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-lg transition-all shadow shadow-brand-500/10">Deploy Test</button>
@@ -2169,7 +2257,6 @@
                     connectedIds.add(l.target);
                 });
 
-                // Draw lines
                 ctx.strokeStyle = 'rgba(147, 51, 234, 0.2)';
                 ctx.lineWidth = 1.5;
                 links.forEach(l => {
@@ -2189,7 +2276,6 @@
                     }
                 });
 
-                // Render Nodes
                 nodes.forEach(n => {
                     const isOrphan = !connectedIds.has(n.id);
                     const nodeRadius = Math.min(40, Math.max(12, n.views / 150));
@@ -2438,9 +2524,9 @@
                     else if (p.score < 75) scoreColor = 'text-amber-500 bg-amber-500/10';
 
                     performersHTML += `
-                        <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl">
+                        <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl hover:scale-[1.02] transition-transform duration-150">
                             <div class="flex items-center gap-3 min-w-0">
-                                <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-sm">
                                     ${medal}
                                 </div>
                                 <div class="min-w-0">
@@ -2468,30 +2554,64 @@
                 const closeRate = 0.25; 
                 const pipelineYieldValue = stats.totalDemos * clv * closeRate;
 
+                // Built-in intelligent advisory module
+                let advisorCardHTML = '';
+                if (stats.totalDemos > 0 && stats.totalTraffic > 0) {
+                    const avgConvRate = (stats.totalDemos / stats.totalTraffic) * 100;
+                    if (avgConvRate < 1.5) {
+                        advisorCardHTML = `
+                            <div class="p-4 bg-amber-500/5 border border-amber-500/20 rounded-xl space-y-2 text-xs">
+                                <div class="flex items-center gap-2 text-amber-500 font-bold">
+                                    <i class="fa-solid fa-triangle-exclamation animate-bounce"></i>
+                                    <span>Advisory: Conversions are Below Benchmark (Rate: ${avgConvRate.toFixed(2)}%)</span>
+                                </div>
+                                <p class="text-slate-500 dark:text-slate-400">Traffic yield is low relative to views. We suggest deploying micro lead-magnets (checklists or pricing estimators) on your revamped pages to turn reading intent into booked SaaS demos.</p>
+                            </div>
+                        `;
+                    } else {
+                        advisorCardHTML = `
+                            <div class="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-xl space-y-2 text-xs">
+                                <div class="flex items-center gap-2 text-emerald-500 font-bold">
+                                    <i class="fa-solid fa-circle-check animate-pulse"></i>
+                                    <span>Advisory: Conversion Rate Healthy (Rate: ${avgConvRate.toFixed(2)}%)</span>
+                                </div>
+                                <p class="text-slate-500 dark:text-slate-400">Your content capture loop is operating effectively. Maintain current publishing velocity and target secondary keywords.</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    advisorCardHTML = `
+                        <div class="p-4 bg-slate-500/5 border border-slate-500/10 rounded-xl space-y-2 text-xs text-slate-500">
+                            <span>No performance metrics found. Track new search pages to configure advisors.</span>
+                        </div>
+                    `;
+                }
+
                 panel.innerHTML = `
+                    <!-- Premium responsive stats cards grids -->
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-slate-800 dark:text-slate-100 animate-fade-in">
-                        <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
+                        <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4 hover:border-brand-500/40 transition-colors">
                             <div class="w-12 h-12 rounded-lg bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-users"></i></div>
                             <div>
                                 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Demos</p>
                                 <h4 class="text-xl font-black mt-1">${stats.totalDemos.toLocaleString()}</h4>
                             </div>
                         </div>
-                        <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
+                        <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4 hover:border-emerald-500/40 transition-colors">
                             <div class="w-12 h-12 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-dollar-sign"></i></div>
                             <div>
                                 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Revenue</p>
                                 <h4 class="text-xl font-black mt-1">$${stats.totalRevenue.toLocaleString()}</h4>
                             </div>
                         </div>
-                        <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
+                        <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4 hover:border-sky-500/40 transition-colors">
                             <div class="w-12 h-12 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-percent"></i></div>
                             <div>
                                 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Campaign ROI</p>
                                 <h4 class="text-xl font-black mt-1 ${roiPercentage >= 0 ? 'text-emerald-500' : 'text-rose-500'}">${roiPercentage.toFixed(1)}%</h4>
                             </div>
                         </div>
-                        <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
+                        <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4 hover:border-brand-500/40 transition-colors">
                             <div class="w-12 h-12 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-sack-dollar"></i></div>
                             <div>
                                 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1">Pipeline Yield <i class="fa-solid fa-circle-info text-[8px]" title="Demos * CLV ($5k) * Close Rate (25%)"></i></p>
@@ -2540,31 +2660,39 @@
                             </div>
                         </div>
 
-                        <!-- ROI Leaderboard -->
-                        <div class="lg:col-span-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+                        <!-- Leaderboard card column -->
+                        <div class="lg:col-span-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm flex flex-col justify-between space-y-4">
                             <div class="pb-3 border-b border-slate-100 dark:border-slate-855">
                                 <h3 class="text-sm font-bold uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-trophy text-amber-500"></i> Global ROI Leaderboard</h3>
                             </div>
-                            <div class="space-y-3 mt-4 overflow-y-auto max-h-80 flex-1 pr-1">
+                            <div class="space-y-3 overflow-y-auto max-h-80 flex-1 pr-1">
                                 ${performersHTML}
                             </div>
                         </div>
                     </div>
 
-                    <!-- Milestone tracker progress -->
-                    <div class="p-6 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm space-y-4">
-                        <h4 class="text-xs font-extrabold uppercase tracking-widest text-brand-600 dark:text-brand-400 flex items-center gap-2">
-                            <i class="fa-solid fa-bullseye"></i> Active Target Milestones
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                            <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-855 rounded-xl space-y-2">
-                                <div class="flex justify-between items-center"><span class="font-bold">Demos Captured Target</span><span class="font-mono font-bold">${stats.totalDemos}/100 Demos</span></div>
-                                <div class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-brand-500" style="width: ${Math.min(100, (stats.totalDemos/100)*100)}%"></div></div>
+                    <!-- Milestone tracker progress and dynamic advisor section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <div class="lg:col-span-6 p-6 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm space-y-4 flex flex-col justify-between">
+                            <h4 class="text-xs font-extrabold uppercase tracking-widest text-brand-600 dark:text-brand-400 flex items-center gap-2 shrink-0">
+                                <i class="fa-solid fa-bullseye animate-pulse"></i> Active Target Milestones
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs flex-1 pt-2">
+                                <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-855 rounded-xl space-y-2 flex flex-col justify-center">
+                                    <div class="flex justify-between items-center"><span class="font-bold">Demos Captured Target</span><span class="font-mono font-bold">${stats.totalDemos}/100 Demos</span></div>
+                                    <div class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-brand-500" style="width: ${Math.min(100, (stats.totalDemos/100)*100)}%"></div></div>
+                                </div>
+                                <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-855 rounded-xl space-y-2 flex flex-col justify-center">
+                                    <div class="flex justify-between items-center"><span class="font-bold">Total Organic Yield Target</span><span class="font-mono font-bold">$${stats.totalRevenue.toLocaleString()}/$20,000</span></div>
+                                    <div class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-emerald-500" style="width: ${Math.min(100, (stats.totalRevenue/20000)*100)}%"></div></div>
+                                </div>
                             </div>
-                            <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-855 rounded-xl space-y-2">
-                                <div class="flex justify-between items-center"><span class="font-bold">Total Organic Yield Target</span><span class="font-mono font-bold">$${stats.totalRevenue.toLocaleString()}/$20,000</span></div>
-                                <div class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-emerald-500" style="width: ${Math.min(100, (stats.totalRevenue/20000)*100)}%"></div></div>
-                            </div>
+                        </div>
+                        <div class="lg:col-span-6 p-6 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm space-y-3">
+                            <h4 class="text-xs font-extrabold uppercase tracking-widest text-brand-600 dark:text-brand-400 flex items-center gap-2">
+                                <i class="fa-solid fa-shield-halved"></i> Conversion Diagnostics & Optimization Advisor
+                            </h4>
+                            ${advisorCardHTML}
                         </div>
                     </div>
                 `;
@@ -2774,7 +2902,7 @@
                             </div>
                         `;
                     } else if (f.type === 'file' && disp !== '-') {
-                        disp = `<span class="px-2 py-0.5 border text-[10px] bg-slate-100 rounded">File Attached</span>`;
+                        disp = `<span class="px-2 py-0.5 border text-[10px] bg-slate-100 rounded font-bold">File Attached</span>`;
                     } else if (f.type === 'date' && disp !== '-') {
                         disp = `<span class="px-2 py-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 rounded font-mono text-[10px] font-bold">${disp}</span>`;
                     } else if (f.key === 'amt' && disp !== '-') {
@@ -3072,26 +3200,62 @@
             return `
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-180px)] overflow-hidden">
                     <div class="lg:col-span-8 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl p-6 shadow-sm flex flex-col h-full overflow-hidden">
-                        <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200/60 shrink-0">
-                            <div>
+                        
+                        <!-- Dynamic AI Customization Control Bar - refer image_8f2e62.png -->
+                        <div class="flex flex-col gap-3 pb-3 mb-4 border-b border-slate-200/60 shrink-0">
+                            <div class="flex items-center justify-between">
                                 <h3 class="text-sm font-bold uppercase tracking-wider flex items-center gap-2">
-                                    <i class="fa-solid fa-brain text-brand-500"></i> AI Assistant Workspace
+                                    <i class="fa-solid fa-brain text-brand-500 animate-pulse"></i> AI Assistant Workspace
                                 </h3>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-[10px] font-bold text-slate-400">Persona Swapper:</span>
-                                <select id="persona-swapper-select" onchange="window.activePersona = this.value; showToast('Swapped context agent persona!');" class="p-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs rounded outline-none">
-                                    <option value="auditor" ${activePersona === 'auditor' ? 'selected' : ''}>Harsh SEO Auditor</option>
-                                    <option value="copywriter" ${activePersona === 'copywriter' ? 'selected' : ''}>Copywriting Wizard</option>
-                                    <option value="coach" ${activePersona === 'coach' ? 'selected' : ''}>Cold Outreach Coach</option>
-                                </select>
+                            
+                            <!-- Control Studio parameters grid -->
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 bg-slate-50 dark:bg-slate-900/65 p-2 rounded-xl border border-slate-200/50 dark:border-slate-850">
+                                <div class="flex flex-col gap-1 min-w-0">
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest"><i class="fa-solid fa-user-ninja mr-1"></i> Persona:</span>
+                                    <select id="persona-swapper-select" onchange="window.activePersona = this.value; showToast('Swapped context agent persona!');" class="p-1 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[11px] rounded-lg outline-none font-semibold truncate">
+                                        <option value="auditor" ${activePersona === 'auditor' ? 'selected' : ''}>Harsh SEO Auditor</option>
+                                        <option value="copywriter" ${activePersona === 'copywriter' ? 'selected' : ''}>Copywriting Wizard</option>
+                                        <option value="coach" ${activePersona === 'coach' ? 'selected' : ''}>Outreach Coach</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="flex flex-col gap-1 min-w-0">
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest"><i class="fa-solid fa-volume-high mr-1"></i> Tone:</span>
+                                    <select id="tone-swapper-select" onchange="window.activeTone = this.value; showToast('Tone adjusted!');" class="p-1 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[11px] rounded-lg outline-none font-semibold truncate">
+                                        <option value="professional" ${window.activeTone === 'professional' ? 'selected' : ''}>Professional</option>
+                                        <option value="casual" ${window.activeTone === 'casual' ? 'selected' : ''}>Casual & Friendly</option>
+                                        <option value="witty" ${window.activeTone === 'witty' ? 'selected' : ''}>Witty / Humorous</option>
+                                        <option value="urgent" ${window.activeTone === 'urgent' ? 'selected' : ''}>Urgent & Direct</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="flex flex-col gap-1 min-w-0">
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest"><i class="fa-solid fa-pen-nib mr-1"></i> Style:</span>
+                                    <select id="style-swapper-select" onchange="window.activeStyle = this.value; showToast('Style tweaked!');" class="p-1 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[11px] rounded-lg outline-none font-semibold truncate">
+                                        <option value="analytical" ${window.activeStyle === 'analytical' ? 'selected' : ''}>Analytical</option>
+                                        <option value="narrative" ${window.activeStyle === 'narrative' ? 'selected' : ''}>Narrative Story</option>
+                                        <option value="conversational" ${window.activeStyle === 'conversational' ? 'selected' : ''}>Conversational</option>
+                                        <option value="technical" ${window.activeStyle === 'technical' ? 'selected' : ''}>Technical Docs</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="flex flex-col gap-1 min-w-0">
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest"><i class="fa-solid fa-compress mr-1"></i> Length:</span>
+                                    <select id="length-swapper-select" onchange="window.activeLength = this.value; showToast('Output length set!');" class="p-1 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[11px] rounded-lg outline-none font-semibold truncate">
+                                        <option value="tldr" ${window.activeLength === 'tldr' ? 'selected' : ''}>TL;DR Summary</option>
+                                        <option value="medium" ${window.activeLength === 'medium' ? 'selected' : ''}>Medium Draft</option>
+                                        <option value="comprehensive" ${window.activeLength === 'comprehensive' ? 'selected' : ''}>Comprehensive</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
+                        <!-- Chat message panels -->
                         <div id="ai-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-slate-200/50 dark:border-slate-800/50 mb-4 text-xs"></div>
 
                         <div class="shrink-0 flex gap-2">
-                            <input type="text" id="ai-chat-input" placeholder="Type your query here..." onkeydown="handleChatKeyDown(event)" class="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-white outline-none">
+                            <input type="text" id="ai-chat-input" placeholder="Ask for SEO critiques, title ideas, or outreach audits..." onkeydown="handleChatKeyDown(event)" class="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-white outline-none">
                             <button onclick="sendChatMessage()" id="btn-send-chat" class="bg-brand-600 hover:bg-brand-500 text-white px-5 rounded-xl text-xs font-bold transition-all shadow shadow-brand-500/10">Send</button>
                         </div>
                     </div>
@@ -3183,13 +3347,19 @@
 
             btn.disabled = true;
 
-            let customAgentInstruction = 'You are a senior growth strategist.';
+            // Integrating Control Studio options (image_8f2e62.png) into Gemini Instructions
+            let customAgentInstruction = `You are a helpful growth assistant.
+            - Persona Focus: ${window.activePersona}
+            - Output Tone Accent: ${window.activeTone}
+            - Formulation Style: ${window.activeStyle}
+            - Requested Length: ${window.activeLength}`;
+
             if (window.activePersona === 'auditor') {
-                customAgentInstruction = "You are a harsh technical SEO Auditor. Critique keywords and content depth strictly based on search engine parameters.";
+                customAgentInstruction += "\nFocus on highly analytical audits, content keyword density, ranking drops, and critique content strictly.";
             } else if (window.activePersona === 'copywriter') {
-                customAgentInstruction = "You are an expert copywriting Wizard. Leverage AIDA or PAS methodologies to write engaging title tags and description hooks.";
+                customAgentInstruction += "\nLeverage high-conversion copywriting frameworks (AIDA, PAS). Pitch engaging, click-worthy titles.";
             } else if (window.activePersona === 'coach') {
-                customAgentInstruction = "You are a direct Cold Outreach Coach. Critique email messaging styles and eliminate any possible spam triggers.";
+                customAgentInstruction += "\nAct as an outreach advisor. Target email deliverability, custom hooks, and spam trigger avoidance.";
             }
 
             try {
@@ -3304,7 +3474,13 @@
                     el.classList.add('border-rose-400', 'bg-rose-50');
                 } else {
                     el.classList.remove('border-rose-400', 'bg-rose-50');
-                    updatedDoc[f.key] = val;
+                    
+                    // Casting string inputs to proper floats/ints for numeric types
+                    if (f.type === 'number') {
+                        updatedDoc[f.key] = val ? Number(val) : 0;
+                    } else {
+                        updatedDoc[f.key] = val;
+                    }
                 }
             });
 
@@ -3355,7 +3531,7 @@
             const btn = document.getElementById('confirm-delete-btn');
 
             heading.textContent = "Delete Tracking Record?";
-            body.textContent = "This action cannot be undone.";
+            body.textContent = "This action cannot be undone. Record will be permanently removed.";
 
             const modal = document.getElementById('confirm-modal');
             const content = document.getElementById('confirm-modal-content');
