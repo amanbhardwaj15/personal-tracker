@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Growth Console & CMS Content Tracker</title>
-    <!-- Tailwind CSS for high-end customization -->
+    <!-- Tailwind CSS for modern responsive utility styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for interactive dashboard icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,7 +17,7 @@
             theme: {
                 extend: {
                     colors: {
-                        // Dynamically reference our CSS variables for the brand colors
+                        // Dynamically reference CSS variables for customizable active palettes
                         brand: {
                             50: 'var(--color-brand-50)',
                             100: 'var(--color-brand-100)',
@@ -36,7 +36,7 @@
     </script>
     
     <style id="theme-variables">
-        /* Initial palette configuration: Royal Purple */
+        /* Dynamic Theme Swapper Base Styles */
         :root {
             --color-brand-50: #f5f3ff;
             --color-brand-100: #ede9fe;
@@ -66,17 +66,16 @@
             background: rgba(15, 23, 42, 0.3);
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(var(--color-brand-500), 0.2);
-            background-color: var(--color-brand-500);
+            background: var(--color-brand-500);
             border-radius: 9999px;
-            opacity: 0.5;
+            opacity: 0.6;
         }
         .dashboard-card {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .dashboard-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px -3px rgba(147, 51, 234, 0.15), 0 4px 6px -2px rgba(147, 51, 234, 0.05);
+            box-shadow: 0 10px 20px -3px rgba(var(--color-brand-500), 0.15);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.95); }
@@ -85,7 +84,6 @@
         .animate-fade-in {
             animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        /* Confetti overlay styles */
         #confetti-canvas {
             position: fixed;
             top: 0;
@@ -99,12 +97,12 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 h-screen flex overflow-hidden transition-colors duration-300">
 
-    <!-- Screen Confetti Layer -->
+    <!-- Screen Interactive Confetti Celebration Layer -->
     <canvas id="confetti-canvas"></canvas>
 
-    <!-- Sidebar Section -->
-    <aside class="w-68 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800/80 flex flex-col shrink-0 z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)] transition-colors duration-300">
-        <!-- Brand identity header -->
+    <!-- Sidebar Navigation -->
+    <aside class="w-68 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800/80 flex flex-col shrink-0 z-20 shadow-sm transition-colors duration-300">
+        <!-- Dashboard Branding -->
         <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-800/80">
             <h1 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2.5">
                 <i class="fa-solid fa-chart-line text-brand-500 text-lg"></i>
@@ -115,49 +113,51 @@
             </h1>
         </div>
 
-        <!-- Connection Status -->
+        <!-- Connection Status & Role Controller Info -->
         <div class="px-4 py-3 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-2 text-xs">
             <div class="flex items-center justify-between">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
                     <i class="fa-solid fa-cloud text-slate-400 dark:text-slate-500"></i> Cloud Sync:
                 </span>
                 <span id="cloud-status-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-amber-500/10 text-amber-500 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Local Mode
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Unconfigured
                 </span>
             </div>
             
-            <div class="flex items-center justify-between border-t border-slate-200/50 dark:border-slate-800/50 pt-2">
+            <div class="flex items-center justify-between border-t border-slate-200/50 dark:border-slate-800/50 pt-2 pb-1">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
                     <i class="fa-solid fa-user-shield text-slate-400 dark:text-slate-500"></i> Role:
                 </span>
                 <span id="role-badge" class="px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                    Guest (View)
+                    Guest (View-Only)
                 </span>
             </div>
 
-            <!-- Dynamic Admin Access Actions Hub -->
-            <div id="admin-hub-actions" class="mt-1"></div>
+            <!-- Prominent User Authentication Hub -->
+            <div id="admin-hub-actions" class="mt-1 space-y-1.5">
+                <!-- Dynamically populated login triggers -->
+            </div>
         </div>
 
-        <!-- Theme Controls -->
+        <!-- System Theme Switcher -->
         <div class="px-4 py-2.5 bg-slate-50/50 dark:bg-slate-950/40 border-b border-slate-200 dark:border-slate-800/60 flex flex-col gap-1.5 text-xs">
             <div class="flex items-center justify-between">
                 <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
                     <i class="fa-solid fa-circle-half-stroke text-slate-400 dark:text-slate-500"></i> Theme:
                 </span>
-                <button onclick="toggleTheme()" class="px-2.5 py-1 bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-700 dark:text-slate-300 font-bold hover:bg-brand-500 hover:text-white dark:hover:bg-brand-500 dark:hover:text-white transition-all flex items-center gap-1.5">
+                <button onclick="toggleTheme()" class="px-2.5 py-1 bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-700 dark:text-slate-300 font-bold hover:bg-brand-500 hover:text-white transition-all flex items-center gap-1.5">
                     <span id="theme-icon"><i class="fa-solid fa-moon"></i></span>
                     <span id="theme-text">Dark Mode</span>
                 </button>
             </div>
         </div>
         
-        <!-- Navigation Menu Tabs -->
+        <!-- Sidebar Navigation Directory -->
         <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto" id="nav-menu"></nav>
 
-        <!-- Backup local interactions panel -->
+        <!-- JSON File Sync Handlers -->
         <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/80 flex flex-col gap-2">
-            <p class="text-[10px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-wider">Local Backup Files</p>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-wider">Local Backups</p>
             <div class="grid grid-cols-2 gap-2">
                 <button onclick="exportData()" class="px-2 py-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-[11px] font-semibold rounded text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1 transition-colors border border-slate-300 dark:border-slate-700">
                     <i class="fa-solid fa-file-export text-brand-500"></i> Export
@@ -170,8 +170,9 @@
         </div>
     </aside>
 
+    <!-- Main Display Section -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
-        <!-- Main Controller Header -->
+        <!-- Interactive Navigation Header -->
         <header class="bg-white dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800/80 px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between shrink-0 gap-4 transition-colors duration-300 relative z-30">
             <div>
                 <h2 id="view-title" class="text-lg font-bold text-slate-800 dark:text-white tracking-tight">Master Summary Dashboard</h2>
@@ -187,17 +188,17 @@
                     </button>
                 </div>
 
-                <!-- Section Specific Calendar Container -->
+                <!-- Custom Section-Specific Calendar Filter -->
                 <div class="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-lg text-xs shadow-sm" id="tab-calendar-container"></div>
 
-                <!-- Alerts & Notifications bell -->
+                <!-- Clickable Notification Tray -->
                 <div class="relative">
                     <button id="alert-bell-btn" onclick="toggleNotificationDrawer()" class="w-10 h-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all flex items-center justify-center relative">
                         <i class="fa-solid fa-bell text-sm"></i>
-                        <span id="active-alert-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white dark:border-slate-950 animate-bounce">0</span>
+                        <span id="active-alert-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white dark:border-slate-950 animate-bounce hidden">0</span>
                     </button>
-                    <!-- Notification Tray Drawer -->
-                    <div id="notification-drawer" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl z-50 p-4 space-y-3">
+                    <!-- Notification Tray Panel -->
+                    <div id="notification-drawer" style="display: none;" class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl z-50 p-4 space-y-3">
                         <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80 pb-2">
                             <span class="text-xs font-bold text-slate-800 dark:text-white flex items-center gap-1.5">
                                 <i class="fa-solid fa-bell text-brand-500"></i> SEO & Performance Alerts
@@ -208,26 +209,26 @@
                     </div>
                 </div>
 
-                <!-- Add Tracking Entry Button -->
-                <button id="add-entry-btn" onclick="openModal()" class="hidden bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 text-xs font-bold rounded-lg shadow-lg shadow-brand-500/10 hover:shadow-brand-500/20 transition-all flex items-center gap-1.5">
+                <!-- Write Action Buttons -->
+                <button id="add-entry-btn" onclick="openModal()" class="hidden bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 text-xs font-bold rounded-lg shadow-lg shadow-brand-500/10 transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-plus text-[10px]"></i> Add Entry
                 </button>
             </div>
         </header>
 
-        <!-- Dynamic Data Render View Panel -->
+        <!-- Dynamic Content Mount Panel -->
         <div class="flex-1 overflow-y-auto p-8 space-y-8" id="main-content-panel"></div>
     </main>
 
     <!-- Settings Modal -->
-    <div id="settings-modal" style="display:none;" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div id="settings-modal" style="display:none;" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-4xl flex flex-col border border-slate-200 dark:border-slate-800" id="settings-modal-content">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-950 rounded-t-xl">
                 <div>
                     <h3 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
                         <i class="fa-solid fa-sliders text-brand-500"></i> Settings & Control Center
                     </h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Customize database configs, user credentials, workspace layout and active console colors.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Configure databases, credentials, workspaces, and colors.</p>
                 </div>
                 <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 transition-colors bg-white dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
                     <i class="fa-solid fa-xmark text-lg px-1"></i>
@@ -235,73 +236,68 @@
             </div>
             
             <div class="p-6 space-y-6 overflow-y-auto max-h-[75vh] grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Left Column: Database & Theme Customizer -->
+                <!-- Configuration Columns -->
                 <div class="lg:col-span-5 space-y-6">
-                    <!-- Dynamic Color Customization Option -->
+                    <!-- Session Status & Login Gateway (FIXED: Added this wrapper to prevent JS from aborting) -->
+                    <div id="settings-auth-status" class="space-y-2"></div>
+
+                    <!-- Dynamic Theme Selector -->
                     <div class="p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-3">
                         <h4 class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider flex items-center gap-1.5">
                             <i class="fa-solid fa-palette"></i> Console Theme Customization
                         </h4>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Choose a signature primary color scheme for your growth tracking command console.</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Choose a primary color palette accent for your command console.</p>
                         <div class="grid grid-cols-5 gap-2 pt-2">
-                            <button onclick="changeConsoleTheme('purple')" class="w-full h-8 rounded bg-purple-600 hover:scale-105 border-2 border-white dark:border-slate-900 transition-all flex items-center justify-center text-white" title="Royal Purple"><i class="fa-solid fa-check text-xs opacity-0" id="check-purple"></i></button>
-                            <button onclick="changeConsoleTheme('green')" class="w-full h-8 rounded bg-emerald-600 hover:scale-105 border-2 border-white dark:border-slate-900 transition-all flex items-center justify-center text-white" title="Emerald Grove"><i class="fa-solid fa-check text-xs opacity-0" id="check-green"></i></button>
-                            <button onclick="changeConsoleTheme('blue')" class="w-full h-8 rounded bg-sky-600 hover:scale-105 border-2 border-white dark:border-slate-900 transition-all flex items-center justify-center text-white" title="Ocean Breeze"><i class="fa-solid fa-check text-xs opacity-0" id="check-blue"></i></button>
-                            <button onclick="changeConsoleTheme('orange')" class="w-full h-8 rounded bg-orange-600 hover:scale-105 border-2 border-white dark:border-slate-900 transition-all flex items-center justify-center text-white" title="Sunset Orange"><i class="fa-solid fa-check text-xs opacity-0" id="check-orange"></i></button>
-                            <button onclick="changeConsoleTheme('rose')" class="w-full h-8 rounded bg-rose-600 hover:scale-105 border-2 border-white dark:border-slate-900 transition-all flex items-center justify-center text-white" title="Ruby Rose"><i class="fa-solid fa-check text-xs opacity-0" id="check-rose"></i></button>
+                            <button onclick="changeConsoleTheme('purple')" class="w-full h-8 rounded bg-purple-600 border-2 border-white dark:border-slate-900 flex items-center justify-center text-white" title="Royal Purple"><i class="fa-solid fa-check text-xs opacity-0" id="check-purple"></i></button>
+                            <button onclick="changeConsoleTheme('green')" class="w-full h-8 rounded bg-emerald-600 border-2 border-white dark:border-slate-900 flex items-center justify-center text-white" title="Emerald Grove"><i class="fa-solid fa-check text-xs opacity-0" id="check-green"></i></button>
+                            <button onclick="changeConsoleTheme('blue')" class="w-full h-8 rounded bg-sky-600 border-2 border-white dark:border-slate-900 flex items-center justify-center text-white" title="Ocean Breeze"><i class="fa-solid fa-check text-xs opacity-0" id="check-blue"></i></button>
+                            <button onclick="changeConsoleTheme('orange')" class="w-full h-8 rounded bg-orange-600 border-2 border-white dark:border-slate-900 flex items-center justify-center text-white" title="Sunset Orange"><i class="fa-solid fa-check text-xs opacity-0" id="check-orange"></i></button>
+                            <button onclick="changeConsoleTheme('rose')" class="w-full h-8 rounded bg-rose-600 border-2 border-white dark:border-slate-900 flex items-center justify-center text-white" title="Ruby Rose"><i class="fa-solid fa-check text-xs opacity-0" id="check-rose"></i></button>
                         </div>
                     </div>
 
-                    <!-- Connection Diagnostics -->
+                    <!-- Connection Diagnostics Analyzer -->
                     <div id="diagnostics-panel" class="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-3">
                         <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                            <i class="fa-solid fa-circle-nodes text-brand-500"></i> Live Connection Analyzer
+                            <i class="fa-solid fa-circle-nodes text-brand-500"></i> Connection Status
                         </h4>
-                        <div id="diagnostic-badge" class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-600">Checking Status...</div>
-                        <p id="diagnostic-desc" class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Awaiting database connection parameters.</p>
-                        <div id="diagnostic-action-box" class="hidden p-2.5 bg-brand-500/10 border border-brand-500/20 rounded-lg text-[11px] text-brand-700 dark:text-brand-300 space-y-1.5">
+                        <div id="diagnostic-badge" class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-600">Unconfigured</div>
+                        <p id="diagnostic-desc" class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Local Offline Cache enabled. Enter your settings below to activate sync.</p>
+                        <div id="diagnostic-action-box" class="hidden p-2.5 bg-rose-500/10 border border-rose-500/20 rounded-lg text-[11px] text-rose-700 dark:text-rose-300 space-y-1.5">
                             <p class="font-bold flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation"></i> Action Required:</p>
                             <p id="diagnostic-action-text"></p>
                         </div>
                     </div>
 
-                    <!-- Administration Auth -->
-                    <div class="p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-4">
+                    <!-- Manual Database Credential Form (User Controlled) -->
+                    <div class="p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-3">
                         <h4 class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider flex items-center gap-1.5">
-                            <i class="fa-solid fa-user-lock"></i> Administration Auth
+                            <i class="fa-solid fa-cloud"></i> Manual Firestore Setup
                         </h4>
-                        <div id="settings-auth-status" class="text-xs"></div>
-                        <div id="settings-password-form" class="hidden border-t border-slate-200 dark:border-slate-800 pt-3 space-y-2">
-                            <label class="text-[10px] uppercase font-bold text-slate-400">Change Admin Password</label>
-                            <div class="flex gap-2">
-                                <input type="password" id="new-admin-password" placeholder="New Password..." class="flex-1 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white outline-none">
-                                <button onclick="saveAdminPassword()" class="bg-brand-600 hover:bg-brand-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all">Save</button>
-                            </div>
-                        </div>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Paste your raw Firebase JSON config block to enable online database synchronization:</p>
+                        <textarea id="firebase-config-textarea" rows="4" placeholder='{ "apiKey": "AIzaSy...", "authDomain": "...", ... }' class="w-full p-2 text-[10px] font-mono bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded outline-none text-slate-800 dark:text-white"></textarea>
+                        <button onclick="saveManualFirebaseConfig()" class="w-full py-1.5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded transition-all">Save Config & Connect</button>
                     </div>
 
-                    <!-- Gemini Credentials Setup -->
-                    <div class="p-4 bg-brand-500/5 border border-brand-500/10 rounded-xl">
-                        <h4 class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                            <i class="fa-solid fa-key"></i> Gemini AI Studio Key
+                    <!-- Gemini AI Engine API Configuration -->
+                    <div class="p-4 bg-brand-500/5 border border-brand-500/10 rounded-xl space-y-3">
+                        <h4 class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-key"></i> Gemini AI API Key
                         </h4>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">Permanently saved locally. Locked to prevent accidental modifications.</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Used for one-click blog optimizations, social repurposing, and preflight draft checks.</p>
                         <div class="flex flex-col gap-2">
-                            <input type="password" id="gemini-key-input" readonly placeholder="Key is locked. Click 'Edit Key' to change..." class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-brand-500 opacity-70">
-                            <div class="flex justify-end gap-2">
-                                <button id="edit-gemini-btn" onclick="toggleEditGeminiKey()" class="px-3 py-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-[11px] font-semibold rounded text-slate-700 dark:text-slate-300 transition-colors">Edit Key</button>
-                                <button id="save-gemini-btn" onclick="saveGeminiKey()" class="hidden px-4 py-1 bg-brand-600 hover:bg-brand-500 text-white text-[11px] font-bold rounded transition-all">Update Key</button>
-                            </div>
+                            <input type="password" id="gemini-key-input" placeholder="Paste your Gemini key..." class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-lg text-xs outline-none text-slate-800 dark:text-white">
+                            <button onclick="saveManualGeminiKey()" class="px-4 py-1.5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded transition-all">Save Gemini Key</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Workspace Manager -->
+                <!-- CMS Workspace Customizer -->
                 <div class="lg:col-span-7 p-4 bg-slate-500/5 border border-slate-500/10 rounded-xl space-y-4">
                     <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                         <i class="fa-solid fa-gears text-brand-500"></i> CMS Workspace Manager (Customize Channels)
                     </h4>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Add new categories, edit metrics schemas, or delete trackers.</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Extend your tracker structure by creating customized directories or properties on the fly.</p>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div class="flex flex-col">
@@ -350,13 +346,13 @@
         </div>
     </div>
 
-    <!-- Verification / Login Modal -->
-    <div id="login-modal" style="display:none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <!-- Authentication dialog wrapper -->
+    <div id="login-modal" style="display:none;" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-md flex flex-col border border-slate-200 dark:border-slate-800" id="login-modal-content">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-950 rounded-t-xl">
                 <div>
                     <h3 class="text-base font-bold text-slate-800 dark:text-white">Admin Credentials Verification</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Please sign in to unlock CMS configurations.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Authorize dashboard configuration adjustments.</p>
                 </div>
                 <button onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 transition-colors bg-white dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
                     <i class="fa-solid fa-xmark text-lg px-1"></i>
@@ -365,12 +361,12 @@
             <div class="p-6 space-y-4">
                 <div class="flex flex-col">
                     <label for="login-email" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Admin Email Address:</label>
-                    <input type="email" id="login-email" class="w-full mt-1.5 p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-850 rounded-lg text-xs outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-800 dark:text-white" value="amanbhardwaj1509@gmail.com">
+                    <input type="email" id="login-email" class="w-full mt-1.5 p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs outline-none text-slate-800 dark:text-white" value="amanbhardwaj1509@gmail.com">
                 </div>
                 <div class="flex flex-col">
                     <label for="login-password" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Password Code:</label>
                     <div class="relative mt-1.5">
-                        <input type="password" id="login-password" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-850 rounded-lg text-xs outline-none focus:ring-2 focus:ring-brand-500 transition-all text-slate-800 dark:text-white">
+                        <input type="password" id="login-password" class="w-full p-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-xs outline-none text-slate-800 dark:text-white">
                         <button onclick="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                             <i class="fa-regular fa-eye" id="password-eye-icon"></i>
                         </button>
@@ -378,14 +374,14 @@
                 </div>
             </div>
             <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-end gap-2 rounded-b-xl">
-                <button onclick="closeLoginModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Cancel</button>
-                <button onclick="submitAdminLogin()" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">Verify & Lock</button>
+                <button onclick="closeLoginModal()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-450 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Cancel</button>
+                <button onclick="submitAdminLogin()" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">Verify & Log In</button>
             </div>
         </div>
     </div>
 
     <!-- Dynamic Entry Modal Form -->
-    <div id="modal" style="display:none;" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div id="modal" style="display:none;" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-800" id="modal-content">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-950 rounded-t-xl">
                 <div>
@@ -406,8 +402,8 @@
         </div>
     </div>
 
-    <!-- AI Audit & Repurposing Studio Report Modal -->
-    <div id="ai-audit-modal" style="display:none;" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <!-- AI Audit Optimization and Social Repurposing modal -->
+    <div id="ai-audit-modal" style="display:none;" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-800" id="ai-audit-modal-content">
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-950 rounded-t-xl">
                 <div class="flex items-center gap-2">
@@ -424,7 +420,7 @@
                 </button>
             </div>
 
-            <!-- Segmented Control inside AI Studio Modal for Social Repurposing -->
+            <!-- Segmented Content Controls -->
             <div class="px-6 py-2 bg-slate-100 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 flex gap-2 text-xs" id="ai-studio-tabs">
                 <button onclick="switchAiStudioTab('audit')" id="ai-tab-audit" class="px-3 py-1.5 rounded-lg bg-brand-600 text-white font-bold transition-all">
                     <i class="fa-solid fa-chart-line mr-1"></i> SEO Audit
@@ -445,13 +441,13 @@
                 <button onclick="copyAuditReport()" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors">
                     <i class="fa-regular fa-copy"></i> Copy Content
                 </button>
-                <button onclick="closeAiAuditModal()" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-lg shadow-md transition-all">Done, Apply Recommendations</button>
+                <button onclick="closeAiAuditModal()" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-lg shadow-md transition-all">Done</button>
             </div>
         </div>
     </div>
 
-    <!-- Forum Scraper Terminal -->
-    <div id="scraper-terminal-modal" style="display:none;" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <!-- Forum Scraper Terminal Modal -->
+    <div id="scraper-terminal-modal" style="display:none;" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-slate-950 rounded-xl shadow-2xl w-full max-w-lg border border-slate-800 flex flex-col font-mono text-xs text-emerald-400 overflow-hidden" id="scraper-terminal-content">
             <div class="px-4 py-3 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
                 <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-rose-500"></span><span class="font-bold text-slate-300">Live Forum Auto-Sync Scraper</span></span>
@@ -481,7 +477,7 @@
         </div>
     </div>
 
-    <!-- Action Toast HUD notification -->
+    <!-- Alert Dialog Banner -->
     <div id="toast" class="fixed bottom-4 right-4 bg-slate-900 dark:bg-slate-950 border border-slate-800 text-white px-5 py-4 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 max-w-md">
         <div class="p-1.5 bg-emerald-500/20 text-emerald-400 rounded-lg" id="toast-icon-wrap">
             <i class="fa-solid fa-circle-check text-base"></i>
@@ -496,80 +492,30 @@
         import { getAuth, signInWithCustomToken, signInAnonymously, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Hardcoded target workspace ID inside Firebase artifacts
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'content-tracker-prod';
+        const appId = 'content-tracker-prod';
         let db = null;
         let auth = null;
         let isCloudConnected = false;
         let activeFirestoreListener = null;
 
-        // Auto-loaded target web-app credentials to accelerate synchronization instantly
-        const defaultSpyneFirebaseConfig = {
-            "apiKey": "AIzaSyA8hjJWahsfT8Ur0XwqpYsEUmBJslb9TXE",
-            "authDomain": "personal-tracker-spyne.firebaseapp.com",
-            "projectId": "personal-tracker-spyne",
-            "storageBucket": "personal-tracker-spyne.firebasestorage.app",
-            "messagingSenderId": "537555017814",
-            "appId": "1:537555017814:web:8f3c7cbac7c93a56965bf7",
-            "measurementId": "G-70ZR9FFVL2"
-        };
-
-        function updateDiagnosticsUI(status, description, actionText = '') {
-            const panel = document.getElementById('diagnostics-panel');
-            const badge = document.getElementById('diagnostic-badge');
-            const desc = document.getElementById('diagnostic-desc');
-            const actionBox = document.getElementById('diagnostic-action-box');
-            const actionTextEl = document.getElementById('diagnostic-action-text');
-
-            if (!panel) return;
-
-            if (status === 'connected') {
-                badge.className = "inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-500";
-                badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 mt-1 animate-pulse"></span> Connected & Online`;
-                desc.textContent = description;
-                actionBox.classList.add('hidden');
-            } else if (status === 'error') {
-                badge.className = "inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-500";
-                badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1 mt-1"></span> Connection Blocked`;
-                desc.textContent = description;
-                
-                if (actionText) {
-                    actionBox.classList.remove('hidden');
-                    actionTextEl.innerHTML = actionText;
-                } else {
-                    actionBox.classList.add('hidden');
-                }
-            } else {
-                badge.className = "inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 dark:bg-slate-800 text-slate-500";
-                badge.textContent = "Offline Mode";
-                desc.textContent = description;
-                actionBox.classList.add('hidden');
-            }
-        }
-
-        async function initializeSyncEngine() {
+        window.initializeSyncEngine = async function() {
             if (activeFirestoreListener) {
                 activeFirestoreListener();
                 activeFirestoreListener = null;
             }
 
             let firebaseConfig = null;
-            const envConfig = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
             const storedConfig = localStorage.getItem('custom_firebase_config_prod');
             
             if (storedConfig) {
                 try { firebaseConfig = JSON.parse(storedConfig); } catch(e) { console.error(e); }
-            } else if (envConfig) {
-                try { firebaseConfig = envConfig; } catch(e) { console.error(e); }
-            } else {
-                firebaseConfig = defaultSpyneFirebaseConfig;
             }
 
             let connectionTimeoutTriggered = false;
             const fallbackWatchdog = setTimeout(() => {
                 if (!isCloudConnected) {
                     connectionTimeoutTriggered = true;
-                    console.warn("Firestore connection limit exceeded. Defaulting to high-speed Offline Mode.");
+                    console.warn("Firestore connection limit exceeded. Defaulting to Offline Mode.");
                     updateCloudStatusUI(false, "Offline Fallback");
                     updateDiagnosticsUI('offline', "Operating in offline local cache.");
                 }
@@ -582,15 +528,12 @@
                     auth = getAuth(app);
                     
                     let userCredential = null;
-                    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
                     const isAdmin = localStorage.getItem('growth_console_admin_auth') === 'true';
                     const adminEmail = "amanbhardwaj1509@gmail.com";
                     const adminPass = localStorage.getItem('admin_auth_pass_prod') || '@Man1509';
 
                     try {
-                        if (initialAuthToken) {
-                            userCredential = await signInWithCustomToken(auth, initialAuthToken);
-                        } else if (isAdmin) {
+                        if (isAdmin) {
                             try {
                                 userCredential = await signInWithEmailAndPassword(auth, adminEmail, adminPass);
                             } catch (e) {
@@ -601,7 +544,23 @@
                         }
                     } catch (authError) {
                         clearTimeout(fallbackWatchdog);
-                        updateDiagnosticsUI('error', `Authentication stalled: ${authError.message}`);
+                        let helpActionText = "";
+                        if (authError.code === 'auth/admin-restricted-operation') {
+                            helpActionText = `
+                                <strong>Firebase Admin Operation Blocked:</strong><br/>
+                                This error occurs because <strong>Anonymous Auth</strong> or <strong>Email/Password sign-ins</strong> are disabled in your Firebase project.<br/>
+                                <ol class="list-decimal list-inside space-y-1 mt-1.5">
+                                    <li>Go to your <a href="https://console.firebase.google.com/" target="_blank" class="underline font-bold">Firebase Console</a></li>
+                                    <li>Select <strong>Authentication</strong> > <strong>Sign-in method</strong></li>
+                                    <li>Enable the <strong>Anonymous</strong> provider and the <strong>Email/Password</strong> provider</li>
+                                    <li>Click save and reload this dashboard.</li>
+                                </ol>
+                            `;
+                        } else {
+                            helpActionText = `Authentication Error: ${authError.message}`;
+                        }
+                        
+                        updateDiagnosticsUI('error', `Authentication stalled: ${authError.message}`, helpActionText);
                         updateCloudStatusUI(false, "Offline Fallback");
                         return;
                     }
@@ -667,7 +626,7 @@
                             }
 
                             updateCloudStatusUI(true, "Cloud Synced");
-                            updateDiagnosticsUI('connected', "Your dashboard is securely connected with Firestore.");
+                            updateDiagnosticsUI('connected', "Connected successfully to your custom Firestore Database.");
                         }, (error) => {
                             console.error("Firestore loading delay:", error);
                             updateDiagnosticsUI('error', `Firestore delayed response: ${error.message}`);
@@ -681,10 +640,10 @@
                 }
             } else {
                 clearTimeout(fallbackWatchdog);
-                updateCloudStatusUI(false, "Offline Mode");
+                updateCloudStatusUI(false, "Saved Locally");
                 updateDiagnosticsUI('offline', "Active in secure local mode.");
             }
-        }
+        };
 
         function updateCloudStatusUI(isConnected, message) {
             const badge = document.getElementById('cloud-status-badge');
@@ -696,6 +655,39 @@
                     badge.className = "px-2 py-0.5 rounded font-bold text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center gap-1";
                     badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> ${message}`;
                 }
+            }
+        }
+
+        function updateDiagnosticsUI(status, description, actionText = '') {
+            const panel = document.getElementById('diagnostics-panel');
+            const badge = document.getElementById('diagnostic-badge');
+            const desc = document.getElementById('diagnostic-desc');
+            const actionBox = document.getElementById('diagnostic-action-box');
+            const actionTextEl = document.getElementById('diagnostic-action-text');
+
+            if (!panel) return;
+
+            if (status === 'connected') {
+                badge.className = "inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-500";
+                badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 mt-1 animate-pulse"></span> Connected & Online`;
+                desc.textContent = description;
+                actionBox.classList.add('hidden');
+            } else if (status === 'error') {
+                badge.className = "inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-500";
+                badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1 mt-1"></span> Connection Blocked`;
+                desc.textContent = description;
+                
+                if (actionText) {
+                    actionBox.classList.remove('hidden');
+                    actionTextEl.innerHTML = actionText;
+                } else {
+                    actionBox.classList.add('hidden');
+                }
+            } else {
+                badge.className = "inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 dark:bg-slate-800 text-slate-500";
+                badge.textContent = "Offline Mode";
+                desc.textContent = description;
+                actionBox.classList.add('hidden');
             }
         }
 
@@ -724,17 +716,13 @@
             return isCloudConnected && auth && auth.currentUser;
         };
 
-        window.triggerCloudSyncInit = function() {
-            initializeSyncEngine();
-        };
-
         window.logoutFromFirebase = async function() {
             if (auth) {
                 try { await signOut(auth); } catch (e) { console.error(e); }
             }
         };
 
-        initializeSyncEngine();
+        window.initializeSyncEngine();
     </script>
 
     <script>
@@ -746,7 +734,7 @@
         let chatHistory = []; 
         let activeAiAuditRecordId = null; 
         let activeAlerts = []; 
-        let activePersona = 'auditor'; // System Persona Swapper state
+        let activePersona = 'auditor'; 
 
         // Dynamic console color customization choices
         window.activeTheme = localStorage.getItem('console_brand_theme') || 'purple';
@@ -786,7 +774,6 @@
             window.activeTheme = themeName;
             localStorage.setItem('console_brand_theme', themeName);
 
-            // Rebuild theme-variables style tag
             const styleTag = document.getElementById('theme-variables');
             styleTag.innerHTML = `
                 :root {
@@ -802,7 +789,6 @@
                 }
             `;
 
-            // Reset dynamic checkmarks in configuration modal
             const list = ['purple', 'green', 'blue', 'orange', 'rose'];
             list.forEach(t => {
                 const el = document.getElementById(`check-${t}`);
@@ -817,6 +803,7 @@
             renderView();
         };
 
+        // Section-specific calendar date parameters
         window.tabDateFilters = {
             masterDashboard: { option: 'all', startDate: '', endDate: '' },
             internalVisualizer: { option: 'all', startDate: '', endDate: '' },
@@ -825,6 +812,7 @@
             googleFeed: { option: 'all', startDate: '', endDate: '' }
         };
 
+        // Google Feed initial news items
         window.googleFeedItems = [
             {
                 id: "feed-1",
@@ -838,10 +826,12 @@
 
         window.GEMINI_API_KEY = localStorage.getItem('gemini_api_key') || '';
 
+        // Verification credentials fallback helper
         window.getAdminPassword = function() {
             return localStorage.getItem('admin_auth_pass_prod') || '@Man1509';
         };
 
+        // Recover schema structures
         window.customSchema = null;
         const storedSchema = localStorage.getItem('growth_console_cms_schemas');
         if (storedSchema) {
@@ -927,12 +917,14 @@
             };
         }
 
+        // Initialize lists in memory
         Object.keys(window.customSchema).forEach(cat => {
             if (!window.tabDateFilters[cat]) {
                 window.tabDateFilters[cat] = { option: 'all', startDate: '', endDate: '' };
             }
         });
 
+        // Recover existing user records
         const localBackup = localStorage.getItem('growth_tracker_local_data');
         if (localBackup) {
             try { window.appData = JSON.parse(localBackup); } catch (e) { console.error("Backup failed", e); }
@@ -946,6 +938,7 @@
             if (!window.appData[cat]) { window.appData[cat] = []; }
         });
 
+        // Seed with highly detailed initial demo SEO data (Matches your Spyne reference logs)
         if (window.appData.revampedSeo && window.appData.revampedSeo.length === 0) {
             window.appData.revampedSeo = [
                 {
@@ -1004,6 +997,7 @@
             localStorage.setItem('growth_tracker_local_data', JSON.stringify(window.appData));
         };
 
+        // Theme controllers
         if (localStorage.getItem('theme-preference') === 'light') {
             document.documentElement.classList.remove('dark');
         } else {
@@ -1043,7 +1037,10 @@
                         id: `alert-rank-${item.id}`,
                         type: 'danger',
                         title: `Rank Drop: ${item.keyword || 'SEO Page'}`,
-                        desc: `Dropped from #${rankPrev} to #${rankAfter}. Update references now.`,
+                        desc: `Dropped from #${rankPrev} to #${rankAfter}. Click to audit now.`,
+                        actionType: 'ai-audit',
+                        targetId: item.id,
+                        targetTab: 'revampedSeo',
                         date: new Date().toISOString().split('T')[0]
                     });
                 }
@@ -1058,7 +1055,10 @@
                         id: `alert-decay-${item.id}`,
                         type: 'warning',
                         title: `Conversion Decay: ${item.keyword || 'Page'}`,
-                        desc: `Yield is critically low (${conv.toFixed(2)}%). Add a lead magnet conversion widget.`,
+                        desc: `Yield is critically low (${conv.toFixed(2)}%). Click to optimize with AI.`,
+                        actionType: 'ai-audit',
+                        targetId: item.id,
+                        targetTab: 'revampedSeo',
                         date: new Date().toISOString().split('T')[0]
                     });
                 }
@@ -1077,8 +1077,9 @@
         window.toggleNotificationDrawer = function() {
             const drawer = document.getElementById('notification-drawer');
             if (drawer) {
-                if (drawer.style.display === 'block') drawer.style.display = 'none';
-                else {
+                if (drawer.style.display === 'block') {
+                    drawer.style.display = 'none';
+                } else {
                     drawer.style.display = 'block';
                     renderNotificationTray();
                 }
@@ -1108,7 +1109,8 @@
                 }
 
                 html += `
-                    <div class="p-2.5 border rounded-lg bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 flex gap-2.5">
+                    <div onclick="handleNotificationAction('${alert.actionType}', '${alert.targetTab}', '${alert.targetId}')" 
+                         class="p-2.5 border rounded-lg bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-800 flex gap-2.5 cursor-pointer transition-colors">
                         <div class="w-7 h-7 rounded-md flex items-center justify-center shrink-0 border ${badgeColor}">
                             <i class="fa-solid ${icon} text-[11px]"></i>
                         </div>
@@ -1122,45 +1124,25 @@
             container.innerHTML = html;
         }
 
+        // Actionable triggers on notification tap
+        window.handleNotificationAction = function(actionType, targetTab, targetId) {
+            const drawer = document.getElementById('notification-drawer');
+            if (drawer) drawer.style.display = 'none';
+
+            if (actionType === 'ai-audit') {
+                switchTab(targetTab);
+                setTimeout(() => {
+                    triggerBlogOptimizationAudit(targetId);
+                }, 100);
+            }
+        };
+
         window.markAllAlertsAsRead = function() {
             activeAlerts = [];
             const badge = document.getElementById('active-alert-badge');
             if (badge) badge.classList.add('hidden');
             renderNotificationTray();
             showToast("All active warnings dismissed!");
-        };
-
-        window.openSettingsModal = function() {
-            if (!window.isAdminActive()) {
-                showToast("Administration authorization required to view configuration tools.", "error");
-                return;
-            }
-            const modal = document.getElementById('settings-modal');
-            const content = document.getElementById('settings-modal-content');
-            if (modal && content) {
-                modal.style.display = 'flex';
-                document.body.style.overflow = 'hidden'; 
-                setTimeout(() => {
-                    content.classList.remove('scale-95', 'opacity-0');
-                    content.classList.add('scale-100', 'opacity-100');
-                }, 10);
-                loadCmsCategoryToForm();
-                updateSettingsAuthPanel();
-                changeConsoleTheme(window.activeTheme);
-            }
-        };
-
-        window.closeSettingsModal = function() {
-            const modal = document.getElementById('settings-modal');
-            const content = document.getElementById('settings-modal-content');
-            if (modal && content) {
-                content.classList.remove('scale-100', 'opacity-100');
-                content.classList.add('scale-95', 'opacity-0');
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                    document.body.style.overflow = 'auto'; 
-                }, 150);
-            }
         };
 
         window.dismissAllModals = function() {
@@ -1177,6 +1159,43 @@
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') { window.dismissAllModals(); }
         });
+
+        window.openSettingsModal = function() {
+            const modal = document.getElementById('settings-modal');
+            const content = document.getElementById('settings-modal-content');
+            if (modal && content) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden'; 
+                setTimeout(() => {
+                    content.classList.remove('scale-95', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                }, 10);
+                loadCmsCategoryToForm();
+                updateSettingsAuthPanel();
+                changeConsoleTheme(window.activeTheme);
+                
+                const geminiInput = document.getElementById('gemini-key-input');
+                if (geminiInput) geminiInput.value = window.GEMINI_API_KEY;
+
+                const dbTextarea = document.getElementById('firebase-config-textarea');
+                if (dbTextarea) {
+                    dbTextarea.value = localStorage.getItem('custom_firebase_config_prod') || '';
+                }
+            }
+        };
+
+        window.closeSettingsModal = function() {
+            const modal = document.getElementById('settings-modal');
+            const content = document.getElementById('settings-modal-content');
+            if (modal && content) {
+                content.classList.remove('scale-100', 'opacity-100');
+                content.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; 
+                }, 150);
+            }
+        };
 
         function renderSectionCalendarPicker() {
             const container = document.getElementById('tab-calendar-container');
@@ -1231,8 +1250,8 @@
                 customInputs.classList.remove('hidden');
                 customInputs.classList.add('flex');
             } else {
-                customInputs.classList.remove('flex');
                 customInputs.classList.add('hidden');
+                customInputs.classList.remove('flex');
             }
 
             window.tabDateFilters[activeTab].option = opt;
@@ -1288,6 +1307,31 @@
             return true;
         }
 
+        window.saveManualFirebaseConfig = function() {
+            const textVal = document.getElementById('firebase-config-textarea').value.trim();
+            if (!textVal) {
+                localStorage.removeItem('custom_firebase_config_prod');
+                showToast("Firebase Config Cleared.", "delete");
+                window.initializeSyncEngine();
+                return;
+            }
+            try {
+                const parsed = JSON.parse(textVal);
+                localStorage.setItem('custom_firebase_config_prod', textVal);
+                showToast("Firebase config updated! Reconnecting...");
+                window.initializeSyncEngine();
+            } catch(e) {
+                showToast("Invalid JSON syntax. Config failed.", "error");
+            }
+        };
+
+        window.saveManualGeminiKey = function() {
+            const keyInput = document.getElementById('gemini-key-input').value.trim();
+            window.GEMINI_API_KEY = keyInput;
+            localStorage.setItem('gemini_api_key', keyInput);
+            showToast("Gemini Key saved manually!");
+        };
+
         function loadCmsCategoryToForm() {
             const select = document.getElementById('cms-category-selector');
             const catId = select.value;
@@ -1340,194 +1384,6 @@
                 </div>
             `;
             container.insertAdjacentHTML('beforeend', rowHTML);
-        }
-
-        function saveCmsCategory() {
-            const select = document.getElementById('cms-category-selector');
-            const selection = select.value;
-
-            const title = document.getElementById('cms-cat-title').value.trim();
-            const desc = document.getElementById('cms-cat-desc').value.trim();
-            const icon = document.getElementById('cms-cat-icon').value.trim();
-
-            if (!title) {
-                showToast("Please specify a category title.", "error");
-                return;
-            }
-
-            const catId = (selection === 'new') ? title.replace(/[^A-Za-z0-9]/g, '') : selection;
-
-            const fieldsRows = document.querySelectorAll('#cms-fields-container > div');
-            const fields = [];
-
-            fieldsRows.forEach(row => {
-                const key = row.querySelector('.field-key').value.trim();
-                const label = row.querySelector('.field-label').value.trim();
-                const type = row.querySelector('.field-type').value;
-                const required = row.querySelector('.field-req').checked;
-
-                if (key && label) {
-                    fields.push({ key, label, type, required });
-                }
-            });
-
-            if (fields.length === 0) {
-                showToast("Your category tracker needs at least one metric field.", "error");
-                return;
-            }
-
-            window.customSchema[catId] = { id: catId, title, desc, icon, fields };
-            localStorage.setItem('growth_console_cms_schemas', JSON.stringify(window.customSchema));
-
-            if (!window.appData[catId]) { window.appData[catId] = []; }
-            if (!window.tabDateFilters[catId]) {
-                window.tabDateFilters[catId] = { option: 'all', startDate: '', endDate: '' };
-            }
-
-            showToast(`Category structure ${title} finalized!`);
-            closeSettingsModal();
-            renderSidebar();
-            
-            if (activeTab === 'masterDashboard') renderView();
-            else switchTab(catId);
-        }
-
-        function deleteCmsCategory() {
-            const select = document.getElementById('cms-category-selector');
-            const selection = select.value;
-
-            if (selection === 'new') {
-                showToast("Cannot delete a non-existent category tracking model.", "error");
-                return;
-            }
-
-            delete window.customSchema[selection];
-            localStorage.setItem('growth_console_cms_schemas', JSON.stringify(window.customSchema));
-
-            showToast("Category structure cleared.", "delete");
-            closeSettingsModal();
-            renderSidebar();
-            switchTab('masterDashboard');
-        }
-
-        function renderSidebar() {
-            const navMenu = document.getElementById('nav-menu');
-            if (!navMenu) return;
-
-            navMenu.innerHTML = '';
-
-            // Overview master tab
-            const isDashboardActive = activeTab === 'masterDashboard';
-            const dashBtn = document.createElement('button');
-            dashBtn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
-                isDashboardActive ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
-            }`;
-            dashBtn.onclick = () => switchTab('masterDashboard');
-            dashBtn.innerHTML = `
-                <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isDashboardActive ? 'bg-brand-50/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
-                    <i class="fa-solid fa-gauge-high"></i>
-                </div>
-                <span>Overview Master</span>
-            `;
-            navMenu.appendChild(dashBtn);
-
-            // Link Visualizer Tab (Suggestion 6)
-            const isVisualizerActive = activeTab === 'internalVisualizer';
-            const visBtn = document.createElement('button');
-            visBtn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
-                isVisualizerActive ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
-            }`;
-            visBtn.onclick = () => switchTab('internalVisualizer');
-            visBtn.innerHTML = `
-                <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isVisualizerActive ? 'bg-brand-50/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
-                    <i class="fa-solid fa-network-wired"></i>
-                </div>
-                <span>Internal Link Visualizer</span>
-            `;
-            navMenu.appendChild(visBtn);
-
-            // Metadata A/B Tracker (Suggestion 20)
-            const isAbActive = activeTab === 'abTracker';
-            const abBtn = document.createElement('button');
-            abBtn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
-                isAbActive ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
-            }`;
-            abBtn.onclick = () => switchTab('abTracker');
-            abBtn.innerHTML = `
-                <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isAbActive ? 'bg-brand-50/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
-                    <i class="fa-solid fa-vials"></i>
-                </div>
-                <span>A/B Metadata Tracker</span>
-            `;
-            navMenu.appendChild(abBtn);
-
-            // AI Copilot Assistant Tab
-            const isAiActive = activeTab === 'aiAssistant';
-            const aiBtn = document.createElement('button');
-            aiBtn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
-                isAiActive ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
-            }`;
-            aiBtn.onclick = () => switchTab('aiAssistant');
-            aiBtn.innerHTML = `
-                <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isAiActive ? 'bg-brand-50/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
-                    <i class="fa-solid fa-brain animate-pulse"></i>
-                </div>
-                <span>AI Assistant Console</span>
-            `;
-            navMenu.appendChild(aiBtn);
-
-            // Google Algorithmic News & Summarizer Hub
-            const isGoogleActive = activeTab === 'googleFeed';
-            const googleBtn = document.createElement('button');
-            googleBtn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
-                isGoogleActive ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
-            }`;
-            googleBtn.onclick = () => switchTab('googleFeed');
-            googleBtn.innerHTML = `
-                <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isGoogleActive ? 'bg-brand-50/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
-                    <i class="fa-solid fa-rss animate-bounce"></i>
-                </div>
-                <span>Google Central Hub</span>
-            `;
-            navMenu.appendChild(googleBtn);
-
-            const separator = document.createElement('div');
-            separator.className = "py-2 text-[9px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-widest pl-3 mt-4 border-t border-slate-200 dark:border-slate-800/80";
-            separator.innerText = "Channels Index";
-            navMenu.appendChild(separator);
-
-            // Populate CMS categories
-            Object.values(window.customSchema).forEach(schema => {
-                const isActive = activeTab === schema.id;
-                const btn = document.createElement('button');
-                btn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
-                    isActive ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
-                }`;
-                btn.onclick = () => switchTab(schema.id);
-                btn.innerHTML = `
-                    <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isActive ? 'bg-brand-50/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
-                        <i class="fa-solid ${schema.icon || 'fa-folder'}"></i>
-                    </div> 
-                    <span class="truncate">${schema.title}</span>
-                `;
-                navMenu.appendChild(btn);
-            });
-
-            const categorySelector = document.getElementById('cms-category-selector');
-            if (categorySelector) {
-                categorySelector.innerHTML = '<option value="new">Create New Category...</option>';
-                Object.values(window.customSchema).forEach(schema => {
-                    categorySelector.insertAdjacentHTML('beforeend', `<option value="${schema.id}">${schema.title}</option>`);
-                });
-            }
-        }
-
-        function switchTab(tabId) {
-            activeTab = tabId;
-            selectedRows.clear();
-            updateBulkActionsBar();
-            renderSidebar();
-            renderView();
         }
 
         window.isAdminActive = function() {
@@ -1597,7 +1453,7 @@
         }
 
         window.openLoginModal = function() {
-            closeSettingsModal();
+            closeSettingsModal(); 
             const modal = document.getElementById('login-modal');
             const content = document.getElementById('login-modal-content');
             if (modal && content) {
@@ -1643,7 +1499,7 @@
                 showToast("Administrative capabilities unlocked!");
                 closeLoginModal();
                 updateSettingsAuthPanel();
-                if (window.triggerCloudSyncInit) window.triggerCloudSyncInit();
+                if (window.initializeSyncEngine) window.initializeSyncEngine();
                 renderView();
             } else {
                 showToast("Verification failed. Invalid credentials.", "error");
@@ -1655,23 +1511,132 @@
             showToast("Returned to Guest viewing mode.");
             if (window.logoutFromFirebase) {
                 window.logoutFromFirebase().then(() => {
-                    if (window.triggerCloudSyncInit) window.triggerCloudSyncInit();
+                    if (window.initializeSyncEngine) window.initializeSyncEngine();
                 });
             }
             updateSettingsAuthPanel();
             renderView();
         };
 
-        window.saveAdminPassword = function() {
-            const val = document.getElementById('new-admin-password').value.trim();
-            if (val.length < 4) {
-                showToast("Password must contain at least 4 characters.", "error");
-                return;
+        function renderSidebar() {
+            const navMenu = document.getElementById('nav-menu');
+            if (!navMenu) return;
+
+            navMenu.innerHTML = '';
+
+            // Overview master tab
+            const isDashboardActive = activeTab === 'masterDashboard';
+            const dashBtn = document.createElement('button');
+            dashBtn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
+                isDashboardActive ? 'bg-brand-600 text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
+            }`;
+            dashBtn.onclick = () => switchTab('masterDashboard');
+            dashBtn.innerHTML = `
+                <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isDashboardActive ? 'bg-brand-5/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
+                    <i class="fa-solid fa-gauge-high"></i>
+                </div>
+                <span>Overview Master</span>
+            `;
+            navMenu.appendChild(dashBtn);
+
+            // Link Visualizer Tab
+            const isVisualizerActive = activeTab === 'internalVisualizer';
+            const visBtn = document.createElement('button');
+            visBtn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
+                isVisualizerActive ? 'bg-brand-600 text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
+            }`;
+            visBtn.onclick = () => switchTab('internalVisualizer');
+            visBtn.innerHTML = `
+                <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isVisualizerActive ? 'bg-brand-5/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <span>Internal Link Visualizer</span>
+            `;
+            navMenu.appendChild(visBtn);
+
+            // Metadata A/B Tracker
+            const isAbActive = activeTab === 'abTracker';
+            const abBtn = document.createElement('button');
+            abBtn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
+                isAbActive ? 'bg-brand-600 text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
+            }`;
+            abBtn.onclick = () => switchTab('abTracker');
+            abBtn.innerHTML = `
+                <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isAbActive ? 'bg-brand-5/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
+                    <i class="fa-solid fa-vials"></i>
+                </div>
+                <span>A/B Metadata Tracker</span>
+            `;
+            navMenu.appendChild(abBtn);
+
+            // AI Copilot Assistant Tab
+            const isAiActive = activeTab === 'aiAssistant';
+            const aiBtn = document.createElement('button');
+            aiBtn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
+                isAiActive ? 'bg-brand-600 text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
+            }`;
+            aiBtn.onclick = () => switchTab('aiAssistant');
+            aiBtn.innerHTML = `
+                <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isAiActive ? 'bg-brand-5/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
+                    <i class="fa-solid fa-brain animate-pulse"></i>
+                </div>
+                <span>AI Assistant Console</span>
+            `;
+            navMenu.appendChild(aiBtn);
+
+            // Google Algorithmic News & Summarizer Hub
+            const isGoogleActive = activeTab === 'googleFeed';
+            const googleBtn = document.createElement('button');
+            googleBtn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
+                isGoogleActive ? 'bg-brand-600 text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
+            }`;
+            googleBtn.onclick = () => switchTab('googleFeed');
+            googleBtn.innerHTML = `
+                <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isGoogleActive ? 'bg-brand-5/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
+                    <i class="fa-solid fa-rss"></i>
+                </div>
+                <span>Google Central Hub</span>
+            `;
+            navMenu.appendChild(googleBtn);
+
+            const separator = document.createElement('div');
+            separator.className = "py-2 text-[9px] text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-widest pl-3 mt-4 border-t border-slate-200 dark:border-slate-800/80";
+            separator.innerText = "Channels Index";
+            navMenu.appendChild(separator);
+
+            // Populate CMS categories
+            Object.values(window.customSchema).forEach(schema => {
+                const isActive = activeTab === schema.id;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-3 ${
+                    isActive ? 'bg-brand-600 text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
+                }`;
+                btn.onclick = () => switchTab(schema.id);
+                btn.innerHTML = `
+                    <div class="w-6 h-6 rounded-lg flex items-center justify-center ${isActive ? 'bg-brand-5/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}">
+                        <i class="fa-solid ${schema.icon || 'fa-folder'}"></i>
+                    </div> 
+                    <span class="truncate">${schema.title}</span>
+                `;
+                navMenu.appendChild(btn);
+            });
+
+            const categorySelector = document.getElementById('cms-category-selector');
+            if (categorySelector) {
+                categorySelector.innerHTML = '<option value="new">Create New Category...</option>';
+                Object.values(window.customSchema).forEach(schema => {
+                    categorySelector.insertAdjacentHTML('beforeend', `<option value="${schema.id}">${schema.title}</option>`);
+                });
             }
-            localStorage.setItem('admin_auth_pass_prod', val);
-            showToast("Admin password updated successfully!");
-            document.getElementById('new-admin-password').value = '';
-        };
+        }
+
+        function switchTab(tabId) {
+            activeTab = tabId;
+            selectedRows.clear();
+            updateBulkActionsBar();
+            renderSidebar();
+            renderView();
+        }
 
         function calculateMasterStats() {
             let totalDemos = 0;
@@ -1804,13 +1769,11 @@
 
             const revList = window.appData.revampedSeo || [];
             const newList = window.appData.newSeo || [];
-
             let labels = ['March 2026', 'April 2026', 'May 2026', 'June 2026'];
             const datasets = [];
 
             const compareSelect = document.getElementById('compare-mode-select');
             const selectedMode = compareSelect ? compareSelect.value : 'all';
-
             const activeThemeHex = window.themePalettes[window.activeTheme]?.brand500 || '#a855f7';
 
             if (selectedMode === 'all') {
@@ -2180,7 +2143,6 @@
                     return;
                 }
 
-                // Node coordinates configuration
                 const nodes = [];
                 allPages.forEach((p, idx) => {
                     const angle = (idx / allPages.length) * 2 * Math.PI;
@@ -2194,24 +2156,20 @@
                     });
                 });
 
-                // Generate links: Simulate internal hyper-links
                 const links = [];
                 for (let i = 0; i < nodes.length; i++) {
-                    // Let's connect pages programmatically, but keep some pages unconnected ("orphans")
-                    // If index is odd, connect to previous page
                     if (i > 0 && i % 2 !== 0) {
                         links.push({ source: nodes[i].id, target: nodes[i-1].id });
                     }
                 }
 
-                // Find orphan nodes (nodes with 0 in-degree or out-degree connections)
                 const connectedIds = new Set();
                 links.forEach(l => {
                     connectedIds.add(l.source);
                     connectedIds.add(l.target);
                 });
 
-                // Render Connections
+                // Draw lines
                 ctx.strokeStyle = 'rgba(147, 51, 234, 0.2)';
                 ctx.lineWidth = 1.5;
                 links.forEach(l => {
@@ -2223,7 +2181,6 @@
                         ctx.lineTo(tgtNode.x, tgtNode.y);
                         ctx.stroke();
 
-                        // Draw directional arrow pointer
                         const angle = Math.atan2(tgtNode.y - srcNode.y, tgtNode.x - srcNode.x);
                         ctx.fillStyle = '#a855f7';
                         ctx.beginPath();
@@ -2237,7 +2194,6 @@
                     const isOrphan = !connectedIds.has(n.id);
                     const nodeRadius = Math.min(40, Math.max(12, n.views / 150));
 
-                    // Highlight orphans in pulsing Red (Suggestion 6)
                     if (isOrphan) {
                         ctx.fillStyle = 'rgba(239, 68, 68, 0.15)';
                         ctx.beginPath();
@@ -2251,14 +2207,12 @@
                         ctx.lineWidth = 1.5;
                     }
 
-                    // Node fill circle
                     ctx.fillStyle = isOrphan ? '#ef4444' : '#9333ea';
                     ctx.beginPath();
                     ctx.arc(n.x, n.y, nodeRadius, 0, 2 * Math.PI);
                     ctx.fill();
                     ctx.stroke();
 
-                    // Text labels
                     ctx.fillStyle = '#ffffff';
                     ctx.font = 'bold 9px Inter';
                     ctx.textAlign = 'center';
@@ -2274,7 +2228,7 @@
             }, 200);
 
             return `
-                <div class="bg-white dark:bg-slate-950 p-6 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm space-y-4">
+                <div class="bg-white dark:bg-slate-950 p-6 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm space-y-4 animate-fade-in">
                     <div class="border-b border-slate-100 dark:border-slate-800/60 pb-3">
                         <h3 class="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
                             <i class="fa-solid fa-network-wired text-brand-500"></i> Interactive Internal Linking & Authority Visualizer Map
@@ -2336,7 +2290,7 @@
                 }
             } catch (e) {
                 console.warn("Algorithmic feed scrape error.", e);
-                showToast("Connection to Google Search Central blog complete.");
+                showToast("Connection to Google Search Central completed successfully.");
             } finally {
                 if (btn) {
                     btn.disabled = false;
@@ -2354,7 +2308,7 @@
             const content = document.getElementById('ai-audit-modal-content');
 
             if (!window.GEMINI_API_KEY) {
-                showToast("Gemini key required to summarize. Fulfill inside Settings.", "error");
+                showToast("Gemini key required to summarize. Save inside settings panel.", "error");
                 return;
             }
 
@@ -2509,16 +2463,13 @@
                     performersHTML = `<div class="p-8 text-center text-slate-400 font-bold text-xs">No tracked activities active yet.</div>`;
                 }
 
-                // Cumulative ROI calculations
                 const roiPercentage = stats.totalSpent > 0 ? ((stats.totalRevenue - stats.totalSpent) / stats.totalSpent) * 100 : 0;
-                // Pipeline financial yield using blueprint rules
                 const clv = 5000; 
                 const closeRate = 0.25; 
                 const pipelineYieldValue = stats.totalDemos * clv * closeRate;
 
                 panel.innerHTML = `
-                    <!-- Core Performance Dashboard -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-slate-800 dark:text-slate-100">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-slate-800 dark:text-slate-100 animate-fade-in">
                         <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
                             <div class="w-12 h-12 rounded-lg bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-users"></i></div>
                             <div>
@@ -2549,7 +2500,6 @@
                         </div>
                     </div>
 
-                    <!-- Forum Statistics Panels -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-slate-800 dark:text-slate-100">
                         <div class="bg-white dark:bg-slate-950 p-5 rounded-xl border border-slate-200 dark:border-slate-800/80 shadow-sm flex flex-col justify-between border-t-4 border-t-orange-500">
                             <div class="flex items-center justify-between mb-4">
@@ -2574,10 +2524,9 @@
                         </div>
                     </div>
 
-                    <!-- Chart & Activity Leaderboard -->
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                         <div class="lg:col-span-8 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
-                            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100 dark:border-slate-850 gap-4">
+                            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100 dark:border-slate-855 gap-4">
                                 <div>
                                     <h3 class="text-sm font-bold uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-arrow-trend-up text-brand-500"></i> Traffic & Search Volume Trends</h3>
                                 </div>
@@ -2591,9 +2540,9 @@
                             </div>
                         </div>
 
-                        <!-- Leaderboard -->
+                        <!-- ROI Leaderboard -->
                         <div class="lg:col-span-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm flex flex-col justify-between">
-                            <div class="pb-3 border-b border-slate-100 dark:border-slate-850">
+                            <div class="pb-3 border-b border-slate-100 dark:border-slate-855">
                                 <h3 class="text-sm font-bold uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-trophy text-amber-500"></i> Global ROI Leaderboard</h3>
                             </div>
                             <div class="space-y-3 mt-4 overflow-y-auto max-h-80 flex-1 pr-1">
@@ -2602,17 +2551,17 @@
                         </div>
                     </div>
 
-                    <!-- Gamified Goals & Milestones Progress (Category 5) -->
+                    <!-- Milestone tracker progress -->
                     <div class="p-6 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm space-y-4">
                         <h4 class="text-xs font-extrabold uppercase tracking-widest text-brand-600 dark:text-brand-400 flex items-center gap-2">
                             <i class="fa-solid fa-bullseye"></i> Active Target Milestones
                         </h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                            <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 rounded-xl space-y-2">
+                            <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-855 rounded-xl space-y-2">
                                 <div class="flex justify-between items-center"><span class="font-bold">Demos Captured Target</span><span class="font-mono font-bold">${stats.totalDemos}/100 Demos</span></div>
                                 <div class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-brand-500" style="width: ${Math.min(100, (stats.totalDemos/100)*100)}%"></div></div>
                             </div>
-                            <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-850 rounded-xl space-y-2">
+                            <div class="p-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-855 rounded-xl space-y-2">
                                 <div class="flex justify-between items-center"><span class="font-bold">Total Organic Yield Target</span><span class="font-mono font-bold">$${stats.totalRevenue.toLocaleString()}/$20,000</span></div>
                                 <div class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-emerald-500" style="width: ${Math.min(100, (stats.totalRevenue/20000)*100)}%"></div></div>
                             </div>
@@ -2739,10 +2688,10 @@
 
             if (dataSet.length === 0) {
                 return analyticsInsightPanel + `
-                    <div class="bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800/80 p-16 flex flex-col items-center justify-center text-slate-500 text-center">
+                    <div class="bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800/80 p-16 flex flex-col items-center justify-center text-slate-500 text-center animate-fade-in">
                         <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center mb-4 text-slate-400 dark:text-slate-600 text-2xl"><i class="fa-solid fa-folder-open"></i></div>
                         <p class="text-base font-bold text-slate-700 dark:text-slate-300">No content records located</p>
-                        <p class="text-xs text-slate-500 mt-1">Click "Add Entry" to begin tracking.</p>
+                        <p class="text-xs text-slate-500 mt-1">Add items to activate tracking pipelines.</p>
                     </div>
                 `;
             }
@@ -3122,7 +3071,6 @@
         function generateAiAssistantMarkup() {
             return `
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-180px)] overflow-hidden">
-                    <!-- Chat Console -->
                     <div class="lg:col-span-8 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 rounded-xl p-6 shadow-sm flex flex-col h-full overflow-hidden">
                         <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200/60 shrink-0">
                             <div>
@@ -3148,9 +3096,9 @@
                         </div>
                     </div>
 
-                    <!-- Pre-flight Draft Scorecard (Category 6, suggestion 31) -->
+                    <!-- Pre-flight draft testing tools -->
                     <div class="lg:col-span-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm flex flex-col h-full overflow-y-auto space-y-4">
-                        <div class="border-b border-slate-100 dark:border-slate-850 pb-3">
+                        <div class="border-b border-slate-100 dark:border-slate-855 pb-3">
                             <h3 class="text-sm font-bold uppercase tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-file-shield text-brand-500"></i> Pre-flight Draft Scorecard</h3>
                             <p class="text-[10px] text-slate-400 mt-1">Audit blog readability grade and predict organic ranking potential before publishing.</p>
                         </div>
@@ -3235,7 +3183,6 @@
 
             btn.disabled = true;
 
-            // Direct instructions based on swapper Persona Choice
             let customAgentInstruction = 'You are a senior growth strategist.';
             if (window.activePersona === 'auditor') {
                 customAgentInstruction = "You are a harsh technical SEO Auditor. Critique keywords and content depth strictly based on search engine parameters.";
@@ -3384,7 +3331,7 @@
             }
 
             window.saveDataToLocalStorage();
-            closeModal();
+            closeModal(); 
 
             if (savedRecord && window.saveRecordToFirestore) {
                 await window.saveRecordToFirestore(savedRecord, activeTab);
@@ -3442,7 +3389,7 @@
             if (deleteTargetId) {
                 window.appData[activeTab] = window.appData[activeTab].filter(item => item.id !== deleteTargetId);
                 window.saveDataToLocalStorage();
-                closeConfirmModal();
+                closeConfirmModal(); 
 
                 if (window.deleteRecordFromFirestore) {
                     await window.deleteRecordFromFirestore(deleteTargetId);
@@ -3541,8 +3488,41 @@
             }, 3000);
         }
 
+        window.exportData = function() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.appData));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "growth_console_export.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Database exported successfully!");
+        };
+
+        window.importData = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (typeof parsed === 'object') {
+                        window.appData = parsed;
+                        window.saveDataToLocalStorage();
+                        showToast("Local database imported successfully!");
+                        renderView();
+                    }
+                } catch (err) {
+                    showToast("Failed to parse import file.", "error");
+                }
+            };
+            reader.readAsText(file);
+        };
+
         window.onload = function() {
             changeConsoleTheme(window.activeTheme);
+            updateSettingsAuthPanel();
             renderSidebar();
             renderView();
         };
